@@ -1,0 +1,15 @@
+{
+  "name": "@portfolio/config",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "files": [
+    "eslint-base.js",
+    "eslint-next.js",
+    "eslint-react.js",
+    "tsconfig-base.json",
+    "tsconfig-next.json",
+    "tsconfig-node.json",
+    "tailwind-base.js"
+  ]
+}

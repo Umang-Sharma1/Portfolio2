@@ -1,0 +1,36 @@
+{
+  "name": "portfolio-monorepo",
+  "version": "1.0.0",
+  "description": "Portfolio monorepo with Turborepo - Enterprise-level MERN stack",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=web",
+    "dev:api": "turbo run dev --filter=api",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "type-check": "turbo run type-check",
+    "docker:up": "cd docker && docker-compose up -d",
+    "docker:down": "cd docker && docker-compose down",
+    "docker:build": "cd docker && docker-compose up --build -d"
+  },
+  "devDependencies": {
+    "turbo": "^1.11.2",
+    "prettier": "^3.1.1",
+    "@types/node": "^20.10.6",
+    "typescript": "^5.3.3",
+    "concurrently": "^8.2.2"
+  },
+  "packageManager": "npm@10.2.4",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

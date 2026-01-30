@@ -1,0 +1,90 @@
+import type { Config } from 'tailwindcss';
+// Fix: Use ESM import instead of require to resolve 'require is not defined' error in TypeScript environment
+import tailwindAnimate from 'tailwindcss-animate';
+
+const config: Config = {
+  darkMode: 'class',
+  content: [
+    './app/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './lib/**/*.{ts,tsx}',
+    '../../packages/ui/src/**/*.{ts,tsx}',
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        display: ['Space Grotesk', 'sans-serif'],
+      },
+      colors: {
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        border: 'hsl(var(--border))',
+        ring: 'hsl(var(--ring))',
+        space: {
+          black: '#030014',
+          dark: '#0F0F26',
+          light: '#1C1C36',
+        },
+        neon: {
+          cyan: '#00F3FF',
+          purple: '#BC13FE',
+          blue: '#2C58F7',
+        },
+        // Vision HUD color palette
+        vision: {
+          cyan: '#06B6D4',
+          crimson: '#DC2626',
+          orange: '#F97316',
+        },
+        // Text colors for light/dark modes
+        text: {
+          light: '#1e293b',
+          dark: '#f1f5f9',
+        },
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'glass-gradient':
+          'linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)',
+      },
+      animation: {
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        twinkle: 'twinkle 4s ease-in-out infinite',
+        float: 'float 8s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
+        'dash-move': 'dashMove 2s linear infinite',
+      },
+      keyframes: {
+        twinkle: {
+          '0%, 100%': { opacity: '0.2', transform: 'scale(0.8)' },
+          '50%': { opacity: '1', transform: 'scale(1.1)' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+          '50%': { transform: 'translateY(-20px) rotate(1deg)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { opacity: '0.4', boxShadow: '0 0 15px rgba(0, 243, 255, 0.2)' },
+          '50%': { opacity: '0.8', boxShadow: '0 0 35px rgba(0, 243, 255, 0.5)' },
+        },
+        /* Added dashMove keyframes to support border animation in contact section */
+        dashMove: {
+          to: { strokeDashoffset: '0' },
+        },
+      },
+    },
+  },
+  // Fix: Replaced require with imported tailwindAnimate plugin
+  plugins: [tailwindAnimate],
+};
+
+export default config;

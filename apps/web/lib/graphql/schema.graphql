@@ -1,0 +1,762 @@
+# ==========================================
+# CORE TYPES
+# ==========================================
+
+# Project Type (Enhanced)
+type Project {
+  id: ID!
+  title: String!
+  slug: String!
+  description: String!
+  category: ProjectCategory!
+  technologies: [String!]!
+  featured: Boolean!
+  status: ProjectStatus!
+
+  # Links
+  links: ProjectLinks!
+
+  # Images
+  images: ProjectImages!
+
+  # Metrics
+  metrics: ProjectMetrics!
+
+  # Timeline
+  timeline: ProjectTimeline!
+
+  # Analytics
+  views: Int!
+  clicks: ProjectClicks!
+
+  # Additional
+  features: [String!]
+  challenges: String
+  learnings: String
+
+  # Computed fields
+  durationFormatted: String
+  isRecent: Boolean!
+  popularityScore: Float
+
+  # Related data
+  relatedSkills: [Skill!]!
+
+  createdAt: String!
+  updatedAt: String!
+}
+
+type ProjectLinks {
+  github: String
+  live: String
+  demo: String
+  documentation: String
+}
+
+type ProjectImages {
+  thumbnail: String
+  screenshots: [String!]!
+  banner: String
+}
+
+type ProjectMetrics {
+  stars: Int
+  forks: Int
+  downloads: Int
+  contributors: Int
+}
+
+type ProjectTimeline {
+  startDate: String
+  endDate: String
+  duration: Int
+}
+
+type ProjectClicks {
+  github: Int!
+  live: Int!
+  demo: Int!
+}
+
+# Skill Type (Enhanced)
+type Skill {
+  id: ID!
+  name: String!
+  category: SkillCategory!
+  proficiency: Int!
+  yearsOfExperience: Float!
+  projectCount: Int!
+  status: SkillStatus!
+  relatedSkills: [String!]!
+
+  # Optional metadata
+  icon: String
+  color: String
+  description: String
+
+  # Analytics
+  views: Int!
+  lastUsedDate: String
+
+  # Computed fields
+  proficiencyLevel: String!
+  experienceLevel: String!
+  isActive: Boolean!
+
+  # Related data
+  relatedProjects: [Project!]!
+
+  createdAt: String!
+  updatedAt: String!
+}
+
+# Contact Message Type (Enhanced)
+type ContactMessage {
+  id: ID!
+  name: String!
+  email: String!
+  subject: String
+  message: String!
+  status: MessageStatus!
+
+  # Anti-spam
+  isSpam: Boolean!
+  spamScore: Int!
+
+  # Admin fields (only visible to admin)
+  ipAddress: String
+  userAgent: String
+  adminNotes: String
+  repliedAt: String
+
+  # Computed fields
+  isRecent: Boolean!
+  daysSinceCreation: Int!
+  responseTime: String
+
+  createdAt: String!
+  updatedAt: String!
+}
+
+# Analytics Type (NEW)
+type Analytics {
+  id: ID!
+
+  # Page views
+  pageViews: PageViews!
+
+  # Project interactions
+  projectClicks: [ProjectClickData!]!
+
+  # Skill views
+  skillViews: [SkillViewData!]!
+
+  # User metrics
+  uniqueVisitors: Int!
+  returningVisitors: Int!
+  averageSessionDuration: Float!
+  bounceRate: Float!
+
+  # Traffic sources
+  trafficSources: TrafficSources!
+
+  # Devices
+  devices: Devices!
+
+  # Geographic
+  countries: [CountryData!]!
+
+  # Computed
+  mostViewedProject: TopProject
+  mostViewedSkill: TopSkill
+
+  timestamp: String!
+  periodType: PeriodType!
+  createdAt: String!
+}
+
+type PageViews {
+  home: Int!
+  projects: Int!
+  skills: Int!
+  contact: Int!
+  total: Int!
+}
+
+type ProjectClickData {
+  projectId: ID!
+  title: String!
+  clicks: ProjectClicks!
+}
+
+type SkillViewData {
+  skillId: ID!
+  name: String!
+  views: Int!
+}
+
+type TrafficSources {
+  direct: Int!
+  search: Int!
+  social: Int!
+  referral: Int!
+}
+
+type Devices {
+  desktop: Int!
+  mobile: Int!
+  tablet: Int!
+}
+
+type CountryData {
+  country: String!
+  visits: Int!
+}
+
+type TopProject {
+  projectId: ID!
+  title: String!
+  clicks: Int!
+}
+
+type TopSkill {
+  skillId: ID!
+  name: String!
+  views: Int!
+}
+
+# Leaderboard Entry Type (NEW)
+type LeaderboardEntry {
+  id: ID!
+  username: String!
+  wpm: Int!
+  accuracy: Float!
+  score: Int!
+  level: Int!
+  duration: Int!
+  mistakes: Int!
+
+  # Game settings
+  gameMode: GameMode!
+  gameType: GameType!
+
+  # Player info
+  isAnonymous: Boolean!
+  userId: ID
+  country: String
+
+  # Verification
+  isVerified: Boolean!
+
+  # Computed
+  grade: String!
+  rank: Int
+
+  timestamp: String!
+  createdAt: String!
+}
+
+# Stats Type (Enhanced)
+type Stats {
+  # Core stats
+  totalProjects: Int!
+  totalSkills: Int!
+  yearsOfExperience: Float!
+
+  # Personal
+  leetcodeProblems: Int!
+  leetcodeRating: Int!
+
+  # Analytics
+  totalViews: Int!
+  totalClicks: Int!
+
+  # Breakdown
+  projectsByCategory: [CategoryCount!]!
+  skillsByCategory: [CategoryCount!]!
+  topTechnologies: [TechnologyCount!]!
+}
+
+type CategoryCount {
+  category: String!
+  count: Int!
+}
+
+type TechnologyCount {
+  technology: String!
+  count: Int!
+}
+
+# ==========================================
+# ENUMS
+# ==========================================
+
+enum ProjectCategory {
+  FRONTEND
+  BACKEND
+  FULLSTACK
+  DATABASE
+}
+
+enum ProjectStatus {
+  PLANNING
+  IN_PROGRESS
+  COMPLETED
+  ARCHIVED
+}
+
+enum SkillCategory {
+  FRONTEND
+  BACKEND
+  DATABASE
+  DEVOPS
+  TOOLS
+  LANGUAGES
+}
+
+enum SkillStatus {
+  LEARNING
+  PROFICIENT
+  EXPERT
+  ARCHIVED
+}
+
+enum MessageStatus {
+  NEW
+  READ
+  REPLIED
+  SPAM
+  ARCHIVED
+}
+
+enum PeriodType {
+  HOURLY
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum GameMode {
+  EASY
+  MEDIUM
+  HARD
+  EXPERT
+}
+
+enum GameType {
+  TYPING
+  QUIZ
+  CODE_CHALLENGE
+  MEMORY
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+enum ProjectSortField {
+  TITLE
+  CREATED_AT
+  VIEWS
+  CLICKS
+}
+
+enum SkillSortField {
+  NAME
+  PROFICIENCY
+  PROJECT_COUNT
+  VIEWS
+}
+
+enum LeaderboardSortField {
+  SCORE
+  WPM
+  ACCURACY
+  TIMESTAMP
+}
+
+# ==========================================
+# INPUT TYPES
+# ==========================================
+
+# Pagination Input
+input PaginationInput {
+  page: Int = 1
+  limit: Int = 10
+}
+
+# Project Filters
+input ProjectFilterInput {
+  category: ProjectCategory
+  status: ProjectStatus
+  searchTerm: String
+  technologies: [String!]
+  featured: Boolean
+  minViews: Int
+}
+
+input ProjectSortInput {
+  field: ProjectSortField = CREATED_AT
+  order: SortOrder = DESC
+}
+
+# Skill Filters
+input SkillFilterInput {
+  category: SkillCategory
+  status: SkillStatus
+  searchTerm: String
+  minProficiency: Int
+  maxProficiency: Int
+  isActive: Boolean
+}
+
+input SkillSortInput {
+  field: SkillSortField = PROFICIENCY
+  order: SortOrder = DESC
+}
+
+# Leaderboard Filters
+input LeaderboardFilterInput {
+  gameType: GameType
+  gameMode: GameMode
+  country: String
+  username: String
+  isVerified: Boolean = true
+  dateFrom: String
+  dateTo: String
+}
+
+input LeaderboardSortInput {
+  field: LeaderboardSortField = SCORE
+  order: SortOrder = DESC
+}
+
+# Analytics Filters
+input AnalyticsFilterInput {
+  periodType: PeriodType
+  dateFrom: String!
+  dateTo: String!
+}
+
+# Contact Message Input
+input ContactMessageInput {
+  name: String!
+  email: String!
+  subject: String
+  message: String!
+}
+
+# Submit Score Input
+input SubmitScoreInput {
+  username: String!
+  wpm: Int!
+  accuracy: Float!
+  level: Int!
+  duration: Int!
+  mistakes: Int!
+  gameMode: GameMode!
+  gameType: GameType!
+  isAnonymous: Boolean = true
+}
+
+# Track View Input
+input TrackViewInput {
+  page: String!
+  projectId: ID
+  skillId: ID
+  referrer: String
+  device: String
+  country: String
+}
+
+# Track Click Input
+input TrackClickInput {
+  projectId: ID!
+  clickType: String!
+}
+
+# Admin Inputs (Require Authentication)
+input UpdateProjectInput {
+  title: String
+  description: String
+  category: ProjectCategory
+  technologies: [String!]
+  featured: Boolean
+  status: ProjectStatus
+  links: ProjectLinksInput
+  images: ProjectImagesInput
+  metrics: ProjectMetricsInput
+  timeline: ProjectTimelineInput
+  features: [String!]
+  challenges: String
+  learnings: String
+}
+
+input ProjectLinksInput {
+  github: String
+  live: String
+  demo: String
+  documentation: String
+}
+
+input ProjectImagesInput {
+  thumbnail: String
+  screenshots: [String!]
+  banner: String
+}
+
+input ProjectMetricsInput {
+  stars: Int
+  forks: Int
+  downloads: Int
+  contributors: Int
+}
+
+input ProjectTimelineInput {
+  startDate: String
+  endDate: String
+}
+
+input UpdateSkillInput {
+  name: String
+  category: SkillCategory
+  proficiency: Int
+  yearsOfExperience: Float
+  status: SkillStatus
+  relatedSkills: [String!]
+  icon: String
+  color: String
+  description: String
+}
+
+input UpdateMessageStatusInput {
+  status: MessageStatus!
+  adminNotes: String
+}
+
+# ==========================================
+# PAGINATION TYPES
+# ==========================================
+
+type ProjectConnection {
+  edges: [ProjectEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type ProjectEdge {
+  node: Project!
+  cursor: String!
+}
+
+type SkillConnection {
+  edges: [SkillEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SkillEdge {
+  node: Skill!
+  cursor: String!
+}
+
+type LeaderboardConnection {
+  edges: [LeaderboardEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type LeaderboardEdge {
+  node: LeaderboardEntry!
+  cursor: String!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+  currentPage: Int!
+  totalPages: Int!
+}
+
+# ==========================================
+# RESPONSE TYPES
+# ==========================================
+
+type MutationResponse {
+  success: Boolean!
+  message: String!
+}
+
+type SubmitScoreResponse {
+  success: Boolean!
+  message: String!
+  entry: LeaderboardEntry
+  rank: Int
+  isPersonalBest: Boolean!
+}
+
+# ==========================================
+# QUERIES
+# ==========================================
+
+type Query {
+  # ===== Projects =====
+  # Get all projects with filters and pagination
+  projects(
+    filter: ProjectFilterInput
+    sort: ProjectSortInput
+    pagination: PaginationInput
+  ): ProjectConnection!
+
+  # Get single project by slug (SEO-friendly)
+  project(slug: String!): Project
+
+  # Get single project by ID
+  projectById(id: ID!): Project
+
+  # Search projects (full-text search)
+  searchProjects(query: String!, pagination: PaginationInput): ProjectConnection!
+
+  # Get featured projects
+  featuredProjects(limit: Int = 6): [Project!]!
+
+  # Get trending projects
+  trendingProjects(limit: Int = 6): [Project!]!
+
+  # Get projects by category
+  projectsByCategory(category: ProjectCategory!, pagination: PaginationInput): ProjectConnection!
+
+  # ===== Skills =====
+  # Get all skills with filters and pagination
+  skills(
+    filter: SkillFilterInput
+    sort: SkillSortInput
+    pagination: PaginationInput
+  ): SkillConnection!
+
+  # Get single skill
+  skill(id: ID!): Skill
+
+  # Search skills (full-text search)
+  searchSkills(query: String!, pagination: PaginationInput): SkillConnection!
+
+  # Get top skills by category
+  topSkillsByCategory(category: SkillCategory!, limit: Int = 10): [Skill!]!
+
+  # Get trending skills
+  trendingSkills(limit: Int = 5): [Skill!]!
+
+  # Get all skill categories
+  skillCategories: [String!]!
+
+  # ===== Analytics =====
+  # Get analytics for date range
+  analytics(filter: AnalyticsFilterInput!): [Analytics!]!
+
+  # Get aggregate stats for dashboard
+  aggregateAnalytics(dateFrom: String!, dateTo: String!): AggregateAnalytics!
+
+  # Get last N days analytics
+  recentAnalytics(days: Int = 30): [Analytics!]!
+
+  # ===== Leaderboard =====
+  # Get leaderboard with filters and pagination
+  leaderboard(
+    filter: LeaderboardFilterInput
+    sort: LeaderboardSortInput
+    pagination: PaginationInput
+  ): LeaderboardConnection!
+
+  # Get today's top scores
+  todayLeaderboard(gameType: GameType!, limit: Int = 10): [LeaderboardEntry!]!
+
+  # Get player's personal best
+  personalBest(username: String!, gameType: GameType!): LeaderboardEntry
+
+  # Get player rank
+  playerRank(id: ID!): Int
+
+  # ===== Contact Messages (Admin Only) =====
+  # Get all messages with filters
+  contactMessages(status: MessageStatus, pagination: PaginationInput): [ContactMessage!]!
+
+  # Get pending messages
+  pendingMessages: [ContactMessage!]!
+
+  # Get spam statistics
+  spamStats: SpamStats!
+
+  # ===== Stats =====
+  # Get overall portfolio stats
+  stats: Stats!
+}
+
+# ==========================================
+# MUTATIONS
+# ==========================================
+
+type Mutation {
+  # ===== Public Mutations =====
+  # Send contact message
+  sendContactMessage(input: ContactMessageInput!): ContactMessage!
+
+  # Submit game score
+  submitScore(input: SubmitScoreInput!): SubmitScoreResponse!
+
+  # Track page view
+  trackView(input: TrackViewInput!): MutationResponse!
+
+  # Track project click
+  trackClick(input: TrackClickInput!): MutationResponse!
+
+  # ===== Admin Mutations (Require Authentication) =====
+  # Project mutations
+  createProject(input: UpdateProjectInput!): Project!
+  updateProject(id: ID!, input: UpdateProjectInput!): Project!
+  deleteProject(id: ID!): MutationResponse!
+
+  # Skill mutations
+  createSkill(input: UpdateSkillInput!): Skill!
+  updateSkill(id: ID!, input: UpdateSkillInput!): Skill!
+  deleteSkill(id: ID!): MutationResponse!
+
+  # Update skill project count (sync with projects)
+  syncSkillProjectCounts: MutationResponse!
+
+  # Contact message mutations
+  updateMessageStatus(id: ID!, input: UpdateMessageStatusInput!): ContactMessage!
+
+  markMessageAsSpam(id: ID!): ContactMessage!
+  deleteMessage(id: ID!): MutationResponse!
+
+  # Leaderboard mutations
+  verifyScore(id: ID!): LeaderboardEntry!
+  deleteScore(id: ID!): MutationResponse!
+
+  # Analytics mutations
+  generateAnalytics(periodType: PeriodType!): Analytics!
+}
+
+# ==========================================
+# ADDITIONAL TYPES
+# ==========================================
+
+type AggregateAnalytics {
+  totalPageViews: Int!
+  totalUniqueVisitors: Int!
+  totalProjectClicks: Int!
+  totalSkillViews: Int!
+  averageBounceRate: Float!
+  averageSessionDuration: Float!
+  topProjects: [TopProject!]!
+  topSkills: [TopSkill!]!
+}
+
+type SpamStats {
+  total: Int!
+  spam: Int!
+  spamRate: String!
+}

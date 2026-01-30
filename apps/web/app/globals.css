@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Dark mode (default - space theme) */
+  :root {
+    --background: 240 80% 4%; /* Dark space background */
+    --foreground: 210 40% 98%;
+    --card: 240 80% 4%;
+    --card-foreground: 210 40% 98%;
+    --popover: 240 80% 4%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 184 100% 50%; /* Cyan */
+    --primary-foreground: 240 80% 4%;
+    --secondary: 282 98% 54%; /* Purple */
+    --secondary-foreground: 210 40% 98%;
+    --muted: 240 30% 15%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 184 100% 50%;
+    --accent-foreground: 240 80% 4%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 240 30% 15%;
+    --input: 240 30% 15%;
+    --ring: 184 100% 50%;
+    --radius: 0.75rem;
+  }
+
+  /* Light mode - clean professional theme */
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 10%;
+    --primary: 220 90% 50%; /* Professional blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 260 80% 55%; /* Softer purple */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 15% 95%;
+    --muted-foreground: 220 10% 40%;
+    --accent: 220 90% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 15% 90%;
+    --input: 220 15% 90%;
+    --ring: 220 90% 50%;
+  }
+}
+
+@layer components {
+  /* Dark mode glassmorphism */
+  .glassmorphism {
+    @apply bg-space-black/60 backdrop-blur-xl border border-white/10;
+  }
+
+  /* Light mode glassmorphism */
+  .light .glassmorphism {
+    @apply bg-white/80 backdrop-blur-xl border border-gray-200/50 shadow-lg;
+  }
+
+  .hud-corners {
+    @apply relative;
+  }
+
+  .hud-corners::before {
+    content: '';
+    @apply absolute top-0 left-0 w-4 h-4 border-t border-l border-neon-cyan/40 pointer-events-none;
+  }
+
+  .hud-corners::after {
+    content: '';
+    @apply absolute bottom-0 right-0 w-4 h-4 border-b border-r border-neon-purple/40 pointer-events-none;
+  }
+
+  /* Light mode hides space-themed corners */
+  .light .hud-corners::before,
+  .light .hud-corners::after {
+    @apply border-primary/20;
+  }
+}
+
+/* Default dark mode body */
+body {
+  @apply bg-background text-foreground antialiased;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Light mode body - clean white background */
+.light body {
+  cursor: default;
+}
+
+/* Dark mode cursor */
+:root:not(.light) body {
+  cursor: crosshair;
+}
+
+::selection {
+  @apply bg-primary text-primary-foreground;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-neon-cyan/20 rounded-full transition-colors;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-neon-cyan/40;
+}
+
+/* Shimmer animation for skeleton loaders */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Page transition animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
