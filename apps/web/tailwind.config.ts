@@ -15,6 +15,7 @@ const config: Config = {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
         display: ['Space Grotesk', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',
@@ -29,26 +30,28 @@ const config: Config = {
         },
         border: 'hsl(var(--border))',
         ring: 'hsl(var(--ring))',
+        // Space theme colors
         space: {
-          black: '#030014',
+          black: '#050505',
           dark: '#0F0F26',
           light: '#1C1C36',
         },
+        // Neon accent colors
         neon: {
           cyan: '#00F3FF',
           purple: '#BC13FE',
           blue: '#2C58F7',
         },
-        // Vision HUD color palette
+        // Vision HUD color palette - brighter values for better visibility
         vision: {
-          cyan: '#06B6D4',
-          crimson: '#DC2626',
-          orange: '#F97316',
+          cyan: '#22D3EE',
+          crimson: '#E11D48',
+          orange: '#FB923C',
         },
-        // Text colors for light/dark modes
+        // Text colors for light/dark modes - high contrast
         text: {
-          light: '#1e293b',
-          dark: '#f1f5f9',
+          light: '#0f172a',
+          dark: '#f8fafc',
         },
       },
       backgroundImage: {
@@ -62,6 +65,8 @@ const config: Config = {
         float: 'float 8s ease-in-out infinite',
         'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
         'dash-move': 'dashMove 2s linear infinite',
+        scan: 'scan 8s linear infinite',
+        'gradient-x': 'gradient-x 3s ease infinite',
       },
       keyframes: {
         twinkle: {
@@ -76,9 +81,16 @@ const config: Config = {
           '0%, 100%': { opacity: '0.4', boxShadow: '0 0 15px rgba(0, 243, 255, 0.2)' },
           '50%': { opacity: '0.8', boxShadow: '0 0 35px rgba(0, 243, 255, 0.5)' },
         },
-        /* Added dashMove keyframes to support border animation in contact section */
         dashMove: {
           to: { strokeDashoffset: '0' },
+        },
+        scan: {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(100%)' },
+        },
+        'gradient-x': {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
         },
       },
     },

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,87 +7,129 @@
 @layer base {
   /* Dark mode (default - space theme) */
   :root {
-    --background: 240 80% 4%; /* Dark space background */
+    --background: 0 0% 2%; /* Deep space black */
     --foreground: 210 40% 98%;
-    --card: 240 80% 4%;
+    --card: 240 50% 6%;
     --card-foreground: 210 40% 98%;
-    --popover: 240 80% 4%;
+    --popover: 240 50% 6%;
     --popover-foreground: 210 40% 98%;
-    --primary: 184 100% 50%; /* Cyan */
-    --primary-foreground: 240 80% 4%;
-    --secondary: 282 98% 54%; /* Purple */
+    --primary: 187 92% 69%; /* Bright cyan */
+    --primary-foreground: 0 0% 2%;
+    --secondary: 280 85% 65%; /* Bright purple */
     --secondary-foreground: 210 40% 98%;
-    --muted: 240 30% 15%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 184 100% 50%;
-    --accent-foreground: 240 80% 4%;
-    --destructive: 0 62.8% 30.6%;
+    --muted: 240 20% 12%;
+    --muted-foreground: 215 25% 70%;
+    --accent: 187 92% 69%;
+    --accent-foreground: 0 0% 2%;
+    --destructive: 0 72% 50%;
     --destructive-foreground: 210 40% 98%;
-    --border: 240 30% 15%;
-    --input: 240 30% 15%;
-    --ring: 184 100% 50%;
+    --border: 240 20% 18%;
+    --input: 240 20% 18%;
+    --ring: 187 92% 69%;
     --radius: 0.75rem;
   }
 
-  /* Light mode - clean professional theme */
+  /* Light mode - clean professional theme with better contrast */
   .light {
     --background: 0 0% 100%;
-    --foreground: 240 10% 10%;
+    --foreground: 222 47% 11%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 10%;
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 10%;
-    --primary: 220 90% 50%; /* Professional blue */
+    --popover-foreground: 222 47% 11%;
+    --primary: 220 85% 45%; /* Vivid professional blue */
     --primary-foreground: 0 0% 100%;
-    --secondary: 260 80% 55%; /* Softer purple */
+    --secondary: 260 70% 50%; /* Rich purple */
     --secondary-foreground: 0 0% 100%;
-    --muted: 220 15% 95%;
-    --muted-foreground: 220 10% 40%;
-    --accent: 220 90% 50%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 35%;
+    --accent: 220 85% 45%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 15% 90%;
-    --input: 220 15% 90%;
-    --ring: 220 90% 50%;
+    --border: 220 13% 88%;
+    --input: 220 13% 88%;
+    --ring: 220 85% 45%;
+  }
+
+  /* Base HTML styling */
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Improve text rendering */
+  * {
+    text-rendering: optimizeLegibility;
   }
 }
 
 @layer components {
-  /* Dark mode glassmorphism */
+  /* Dark mode glassmorphism - enhanced */
   .glassmorphism {
-    @apply bg-space-black/60 backdrop-blur-xl border border-white/10;
+    @apply bg-black/70 backdrop-blur-2xl border border-white/10 shadow-xl;
   }
 
-  /* Light mode glassmorphism */
+  /* Light mode glassmorphism - more visible */
   .light .glassmorphism {
-    @apply bg-white/80 backdrop-blur-xl border border-gray-200/50 shadow-lg;
+    @apply bg-white/90 backdrop-blur-xl border border-gray-200 shadow-xl;
   }
 
+  /* HUD corners styling */
   .hud-corners {
     @apply relative;
   }
 
   .hud-corners::before {
     content: '';
-    @apply absolute top-0 left-0 w-4 h-4 border-t border-l border-neon-cyan/40 pointer-events-none;
+    @apply absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyan-400/60 pointer-events-none;
   }
 
   .hud-corners::after {
     content: '';
-    @apply absolute bottom-0 right-0 w-4 h-4 border-b border-r border-neon-purple/40 pointer-events-none;
+    @apply absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-purple-400/60 pointer-events-none;
   }
 
-  /* Light mode hides space-themed corners */
+  /* Light mode corners - professional blue */
   .light .hud-corners::before,
   .light .hud-corners::after {
-    @apply border-primary/20;
+    @apply border-blue-500/30;
+  }
+
+  /* Section headings - better visibility */
+  .section-heading {
+    @apply text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight;
+  }
+
+  /* Gradient text utility */
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500;
+  }
+
+  .light .gradient-text {
+    @apply bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600;
+  }
+
+  /* Card hover effects */
+  .card-hover {
+    @apply transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl;
+  }
+
+  /* Text visibility helpers */
+  .text-primary-readable {
+    @apply text-slate-100 dark:text-slate-100;
+  }
+
+  .light .text-primary-readable {
+    @apply text-slate-900;
   }
 }
 
 /* Default dark mode body */
 body {
-  @apply bg-background text-foreground antialiased;
+  @apply bg-background text-foreground antialiased font-sans;
+  font-weight: 400;
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
@@ -101,13 +145,19 @@ body {
   cursor: crosshair;
 }
 
+/* Selection colors - both modes */
 ::selection {
-  @apply bg-primary text-primary-foreground;
+  @apply bg-cyan-500/30 text-foreground;
 }
 
-/* Custom scrollbar */
+.light ::selection {
+  @apply bg-blue-500/30 text-foreground;
+}
+
+/* Custom scrollbar - dark mode */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -115,11 +165,20 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-neon-cyan/20 rounded-full transition-colors;
+  @apply bg-cyan-500/30 rounded-full transition-colors;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-neon-cyan/40;
+  @apply bg-cyan-500/50;
+}
+
+/* Light mode scrollbar */
+.light ::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+.light ::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
 }
 
 /* Shimmer animation for skeleton loaders */

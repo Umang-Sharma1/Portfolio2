@@ -355,13 +355,13 @@ export function ContactForm({ className }: { className?: string }) {
             </motion.div>
 
             <div className="space-y-6">
-              <h2 className="text-5xl md:text-[6.5vw] font-display font-black leading-[0.8] tracking-tighter uppercase italic text-text-light dark:text-text-dark">
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-display font-black leading-[0.85] tracking-tight uppercase text-text-light dark:text-text-dark">
                 Sync <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-br from-vision-crimson via-vision-orange to-vision-cyan drop-shadow-[0_10px_30px_rgba(190,18,60,0.25)]">
                   Reality.
                 </span>
               </h2>
-              <p className="text-text-light/70 dark:text-text-dark/40 text-lg font-medium leading-relaxed max-w-sm">
+              <p className="text-text-light/70 dark:text-text-dark/60 text-base sm:text-lg font-medium leading-relaxed max-w-sm">
                 Initialize communication protocol. Our architecture is optimized for high-fidelity
                 collaboration.
               </p>
