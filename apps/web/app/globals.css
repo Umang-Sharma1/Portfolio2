@@ -29,27 +29,27 @@
     --radius: 0.75rem;
   }
 
-  /* Light mode - clean professional theme with better contrast */
+  /* Light mode - warm professional theme with refined contrast */
   .light {
-    --background: 0 0% 100%;
+    --background: 30 25% 98%;
     --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
+    --card: 30 15% 97%;
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 220 85% 45%; /* Vivid professional blue */
+    --primary: 195 85% 40%; /* Teal-cyan for brand consistency */
     --primary-foreground: 0 0% 100%;
-    --secondary: 260 70% 50%; /* Rich purple */
+    --secondary: 340 70% 48%; /* Crimson-rose accent */
     --secondary-foreground: 0 0% 100%;
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 35%;
-    --accent: 220 85% 45%;
+    --muted: 220 14% 95%;
+    --muted-foreground: 220 9% 40%;
+    --accent: 195 85% 40%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 88%;
-    --input: 220 13% 88%;
-    --ring: 220 85% 45%;
+    --border: 220 13% 90%;
+    --input: 220 13% 90%;
+    --ring: 195 85% 40%;
   }
 
   /* Base HTML styling */
@@ -68,12 +68,31 @@
 @layer components {
   /* Dark mode glassmorphism - enhanced */
   .glassmorphism {
-    @apply bg-black/70 backdrop-blur-2xl border border-white/10 shadow-xl;
+    @apply bg-black/60 backdrop-blur-2xl border border-white/10 shadow-xl;
   }
 
-  /* Light mode glassmorphism - more visible */
+  /* Light mode glassmorphism - translucent refined glass */
   .light .glassmorphism {
-    @apply bg-white/90 backdrop-blur-xl border border-gray-200 shadow-xl;
+    @apply bg-white/50 backdrop-blur-xl border border-slate-200/80 shadow-lg;
+  }
+
+  /* Text glow utilities */
+  .text-glow-cyan {
+    text-shadow:
+      0 0 12px rgba(34, 211, 238, 0.4),
+      0 0 24px rgba(34, 211, 238, 0.15);
+  }
+
+  .text-glow-crimson {
+    text-shadow:
+      0 0 12px rgba(225, 29, 72, 0.4),
+      0 0 24px rgba(225, 29, 72, 0.15);
+  }
+
+  /* Light mode: disable neon glows */
+  .light .text-glow-cyan,
+  .light .text-glow-crimson {
+    text-shadow: none;
   }
 
   /* HUD corners styling */
@@ -108,7 +127,7 @@
   }
 
   .light .gradient-text {
-    @apply bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600;
+    @apply bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600;
   }
 
   /* Card hover effects */
@@ -140,9 +159,9 @@ body {
   cursor: default;
 }
 
-/* Dark mode cursor */
+/* Dark mode cursor - clean default */
 :root:not(.light) body {
-  cursor: crosshair;
+  cursor: default;
 }
 
 /* Selection colors - both modes */
@@ -230,4 +249,45 @@ body {
 
 .animate-scale-in {
   animation: scaleIn 0.3s ease-out;
+}
+
+/* Cyber grid background pattern */
+.cyber-grid {
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.light .cyber-grid {
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Glow shadow for status dots */
+.shadow-glow {
+  box-shadow:
+    0 0 8px rgba(34, 211, 238, 0.6),
+    0 0 20px rgba(34, 211, 238, 0.3);
+}
+
+.light .shadow-glow {
+  box-shadow:
+    0 0 6px rgba(14, 165, 233, 0.3),
+    0 0 16px rgba(14, 165, 233, 0.15);
+}
+
+/* Light mode refinements for vision colors */
+.light .border-vision-cyan\/40 {
+  border-color: rgba(14, 165, 233, 0.4);
+}
+
+.light .text-vision-cyan {
+  color: #0891b2;
+}
+
+.light .text-vision-crimson {
+  color: #be123c;
 }

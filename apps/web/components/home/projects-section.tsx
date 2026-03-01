@@ -1,19 +1,11 @@
 ﻿'use client';
 
 import React, { useRef, useState, memo, useEffect } from 'react';
-import {
-  motion,
-  useInView,
-  AnimatePresence,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from 'framer-motion';
+import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import Link from 'next/link';
-import { useQuery } from '@apollo/client';
-import { GET_FEATURED_PROJECTS } from '@/lib/graphql/queries';
 import { ProjectModal, ProjectData } from '../projects/project-modal';
-import type { Project } from '@/lib/graphql/__generated__/schema';
+
+const MotionDiv = motion.div as any;
 
 function cn(...inputs: any[]) {
   return inputs.filter(Boolean).join(' ');
@@ -22,8 +14,8 @@ function cn(...inputs: any[]) {
 const Icons = {
   External: () => (
     <svg
-      width="12"
-      height="12"
+      width="14"
+      height="14"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -36,10 +28,11 @@ const Icons = {
       <line x1="10" x2="22" y1="14" y2="2" />
     </svg>
   ),
-  Pulse: () => (
+  Pulse: ({ className }: { className?: string }) => (
     <svg
-      width="10"
-      height="10"
+      className={className}
+      width="12"
+      height="12"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -52,83 +45,276 @@ const Icons = {
   ),
   Hex: () => (
     <svg
-      width="14"
-      height="14"
+      width="16"
+      height="16"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
       <path d="M12 2l9 5v10l-9 5-9-5V7l9-5z" />
     </svg>
   ),
+  ArrowRight: () => (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5 12h14M12 5l7 7-7 7" />
+    </svg>
+  ),
 };
 
-// Helper function to map backend Project to ProjectData
-function mapProjectToProjectData(project: Project): ProjectData {
-  console.log('🔄 Mapping project:', project);
-  return {
-    id: project.id,
-    title: project.title,
-    slug: project.slug,
-    category: project.category,
-    description: project.description,
-    fullDescription: project.description,
-    status: project.status.toLowerCase() as 'completed' | 'in-progress' | 'planned',
-    featured: project.featured,
-    technologies: project.technologies,
+const MISSIONS: ProjectData[] = [
+  {
+    id: 'LOG_01',
+    title: 'Aether Nexus',
+    slug: 'aether-nexus',
+    category: 'Orbital_Architecture',
+    description:
+      'High-bandwidth spatial computing hub for real-time asset synchronization in low-orbit nodes.',
+    fullDescription:
+      'Aether Nexus is a pioneering infrastructure project designed to bridge the gap between terrestrial data centers and orbital edge computing nodes. Utilizing high-frequency laser links, it achieves near-zero latency for spatial asset streaming across distributed global clusters.',
+    status: 'completed',
+    featured: true,
+    technologies: ['React 19', 'Three.js', 'Rust', 'WebAssembly'],
     metrics: {
-      lighthouse: {
-        performance: 95,
-        accessibility: 98,
-        bestPractices: 100,
-        seo: 92,
-      },
-      loadTime: '0.5s',
-      uptime: '99.9%',
-      responseTime: '15ms',
+      lighthouse: { performance: 99, accessibility: 100, bestPractices: 100, seo: 95 },
+      loadTime: '0.4s',
+      uptime: '99.99%',
+      responseTime: '12ms',
     },
     architecture: {
       nodes: [
         {
           id: 'n1',
-          label: 'Frontend',
-          type: 'frontend',
-          description: 'User Interface',
+          label: 'Orbital_Edge',
+          type: 'service',
+          description: 'Edge compute node',
           position: { x: 50, y: 50 },
         },
         {
           id: 'n2',
-          label: 'Backend',
-          type: 'backend',
-          description: 'API Layer',
+          label: 'Signal_Mesh',
+          type: 'frontend',
+          description: 'Frontend visualizer',
           position: { x: 250, y: 50 },
         },
         {
           id: 'n3',
-          label: 'Database',
-          type: 'database',
-          description: 'Data Store',
+          label: 'Rust_Core',
+          type: 'backend',
+          description: 'Core logic processor',
           position: { x: 150, y: 150 },
         },
       ],
       connections: [
-        { from: 'n1', to: 'n2', animated: true },
-        { from: 'n2', to: 'n3', animated: true },
+        { from: 'n1', to: 'n3', animated: true },
+        { from: 'n3', to: 'n2', animated: true },
       ],
     },
-  };
-}
+  },
+  {
+    id: 'LOG_02',
+    title: 'Spectral Sentinel',
+    slug: 'spectral-sentinel',
+    category: 'Neural_Security',
+    description:
+      'Automated behavioral firewall leveraging generative patterns to secure distributed data clusters.',
+    status: 'completed',
+    featured: true,
+    technologies: ['Python', 'GenAI', 'TensorFlow', 'gRPC'],
+    metrics: {
+      lighthouse: { performance: 92, accessibility: 98, bestPractices: 95, seo: 90 },
+      loadTime: '0.8s',
+      uptime: '99.95%',
+      responseTime: '24ms',
+    },
+    architecture: {
+      nodes: [
+        {
+          id: 's1',
+          label: 'Neural_Core',
+          type: 'service',
+          description: 'ML Engine',
+          position: { x: 50, y: 100 },
+        },
+        {
+          id: 's2',
+          label: 'Shield_Gate',
+          type: 'auth',
+          description: 'Security layer',
+          position: { x: 250, y: 100 },
+        },
+      ],
+      connections: [{ from: 's1', to: 's2', animated: true }],
+    },
+  },
+  {
+    id: 'LOG_03',
+    title: 'Void Protocol',
+    slug: 'void-protocol',
+    category: 'Core_Infrastructure',
+    description:
+      'Next-generation database engine optimized for quantum-resistant encryption and cold-storage retrieval.',
+    status: 'completed',
+    featured: true,
+    technologies: ['Go', 'Kubernetes', 'PostgreSQL', 'Redis'],
+    metrics: {
+      lighthouse: { performance: 96, accessibility: 95, bestPractices: 100, seo: 94 },
+      loadTime: '0.2s',
+      uptime: '100%',
+      responseTime: '8ms',
+    },
+    architecture: {
+      nodes: [
+        {
+          id: 'v1',
+          label: 'K8s_Cluster',
+          type: 'service',
+          description: 'Orchestration',
+          position: { x: 50, y: 50 },
+        },
+        {
+          id: 'v2',
+          label: 'Void_DB',
+          type: 'database',
+          description: 'Persistent store',
+          position: { x: 250, y: 50 },
+        },
+      ],
+      connections: [{ from: 'v1', to: 'v2', animated: true }],
+    },
+  },
+  {
+    id: 'LOG_04',
+    title: 'Phantom Grid',
+    slug: 'phantom-grid',
+    category: 'Data_Mesh',
+    description:
+      'Distributed real-time analytics pipeline processing millions of events per second with sub-millisecond latency.',
+    status: 'completed',
+    featured: true,
+    technologies: ['Apache Kafka', 'Flink', 'TypeScript', 'ClickHouse'],
+    metrics: {
+      lighthouse: { performance: 97, accessibility: 96, bestPractices: 100, seo: 93 },
+      loadTime: '0.3s',
+      uptime: '99.98%',
+      responseTime: '6ms',
+    },
+    architecture: {
+      nodes: [
+        {
+          id: 'p1',
+          label: 'Event_Stream',
+          type: 'service',
+          description: 'Kafka cluster',
+          position: { x: 50, y: 50 },
+        },
+        {
+          id: 'p2',
+          label: 'Process_Core',
+          type: 'backend',
+          description: 'Stream processor',
+          position: { x: 250, y: 50 },
+        },
+      ],
+      connections: [{ from: 'p1', to: 'p2', animated: true }],
+    },
+  },
+  {
+    id: 'LOG_05',
+    title: 'Nova Terminal',
+    slug: 'nova-terminal',
+    category: 'Developer_Tools',
+    description:
+      'AI-augmented developer workspace with intelligent code analysis, live collaboration, and seamless CI/CD integration.',
+    status: 'in-progress',
+    featured: true,
+    technologies: ['Next.js 14', 'OpenAI', 'WebSocket', 'Docker'],
+    metrics: {
+      lighthouse: { performance: 94, accessibility: 99, bestPractices: 98, seo: 96 },
+      loadTime: '0.6s',
+      uptime: '99.9%',
+      responseTime: '18ms',
+    },
+    architecture: {
+      nodes: [
+        {
+          id: 'nv1',
+          label: 'AI_Engine',
+          type: 'service',
+          description: 'LLM integration',
+          position: { x: 50, y: 50 },
+        },
+        {
+          id: 'nv2',
+          label: 'Editor_Core',
+          type: 'frontend',
+          description: 'Code workspace',
+          position: { x: 250, y: 50 },
+        },
+      ],
+      connections: [{ from: 'nv1', to: 'nv2', animated: true }],
+    },
+  },
+  {
+    id: 'LOG_06',
+    title: 'Eclipse Vault',
+    slug: 'eclipse-vault',
+    category: 'Blockchain_Auth',
+    description:
+      'Decentralized identity management with zero-knowledge proofs and multi-chain wallet integration.',
+    status: 'completed',
+    featured: true,
+    technologies: ['Solidity', 'Ethers.js', 'Next.js', 'IPFS'],
+    metrics: {
+      lighthouse: { performance: 91, accessibility: 97, bestPractices: 100, seo: 90 },
+      loadTime: '0.7s',
+      uptime: '99.95%',
+      responseTime: '22ms',
+    },
+    architecture: {
+      nodes: [
+        {
+          id: 'e1',
+          label: 'Chain_Bridge',
+          type: 'service',
+          description: 'Multi-chain connector',
+          position: { x: 50, y: 100 },
+        },
+        {
+          id: 'e2',
+          label: 'Vault_Core',
+          type: 'auth',
+          description: 'ZK-proof engine',
+          position: { x: 250, y: 100 },
+        },
+      ],
+      connections: [{ from: 'e1', to: 'e2', animated: true }],
+    },
+  },
+];
+
+// ============================================================================
+// PROJECT CARD
+// ============================================================================
 
 const ProjectCard = memo(
   ({
-    project,
+    mission,
     idx,
     onSelect,
   }: {
-    project: ProjectData;
+    mission: ProjectData;
     idx: number;
     onSelect: (p: ProjectData) => void;
   }) => {
@@ -136,23 +322,22 @@ const ProjectCard = memo(
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
-    const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [7, -7]), {
-      damping: 25,
-      stiffness: 150,
+    const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), {
+      damping: 20,
+      stiffness: 200,
     });
-    const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-7, 7]), {
-      damping: 25,
-      stiffness: 150,
+    const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), {
+      damping: 20,
+      stiffness: 200,
     });
 
-    // Parallax shifts for content layers
-    const contentX = useSpring(useTransform(mouseX, [-0.5, 0.5], [10, -10]), {
-      damping: 30,
-      stiffness: 100,
+    const contentX = useSpring(useTransform(mouseX, [-0.5, 0.5], [15, -15]), {
+      damping: 25,
+      stiffness: 150,
     });
-    const contentY = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), {
-      damping: 30,
-      stiffness: 100,
+    const contentY = useSpring(useTransform(mouseY, [-0.5, 0.5], [15, -15]), {
+      damping: 25,
+      stiffness: 150,
     });
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -170,202 +355,184 @@ const ProjectCard = memo(
     };
 
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
+      <MotionDiv
+        initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
         className="group relative h-full"
-        style={{ perspective: '1200px' }}
+        style={{ perspective: '2000px' }}
       >
-        <motion.div
+        <MotionDiv
           ref={cardRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={{ rotateX, rotateY }}
-          className="relative p-10 h-full rounded-[3rem] glassmorphism border-2 border-slate-200/40 dark:border-white/10 transition-all duration-700 hover:border-vision-cyan/40 flex flex-col overflow-hidden bg-white/[0.05] dark:bg-space-black/40 shadow-2xl"
+          className={cn(
+            'relative p-10 h-full rounded-[2.5rem] transition-all duration-700 flex flex-col overflow-hidden border-[1px] backdrop-blur-[40px]',
+            'bg-white/95 dark:bg-space-black/90',
+            'border-slate-300/50 dark:border-white/10 hover:border-vision-cyan/60 shadow-[0_30px_60px_rgba(0,0,0,0.06)] dark:shadow-[0_40px_100px_rgba(0,0,0,0.9)]'
+          )}
         >
-          {/* Animated Scanline Overlay */}
-          <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-[0.03] transition-opacity duration-700">
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(34,211,238,0.5)_50%)] bg-[length:100%_2px] animate-scan" />
+          {/* Lighting Edge Effect */}
+          <div className="absolute inset-0 pointer-events-none z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-vision-crimson/50 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-vision-cyan/50 to-transparent" />
           </div>
 
-          {/* Dynamic Interactive Glow */}
-          <motion.div
-            className="absolute pointer-events-none rounded-full bg-vision-cyan/15 blur-[60px] w-48 h-48 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
+          {/* Dotted Background Effect */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.05] dark:opacity-[0.1]"
             style={{
-              left: useTransform(mouseX, [-0.5, 0.5], ['30%', '70%']),
-              top: useTransform(mouseY, [-0.5, 0.5], ['30%', '70%']),
+              backgroundImage: 'radial-gradient(currentColor 1px, transparent 1px)',
+              backgroundSize: '24px 24px',
             }}
           />
 
-          {/* Top Telemetry */}
-          <motion.div
+          {/* Subtle Ambient HUD Elements */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-1000">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-vision-crimson/10 blur-[120px] translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute bottom-0 left-0 w-80 h-80 bg-vision-cyan/10 blur-[120px] -translate-x-1/2 translate-y-1/2" />
+          </div>
+
+          <MotionDiv
             style={{ x: contentX, y: contentY }}
-            className="flex justify-between items-start mb-12 relative z-10"
+            className="relative z-10 flex-1 flex flex-col"
           >
-            <div className="space-y-1">
-              <div className="text-[10px] font-mono font-black text-vision-crimson uppercase tracking-[0.5em]">
-                LOG_{project.id}
+            <div className="flex justify-between items-start mb-12">
+              <div className="space-y-2">
+                <div className="inline-flex items-center gap-2">
+                  <div className="h-2 w-2 rounded-full bg-vision-crimson shadow-[0_0_12px_#E11D48] animate-pulse" />
+                  <span className="text-[11px] font-mono font-black text-vision-crimson uppercase tracking-[0.6em] drop-shadow-[0_0_10px_rgba(225,29,72,0.5)]">
+                    {mission.id}
+                  </span>
+                </div>
+                <div className="text-[10px] font-mono font-bold text-slate-400 dark:text-text-dark/30 uppercase tracking-[0.4em] italic">
+                  {mission.category}
+                </div>
               </div>
-              <div className="text-[10px] font-mono font-bold text-slate-500 dark:text-text-dark/40 uppercase tracking-widest">
-                {project.category}
+              <div className="h-12 w-12 glassmorphism rounded-2xl flex items-center justify-center text-slate-300 dark:text-text-dark/20 group-hover:text-vision-cyan border border-slate-200 dark:border-white/5 group-hover:border-vision-cyan/40 transition-all shadow-xl bg-white/20 dark:bg-black/40">
+                <Icons.Hex />
               </div>
             </div>
-            <div className="h-10 w-10 glassmorphism rounded-xl flex items-center justify-center text-slate-300 dark:text-text-dark/20 group-hover:text-vision-cyan border-2 border-transparent group-hover:border-vision-cyan/30 transition-all shadow-lg">
-              <Icons.Hex />
+
+            <div className="space-y-4">
+              <h3 className="text-3xl font-display font-black text-slate-900 dark:text-text-dark tracking-tighter uppercase italic group-hover:text-vision-cyan transition-colors duration-500 leading-[1.1]">
+                {mission.title}
+              </h3>
+              <p className="text-[14px] font-bold leading-relaxed text-slate-600 dark:text-text-dark/50 line-clamp-3">
+                {mission.description}
+              </p>
             </div>
-          </motion.div>
+          </MotionDiv>
 
-          {/* Main Content */}
-          <motion.div
-            style={{
-              x: useTransform(contentX, (v) => v * 1.5),
-              y: useTransform(contentY, (v) => v * 1.5),
-            }}
-            className="flex-1 space-y-6 relative z-10"
-          >
-            <h3 className="text-3xl font-display font-black text-slate-900 dark:text-text-dark tracking-tighter uppercase italic group-hover:text-vision-cyan transition-colors duration-500 leading-none">
-              {project.title}
-            </h3>
-            <p className="text-sm font-bold leading-relaxed text-slate-600 dark:text-text-dark/50 line-clamp-3">
-              {project.description}
-            </p>
-          </motion.div>
-
-          {/* Footer Data */}
-          <div className="mt-12 space-y-8 relative z-10">
+          <div className="mt-14 space-y-8 relative z-10">
             <div className="flex flex-wrap gap-2.5">
-              {project.technologies.slice(0, 3).map((t) => (
+              {mission.technologies.slice(0, 3).map((t) => (
                 <span
                   key={t}
-                  className="px-3.5 py-1.5 bg-slate-100 dark:bg-white/5 rounded-xl text-[9px] font-mono font-black text-slate-500 dark:text-text-dark/40 border border-slate-200 dark:border-white/5 group-hover:border-vision-cyan/20 transition-all uppercase tracking-tighter"
+                  className="px-5 py-2.5 bg-slate-100 dark:bg-white/5 rounded-2xl text-[10px] font-mono font-black text-slate-600 dark:text-text-dark/40 border border-slate-200 dark:border-white/5 group-hover:border-vision-cyan/30 transition-all uppercase tracking-tighter"
                 >
                   {t}
                 </span>
               ))}
             </div>
 
-            <div className="flex items-center justify-between pt-8 border-t border-slate-200 dark:border-white/10">
-              <div className="flex flex-col gap-0.5">
-                <div className="text-[8px] font-mono font-black text-slate-400 dark:text-text-dark/20 uppercase tracking-[0.3em]">
-                  Telemetry_Feed
+            <div className="flex items-center justify-between pt-8 border-t border-slate-200/60 dark:border-white/10">
+              <div className="flex flex-col gap-1.5">
+                <div className="text-[8px] font-mono font-black text-slate-400 dark:text-text-dark/20 uppercase tracking-[0.4em]">
+                  Node_Ping
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <div className="h-2 w-2 rounded-full bg-vision-cyan shadow-[0_0_10px_#22D3EE] animate-pulse" />
-                  <span className="text-[10px] font-mono font-black tracking-widest text-slate-900 dark:text-text-dark uppercase">
-                    {project.metrics?.responseTime} Latency
+                <div className="flex items-center gap-3">
+                  <div className="h-2 w-2 rounded-full bg-vision-cyan shadow-[0_0_14px_#22D3EE] animate-pulse" />
+                  <span className="text-[12px] font-mono font-black tracking-[0.2em] text-slate-900 dark:text-text-dark uppercase">
+                    {mission.metrics?.responseTime}
                   </span>
                 </div>
               </div>
               <button
-                onClick={() => onSelect(project)}
-                className="h-12 w-12 rounded-2xl glassmorphism flex items-center justify-center text-slate-400 dark:text-text-dark/40 hover:text-vision-crimson hover:scale-110 hover:shadow-[0_0_30px_rgba(225,29,72,0.3)] transition-all border-2 border-transparent hover:border-vision-crimson/30"
+                onClick={() => onSelect(mission)}
+                className="h-14 w-14 rounded-2xl glassmorphism flex items-center justify-center text-slate-400 dark:text-text-dark/40 hover:text-white dark:hover:text-space-black hover:bg-vision-crimson dark:hover:bg-vision-cyan hover:scale-110 transition-all border border-slate-200 dark:border-white/5 shadow-[0_15px_30px_rgba(0,0,0,0.1)]"
               >
                 <Icons.External />
               </button>
             </div>
           </div>
 
-          {/* Ultra-thin HUD Brackets */}
-          <div className="absolute top-6 left-6 w-6 h-6 border-t-2 border-l-2 border-vision-crimson/20 rounded-tl-xl transition-all group-hover:border-vision-crimson/60" />
-          <div className="absolute bottom-6 right-6 w-6 h-6 border-b-2 border-r-2 border-vision-cyan/20 rounded-br-xl transition-all group-hover:border-vision-cyan/60" />
-        </motion.div>
-      </motion.div>
+          {/* HUD Brackets - Crimson & Cyan with Glow */}
+          <div className="absolute top-6 left-6 w-10 h-10 border-t-[3px] border-l-[3px] border-vision-crimson/40 rounded-tl-xl group-hover:border-vision-crimson group-hover:shadow-[0_0_20px_#E11D48] transition-all duration-500" />
+          <div className="absolute bottom-6 right-6 w-10 h-10 border-b-[3px] border-r-[3px] border-vision-cyan/40 rounded-br-xl group-hover:border-vision-cyan group-hover:shadow-[0_0_20px_#22D3EE] transition-all duration-500" />
+        </MotionDiv>
+      </MotionDiv>
     );
   }
 );
 
-export const ProjectsSection = () => {
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
+
+export const ProjectsSection = ({ onModalToggle }: { onModalToggle?: (open: boolean) => void }) => {
   const containerRef = useRef<HTMLElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-10%' });
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
 
-  // Fetch featured projects from backend
-  const { data, loading, error } = useQuery(GET_FEATURED_PROJECTS, {
-    variables: { limit: 9 },
-  });
-
-  console.log('Featured Projects Data:', data);
-
-  const projects = data?.featuredProjects?.map(mapProjectToProjectData) || [];
-
-  console.log('Mapped Projects:', projects);
-  console.log('Projects count:', projects.length);
-  console.log('Loading state:', loading);
-  console.log('Error state:', error);
+  useEffect(() => {
+    onModalToggle?.(!!selectedProject);
+  }, [selectedProject, onModalToggle]);
 
   return (
     <section
       ref={containerRef}
       id="projects"
-      className="relative py-20 px-6 bg-white dark:bg-space-black transition-colors duration-1000"
+      className="relative py-20 px-6 bg-stone-50 dark:bg-space-black transition-colors duration-1000 overflow-hidden"
     >
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-72 bg-vision-cyan/[0.02] blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-7xl h-96 bg-vision-cyan/[0.04] dark:bg-vision-cyan/[0.02] blur-[180px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-10">
+        <div className="flex flex-col lg:flex-row justify-between items-end mb-16 gap-10">
           <div className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, x: -10 }}
+            <MotionDiv
+              initial={{ opacity: 0, x: -30 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
-              className="inline-flex items-center gap-3 px-5 py-1.5 rounded-full glassmorphism border border-vision-cyan/20 text-vision-cyan font-mono text-[9px] font-black tracking-[0.5em] uppercase"
+              className="inline-flex items-center gap-4 px-6 py-2 rounded-full glassmorphism border border-vision-cyan/20 text-vision-cyan font-mono text-[10px] font-black tracking-[0.5em] uppercase shadow-md dark:shadow-[0_0_30px_rgba(34,211,238,0.2)]"
             >
-              <Icons.Pulse /> MISSION_CONTROL // ALPHA
-            </motion.div>
-            <h2 className="text-4xl md:text-6xl font-display font-black leading-[0.9] tracking-tighter text-text-light dark:text-text-dark uppercase italic">
-              System <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-vision-crimson via-vision-orange to-vision-cyan text-glow-cyan">
-                Architecture.
+              <Icons.Pulse className="animate-pulse" /> Mission_Vessels // ARC-04
+            </MotionDiv>
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-display font-black leading-[0.9] tracking-tighter text-slate-900 dark:text-text-dark uppercase italic">
+              Digital <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-br from-vision-orange via-vision-cyan to-vision-orange drop-shadow-2xl">
+                Vessels.
               </span>
             </h2>
           </div>
 
-          <Link
+          <a
             href="/projects"
-            className="group flex items-center gap-5 text-[10px] font-mono font-black uppercase tracking-[0.4em] text-text-light/30 dark:text-text-dark/20 hover:text-vision-cyan transition-all duration-500"
+            className="group flex items-center gap-6 text-[12px] font-mono font-black uppercase tracking-[0.5em] text-slate-400 dark:text-text-dark/30 hover:text-vision-cyan transition-all duration-700"
           >
-            VIEW_ARCHIVE{' '}
-            <div className="h-[1px] w-8 bg-current group-hover:w-16 transition-all duration-700 opacity-20" />
-          </Link>
+            Establish_Data_Archive{' '}
+            <div className="h-[2px] w-12 bg-current group-hover:w-24 transition-all duration-700 opacity-40 group-hover:opacity-100" />
+          </a>
         </div>
 
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="h-96 rounded-[2rem] glassmorphism border border-white/5 animate-pulse"
-              />
-            ))}
-          </div>
-        ) : error ? (
-          <div className="text-center py-20 text-text-light/50">
-            <p>Error loading projects. Please try again later.</p>
-            <p className="text-xs mt-2">{error.message}</p>
-          </div>
-        ) : projects.length === 0 ? (
-          <div className="text-center py-20 text-text-light/50">
-            <p>No projects found. Please add some projects to the database.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {projects.map((project, idx) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                idx={idx}
-                onSelect={setSelectedProject}
-              />
-            ))}
-          </div>
-        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {MISSIONS.map((mission, idx) => (
+            <ProjectCard
+              key={mission.id}
+              mission={mission}
+              idx={idx}
+              onSelect={setSelectedProject}
+            />
+          ))}
+        </div>
 
-        <div className="mt-12 flex justify-center">
+        <div className="mt-10 flex justify-center">
           <Link
             href="/projects"
-            className="group relative px-8 py-4 font-mono text-[10px] tracking-[0.4em] text-text-light/60 dark:text-text-dark/40 uppercase border border-white/15 rounded-full hover:border-vision-cyan/40 hover:text-vision-cyan hover:bg-vision-cyan/5 transition-all duration-300"
+            className="px-12 py-5 glassmorphism border-2 border-vision-crimson/30 rounded-2xl text-[12px] font-mono font-black text-vision-crimson uppercase tracking-[0.5em] hover:scale-105 hover:bg-vision-crimson/5 hover:border-vision-crimson/60 transition-all shadow-[0_15px_40px_rgba(225,29,72,0.2)] flex items-center gap-4"
           >
-            SHOW_ALL_PROJECTS
+            Show All Archives <Icons.ArrowRight />
           </Link>
         </div>
       </div>
@@ -378,3 +545,5 @@ export const ProjectsSection = () => {
     </section>
   );
 };
+
+export default ProjectsSection;

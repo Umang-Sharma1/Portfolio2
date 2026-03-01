@@ -63,10 +63,14 @@ const config: Config = {
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         twinkle: 'twinkle 4s ease-in-out infinite',
         float: 'float 8s ease-in-out infinite',
+        'float-slow': 'float-slow 20s ease-in-out infinite',
         'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
         'dash-move': 'dashMove 2s linear infinite',
         scan: 'scan 8s linear infinite',
         'gradient-x': 'gradient-x 3s ease infinite',
+        'spin-slow': 'spin 25s linear infinite',
+        'spin-reverse-slow': 'spin 20s linear infinite reverse',
+        'border-beam': 'border-beam 3s linear infinite',
       },
       keyframes: {
         twinkle: {
@@ -76,6 +80,16 @@ const config: Config = {
         float: {
           '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
           '50%': { transform: 'translateY(-20px) rotate(1deg)' },
+        },
+        'float-slow': {
+          '0%, 100%': { transform: 'translateY(0) translateX(0)' },
+          '25%': { transform: 'translateY(-15px) translateX(10px)' },
+          '50%': { transform: 'translateY(5px) translateX(-8px)' },
+          '75%': { transform: 'translateY(-8px) translateX(12px)' },
+        },
+        'border-beam': {
+          '0%': { offsetDistance: '0%' },
+          '100%': { offsetDistance: '100%' },
         },
         'pulse-glow': {
           '0%, 100%': { opacity: '0.4', boxShadow: '0 0 15px rgba(0, 243, 255, 0.2)' },

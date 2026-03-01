@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, memo, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence, useScroll } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from 'next-themes';
 
 function cn(...inputs: any[]) {
@@ -115,54 +115,63 @@ const Icons = {
 
 type NavContext = 'LOCAL' | 'GLOBAL';
 
-const NavItem = memo(
-  ({
-    name,
-    id,
-    isActive,
-    onClick,
-    isExternal = false,
-  }: {
-    name: string;
-    id: string;
-    isActive: boolean;
-    onClick: () => void;
-    isExternal?: boolean;
-  }) => {
-    return (
-      <button
-        onClick={onClick}
-        className={cn(
-          'relative px-4 py-2 text-[10px] font-mono font-black tracking-[0.3em] uppercase transition-all duration-300',
-          isActive
-            ? 'text-vision-cyan'
-            : 'text-slate-600 dark:text-slate-400 hover:text-vision-cyan'
-        )}
-      >
-        <span className="relative z-10 flex items-center gap-2">
-          {name}
-          {isExternal && <span className="h-1 w-1 rounded-full bg-vision-orange" />}
-        </span>
-        {isActive && (
-          <motion.div
-            layoutId="nav-halo"
-            className="absolute inset-0 bg-vision-cyan/10 dark:bg-vision-cyan/5 rounded-lg border border-vision-cyan/30 shadow-[0_0_15px_rgba(34,211,238,0.2)]"
-            transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-          />
-        )}
-      </button>
-    );
-  }
-);
-NavItem.displayName = 'NavItem';
+const NavItem = ({
+  name,
+  id,
+  isActive,
+  onClick,
+  isExternal = false,
+}: {
+  name: string;
+  id: string;
+  isActive: boolean;
+  onClick: () => void;
+  isExternal?: boolean;
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      style={
+        isActive
+          ? {
+              color: '#22D3EE',
+              backgroundColor: 'rgba(34,211,238,0.12)',
+              border: '1px solid rgba(34,211,238,0.4)',
+              boxShadow:
+                '0 0 20px rgba(34,211,238,0.25), inset 0 0 12px rgba(34,211,238,0.06)',
+            }
+          : { border: '1px solid transparent' }
+      }
+      className={cn(
+        'relative px-4 py-2 text-[10px] font-mono font-black tracking-[0.3em] uppercase rounded-lg transition-all duration-300',
+        !isActive && 'text-slate-600 dark:text-slate-400 hover:text-vision-cyan'
+      )}
+    >
+      <span className="flex items-center gap-2">
+        {name}
+        {isExternal && <span className="h-1 w-1 rounded-full bg-vision-orange" />}
+      </span>
+    </button>
+  );
+};
 
 export const Header = () => {
   const { theme, setTheme } = useTheme();
-  const { scrollY } = useScroll();
   const pathname = usePathname();
-  const [navContext, setNavContext] = useState<NavContext>('LOCAL');
+  const isHomePage = pathname === '/';
+  const [navContext, setNavContext] = useState<NavContext>(isHomePage ? 'LOCAL' : 'GLOBAL');
   const [isHidden, setIsHidden] = useState(false);
-  const [currentSection, setCurrentSection] = useState('CORE_SINGULARITY');
+  const [currentSection, setCurrentSection] = useState(
+    isHomePage
+      ? 'CORE_SINGULARITY'
+      : pathname === '/skills'
+        ? 'ARSENAL_MANIFEST'
+        : pathname === '/projects'
+          ? 'MISSION_ARCHIVES'
+          : pathname === '/contact'
+            ? 'UPLINK_CHANNEL'
+            : 'CORE_SINGULARITY'
+  );
   const [memory, setMemory] = useState('12.4MB');
   const [uptime, setUptime] = useState('00:00:00');
   const [mounted, setMounted] = useState(false);
@@ -173,30 +182,64 @@ export const Header = () => {
     setMounted(true);
   }, []);
 
+  // Auto-switch nav context and section label based on route
   useEffect(() => {
+    if (pathname === '/') {
+      setNavContext('LOCAL');
+      setCurrentSection('CORE_SINGULARITY');
+    } else {
+      setNavContext('GLOBAL');
+      if (pathname === '/skills') setCurrentSection('ARSENAL_MANIFEST');
+      else if (pathname === '/projects') setCurrentSection('MISSION_ARCHIVES');
+      else if (pathname === '/contact') setCurrentSection('UPLINK_CHANNEL');
+      else setCurrentSection(pathname.replace('/', '').toUpperCase());
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    let prevScroll = window.scrollY;
+    let ticking = false;
+
     const handleScroll = () => {
-      const current = scrollY.get();
-      const prev = scrollY.getPrevious() || 0;
+      if (ticking) return;
+      ticking = true;
 
-      // Auto-hide logic
-      if (current > prev && current > 150) setIsHidden(true);
-      else setIsHidden(false);
+      requestAnimationFrame(() => {
+        const current = window.scrollY;
 
-      // Section tracking
-      const sections = ['home', 'skills', 'projects', 'contact'];
-      let found = false;
-      for (const s of sections) {
-        const el = document.getElementById(s);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top < 300 && rect.bottom > 300) {
-            setCurrentSection(s.toUpperCase().replace('HOME', 'CORE_SINGULARITY'));
-            found = true;
-            break;
+        // Auto-hide logic
+        if (current > prevScroll && current > 150) setIsHidden(true);
+        else setIsHidden(false);
+        prevScroll = current;
+
+        // Section tracking (only on home page)
+        if (pathname === '/') {
+          const sectionMap: Record<string, string> = {
+            home: 'CORE_SINGULARITY',
+            skills: 'ARSENAL_MANIFEST',
+            projects: 'MISSION_ARCHIVES',
+            timeline: 'FLIGHT_PATH',
+            contact: 'UPLINK_CHANNEL',
+          };
+          // Iterate in reverse so deeper sections are matched first
+          const sections = ['contact', 'timeline', 'projects', 'skills', 'home'];
+          let found = false;
+          for (const s of sections) {
+            const el = document.getElementById(s);
+            if (el) {
+              const rect = el.getBoundingClientRect();
+              if (rect.top <= 300) {
+                setCurrentSection(sectionMap[s] || s.toUpperCase());
+                found = true;
+                break;
+              }
+            }
           }
+          if (!found || current < 200) setCurrentSection('CORE_SINGULARITY');
         }
-      }
-      if (!found || current < 200) setCurrentSection('CORE_SINGULARITY');
+
+        ticking = false;
+      });
     };
 
     const updateStats = () => {
@@ -218,19 +261,21 @@ export const Header = () => {
       setUptime(`${h}:${m}:${s}`);
     };
 
-    const unsubscribe = scrollY.on('change', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // run once on mount
     const timer = setInterval(updateStats, 1000);
 
     return () => {
-      unsubscribe();
+      window.removeEventListener('scroll', handleScroll);
       clearInterval(timer);
     };
-  }, [scrollY]);
+  }, [pathname]);
 
   const localItems = [
     { name: 'Core', id: 'home' },
     { name: 'Arsenal', id: 'skills' },
     { name: 'Missions', id: 'projects' },
+    { name: 'Timeline', id: 'timeline' },
     { name: 'Uplink', id: 'contact' },
   ];
 
@@ -238,6 +283,7 @@ export const Header = () => {
     { name: 'Main Core', id: '/', external: false },
     { name: 'Archives', id: '/projects', external: true },
     { name: 'Manifest', id: '/skills', external: true },
+    { name: 'Uplink', id: '/contact', external: true },
   ];
 
   const handleAction = (id: string, external: boolean) => {
@@ -249,6 +295,16 @@ export const Header = () => {
     }
     setIsMobileMenuOpen(false);
   };
+
+  // Derive active nav id from currentSection — computed fresh every render
+  const sectionToNavId: Record<string, string> = {
+    core_singularity: 'home',
+    arsenal_manifest: 'skills',
+    mission_archives: 'projects',
+    flight_path: 'timeline',
+    uplink_channel: 'contact',
+  };
+  const activeNavId = sectionToNavId[currentSection.toLowerCase()] || 'home';
 
   return (
     <>
@@ -294,34 +350,27 @@ export const Header = () => {
 
           {/* Central Command Dock - Desktop */}
           <nav className="relative hidden lg:block">
-            <div className="glassmorphism px-3 py-2 rounded-[2rem] border border-slate-200 dark:border-white/10 flex items-center gap-1 shadow-2xl backdrop-blur-[40px] bg-white/80 dark:bg-space-black/60 overflow-hidden">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={navContext}
-                  initial={{ opacity: 0, y: 10, rotateX: 90 }}
-                  animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                  exit={{ opacity: 0, y: -10, rotateX: -90 }}
-                  transition={{ duration: 0.4 }}
-                  className="flex items-center gap-1"
-                >
-                  {(navContext === 'LOCAL' ? localItems : globalItems).map((item) => (
+            <div className="glassmorphism px-3 py-2 rounded-[2rem] border border-slate-200 dark:border-white/10 flex items-center gap-1 shadow-2xl backdrop-blur-[40px] bg-white/80 dark:bg-space-black/60">
+              <div className="flex items-center gap-1">
+                {(navContext === 'LOCAL' ? localItems : globalItems).map((item) => {
+                  const isItemActive =
+                    navContext === 'LOCAL'
+                      ? activeNavId === item.id
+                      : item.id === '/'
+                        ? pathname === '/'
+                        : pathname.startsWith(item.id);
+                  return (
                     <NavItem
                       key={item.id}
                       name={item.name}
                       id={item.id}
-                      isActive={
-                        navContext === 'LOCAL'
-                          ? currentSection
-                              .toLowerCase()
-                              .includes(item.id === 'home' ? 'core' : item.id)
-                          : pathname === item.id
-                      }
+                      isActive={isItemActive}
                       onClick={() => handleAction(item.id, (item as any).external || false)}
                       isExternal={(item as any).external}
                     />
-                  ))}
-                </motion.div>
-              </AnimatePresence>
+                  );
+                })}
+              </div>
 
               <div className="h-6 w-[1px] bg-slate-200 dark:bg-white/10 mx-2" />
 

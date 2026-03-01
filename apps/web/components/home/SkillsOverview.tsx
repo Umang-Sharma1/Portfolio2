@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useRef, memo, useState } from 'react';
-import dynamic from 'next/dynamic';
+import React, { useRef, memo } from 'react';
 import {
   motion,
   useInView,
@@ -11,7 +10,7 @@ import {
   AnimatePresence,
 } from 'framer-motion';
 import Link from 'next/link';
-import { useSkills } from '@/hooks/use-skills';
+import { SkillIcon } from '@/lib/skill-icons';
 
 function cn(...inputs: any[]) {
   return inputs.filter(Boolean).join(' ');
@@ -199,57 +198,7 @@ const Icons = {
   ),
 };
 
-// ============================================================================
-// LAZY ICONS
-// ============================================================================
 
-const LazyIcons = {
-  Atom: dynamic(() => import('lucide-react').then((m) => m.Atom), { ssr: false }),
-  Layers: dynamic(() => import('lucide-react').then((m) => m.Layers), { ssr: false }),
-  Code2: dynamic(() => import('lucide-react').then((m) => m.Code2), { ssr: false }),
-  Server: dynamic(() => import('lucide-react').then((m) => m.Server), { ssr: false }),
-  Database: dynamic(() => import('lucide-react').then((m) => m.Database), { ssr: false }),
-  Cloud: dynamic(() => import('lucide-react').then((m) => m.Cloud), { ssr: false }),
-  Hexagon: dynamic(() => import('lucide-react').then((m) => m.Hexagon), { ssr: false }),
-  Sparkles: dynamic(() => import('lucide-react').then((m) => m.Sparkles), { ssr: false }),
-  Box: dynamic(() => import('lucide-react').then((m) => m.Box), { ssr: false }),
-  Terminal: dynamic(() => import('lucide-react').then((m) => m.Terminal), { ssr: false }),
-  Cpu: dynamic(() => import('lucide-react').then((m) => m.Cpu), { ssr: false }),
-};
-
-const iconKey = (value?: string) => (value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-
-const SkillIcon = memo(function SkillIcon({ skill }: { skill: Skill }) {
-  const key = iconKey(skill.icon || skill.name);
-  const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-    react: LazyIcons.Atom,
-    nextjs: LazyIcons.Layers,
-    typescript: LazyIcons.Code2,
-    javascript: LazyIcons.Code2,
-    nodejs: LazyIcons.Server,
-    graphql: LazyIcons.Hexagon,
-    tailwindcss: LazyIcons.Sparkles,
-    tailwind: LazyIcons.Sparkles,
-    docker: LazyIcons.Box,
-    aws: LazyIcons.Cloud,
-    python: LazyIcons.Terminal,
-    mongodb: LazyIcons.Database,
-    postgres: LazyIcons.Database,
-    postgresql: LazyIcons.Database,
-    redis: LazyIcons.Cpu,
-  };
-
-  const Icon = iconMap[key];
-  if (Icon) {
-    return <Icon className="h-8 w-8 text-vision-cyan" />;
-  }
-
-  return (
-    <span className="text-3xl filter drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
-      {skill.icon || '✶'}
-    </span>
-  );
-});
 
 // ============================================================================
 // ANIMATED PROFICIENCY BAR
@@ -266,7 +215,6 @@ const SkillCard = memo(function SkillCard({
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(cardRef, { once: true, margin: '-50px' });
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -301,16 +249,6 @@ const SkillCard = memo(function SkillCard({
       transition={{ duration: 0.8, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      onClick={() => setIsTooltipOpen((prev) => !prev)}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          setIsTooltipOpen((prev) => !prev);
-        }
-      }}
-      tabIndex={0}
-      role="button"
-      aria-expanded={isTooltipOpen}
       style={{ rotateX, rotateY, perspective: '1000px' }}
       className={cn(
         'group relative rounded-[2.5rem] glassmorphism border-2 transition-all duration-700 flex flex-col p-8 overflow-hidden will-change-transform',
@@ -376,31 +314,6 @@ const SkillCard = memo(function SkillCard({
         </div>
       </div>
 
-      <AnimatePresence>
-        {isTooltipOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 12 }}
-            transition={{ duration: 0.2 }}
-            className="absolute left-6 right-6 bottom-6 rounded-2xl bg-white/90 dark:bg-space-black/80 backdrop-blur-xl border border-vision-cyan/30 p-4 text-xs text-slate-700 dark:text-text-dark/80 shadow-[0_20px_60px_rgba(34,211,238,0.15)]"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="font-mono text-[9px] tracking-[0.4em] uppercase text-vision-cyan">
-                Detail_Pulse
-              </span>
-              <span className="font-mono text-[10px] font-black text-vision-crimson">
-                {skill.yearsOfExperience}Y • {skill.projectCount} Missions
-              </span>
-            </div>
-            <p className="text-[12px] font-semibold leading-relaxed">
-              {skill.description ||
-                'Deep operational expertise with consistent delivery across missions.'}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Brackets */}
       <div className="absolute top-6 left-6 w-5 h-5 border-t-2 border-l-2 border-vision-crimson/10 rounded-tl-xl group-hover:border-vision-crimson/40 transition-colors" />
       <div className="absolute bottom-6 right-6 w-5 h-5 border-b-2 border-r-2 border-vision-cyan/10 rounded-br-xl group-hover:border-vision-cyan/40 transition-colors" />
@@ -415,8 +328,8 @@ const SkillCard = memo(function SkillCard({
 export const SkillsOverview = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-10%' });
-  const { skills, loading } = useSkills({ limit: 10 });
-  const topSkills = skills.length ? skills.slice(0, 10) : TOP_SKILLS;
+  // Always use curated TOP_SKILLS for the bento grid showcase
+  const topSkills: Skill[] = TOP_SKILLS;
 
   return (
     <section
@@ -438,7 +351,7 @@ export const SkillsOverview = () => {
             </motion.div>
             <h2 className="text-5xl md:text-6xl font-display font-black leading-[0.9] tracking-tighter text-slate-900 dark:text-text-dark uppercase italic">
               Core <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-vision-crimson via-vision-orange to-vision-cyan text-glow-cyan drop-shadow-2xl">
+              <span className="text-transparent bg-clip-text bg-gradient-to-br from-vision-orange via-vision-cyan to-vision-orange drop-shadow-2xl">
                 Arsenal.
               </span>
             </h2>
@@ -454,7 +367,7 @@ export const SkillsOverview = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[160px] md:grid-flow-dense">
-          {(loading ? TOP_SKILLS : topSkills).map((skill, idx) => (
+          {topSkills.map((skill, idx) => (
             <SkillCard
               key={skill.id}
               skill={skill}

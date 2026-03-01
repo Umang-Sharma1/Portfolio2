@@ -4,6 +4,7 @@ import React from 'react';
 import Hero from '../components/home/Hero';
 import SkillsOverview from '../components/home/SkillsOverview';
 import { ProjectsSection } from '../components/home/projects-section';
+import ExperienceTimeline from '../components/home/ExperienceTimeline';
 import ContactForm from '../components/home/ContactForm';
 import { Card } from '@portfolio/ui';
 import { Cpu, Globe, Zap, ChevronRight } from 'lucide-react';
@@ -18,6 +19,9 @@ export default function Page() {
 
       {/* Featured Projects Section */}
       <ProjectsSection />
+
+      {/* Experience Timeline */}
+      <ExperienceTimeline />
 
       {/* Contact Form Section */}
       <ContactForm />

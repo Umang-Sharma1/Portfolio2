@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState, useRef, memo, useCallback, useMemo, useEffect } from 'react';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useSkills } from '@/hooks/use-skills';
+import { SkillIcon } from '@/lib/skill-icons';
+import PageStarfield from '@/components/background/PageStarfield';
 
 // ============================================================================
 // TYPES
@@ -224,57 +225,7 @@ const Icons = {
   }),
 };
 
-// ============================================================================
-// LAZY SKILL ICONS
-// ============================================================================
-
-const LazyIcons = {
-  Atom: dynamic(() => import('lucide-react').then((m) => m.Atom), { ssr: false }),
-  Layers: dynamic(() => import('lucide-react').then((m) => m.Layers), { ssr: false }),
-  Code2: dynamic(() => import('lucide-react').then((m) => m.Code2), { ssr: false }),
-  Server: dynamic(() => import('lucide-react').then((m) => m.Server), { ssr: false }),
-  Database: dynamic(() => import('lucide-react').then((m) => m.Database), { ssr: false }),
-  Cloud: dynamic(() => import('lucide-react').then((m) => m.Cloud), { ssr: false }),
-  Hexagon: dynamic(() => import('lucide-react').then((m) => m.Hexagon), { ssr: false }),
-  Sparkles: dynamic(() => import('lucide-react').then((m) => m.Sparkles), { ssr: false }),
-  Box: dynamic(() => import('lucide-react').then((m) => m.Box), { ssr: false }),
-  Terminal: dynamic(() => import('lucide-react').then((m) => m.Terminal), { ssr: false }),
-  Cpu: dynamic(() => import('lucide-react').then((m) => m.Cpu), { ssr: false }),
-};
-
 const normalizeCategory = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, '');
-
-const SkillIcon = memo(function SkillIcon({ skill }: { skill: Skill }) {
-  const key = normalizeCategory(skill.icon || skill.name);
-  const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-    react: LazyIcons.Atom,
-    nextjs: LazyIcons.Layers,
-    typescript: LazyIcons.Code2,
-    javascript: LazyIcons.Code2,
-    nodejs: LazyIcons.Server,
-    graphql: LazyIcons.Hexagon,
-    tailwindcss: LazyIcons.Sparkles,
-    tailwind: LazyIcons.Sparkles,
-    docker: LazyIcons.Box,
-    aws: LazyIcons.Cloud,
-    python: LazyIcons.Terminal,
-    mongodb: LazyIcons.Database,
-    postgres: LazyIcons.Database,
-    postgresql: LazyIcons.Database,
-    redis: LazyIcons.Cpu,
-  };
-
-  const Icon = iconMap[key];
-  if (Icon) {
-    return <Icon className="h-10 w-10 text-vision-cyan" />;
-  }
-
-  return (
-    <span className="text-4xl filter drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
-      {skill.icon || '✶'}
-    </span>
-  );
-});
 
 // ============================================================================
 // MOCK DATA (50+ skills for comprehensive display)
@@ -974,19 +925,21 @@ const BackButton = memo(function BackButton() {
     <Link
       href="/"
       className={cn(
-        'inline-flex items-center gap-2 text-sm font-medium',
-        'text-muted-foreground hover:text-foreground',
-        'transition-colors duration-200 group'
+        'inline-flex items-center gap-2.5 px-4 py-2 rounded-xl',
+        'text-[10px] font-mono font-black uppercase tracking-[0.3em]',
+        'text-slate-500 dark:text-white/30 hover:text-vision-cyan',
+        'bg-white/60 dark:bg-white/[0.03] border border-slate-200/60 dark:border-white/[0.06]',
+        'hover:border-vision-cyan/30 transition-all duration-300 group'
       )}
     >
-      <Icons.ArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
-      Back to Home
+      <Icons.ArrowLeft className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-x-1" />
+      Back to Core
     </Link>
   );
 });
 
 /**
- * Hero Section
+ * Hero Section — Immersive Galaxy + Interactive Terminal
  */
 const HeroSection = memo(function HeroSection({
   totalSkills,
@@ -998,7 +951,44 @@ const HeroSection = memo(function HeroSection({
   onSearchChange: (query: string) => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+  // Interactive typing effect
+  const [typedText, setTypedText] = useState('');
+  const fullText = '> scanning_arsenal... indexing technologies... ready.';
+  useEffect(() => {
+    if (!isInView) return;
+    let i = 0;
+    const interval = setInterval(() => {
+      setTypedText(fullText.slice(0, i + 1));
+      i++;
+      if (i >= fullText.length) clearInterval(interval);
+    }, 35);
+    return () => clearInterval(interval);
+  }, [isInView]);
+
+  // Animated count
+  const [animatedCount, setAnimatedCount] = useState(0);
+  useEffect(() => {
+    if (!isInView || totalSkills === 0) return;
+    let current = 0;
+    const step = Math.max(1, Math.floor(totalSkills / 40));
+    const interval = setInterval(() => {
+      current = Math.min(current + step, totalSkills);
+      setAnimatedCount(current);
+      if (current >= totalSkills) clearInterval(interval);
+    }, 30);
+    return () => clearInterval(interval);
+  }, [isInView, totalSkills]);
+
+  // Mouse glow only (no parallax)
+  const handleHeroMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!heroRef.current) return;
+    const rect = heroRef.current.getBoundingClientRect();
+    heroRef.current.style.setProperty('--glow-x', `${e.clientX - rect.left}px`);
+    heroRef.current.style.setProperty('--glow-y', `${e.clientY - rect.top}px`);
+  }, []);
 
   return (
     <motion.div
@@ -1006,78 +996,215 @@ const HeroSection = memo(function HeroSection({
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ duration: 0.6 }}
-      className="text-center mb-12"
+      className="mb-14"
     >
-      {/* Badge */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6"
+      <div
+        ref={heroRef}
+        onMouseMove={handleHeroMouseMove}
+        className="relative rounded-[2.5rem] overflow-hidden mb-10 group/hero"
+        style={{ minHeight: '420px' }}
       >
-        <Icons.Sparkles className="h-4 w-4 text-primary" />
-        <span className="text-sm font-medium text-primary">
-          {totalSkills}+ Technologies Mastered
-        </span>
-      </motion.div>
-
-      {/* Title */}
-      <motion.h1
-        initial={{ opacity: 0, y: 20 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
-      >
-        Technical{' '}
-        <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-          Arsenal
-        </span>
-      </motion.h1>
-
-      {/* Subtitle */}
-      <motion.p
-        initial={{ opacity: 0, y: 20 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-        className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto"
-      >
-        Explore my comprehensive skillset spanning frontend, backend, databases, DevOps, and more.
-        Each skill represents years of hands-on experience and continuous learning.
-      </motion.p>
-
-      {/* Search Bar */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="max-w-md mx-auto"
-      >
-        <div className="relative">
-          <Icons.Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search skills..."
-            className={cn(
-              'w-full pl-12 pr-10 py-3 rounded-xl',
-              'bg-muted/50 border border-border/50',
-              'text-foreground placeholder:text-muted-foreground',
-              'focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary',
-              'transition-all duration-200'
-            )}
+        {/* Dark mode CSS background — animated grid + ambient glow */}
+        <div className="absolute inset-0 z-0 hidden dark:block bg-space-black rounded-[2.5rem] overflow-hidden">
+          {/* Animated scan grid */}
+          <div
+            className="absolute inset-0 opacity-[0.06]"
+            style={{
+              backgroundImage:
+                'linear-gradient(rgba(34,211,238,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.3) 1px, transparent 1px)',
+              backgroundSize: '60px 60px',
+            }}
           />
-          {searchQuery && (
-            <button
-              onClick={() => onSearchChange('')}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-muted transition-colors"
-              aria-label="Clear search"
-            >
-              <Icons.Clear className="h-4 w-4 text-muted-foreground" />
-            </button>
-          )}
+          {/* Horizontal scan line animation */}
+          <div
+            className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-vision-cyan/40 to-transparent animate-pulse"
+            style={{ top: '30%', animationDuration: '3s' }}
+          />
+          <div
+            className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-vision-crimson/30 to-transparent animate-pulse"
+            style={{ top: '65%', animationDuration: '4s', animationDelay: '1.5s' }}
+          />
+          {/* Ambient orbs */}
+          <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-vision-cyan/[0.06] blur-[120px]" />
+          <div className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full bg-vision-crimson/[0.06] blur-[100px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-vision-orange/[0.03] blur-[150px]" />
+          {/* Vignette */}
+          <div className="absolute inset-0 bg-gradient-to-b from-space-black/50 via-transparent to-space-black/70 pointer-events-none" />
+          {/* Border */}
+          <div className="absolute inset-0 rounded-[2.5rem] border border-white/[0.06] pointer-events-none" />
         </div>
-      </motion.div>
+
+        {/* Light mode background */}
+        <div className="absolute inset-0 z-0 dark:hidden bg-white border border-slate-200/80 rounded-[2.5rem]">
+          <div
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: 'radial-gradient(rgba(34,211,238,0.5) 1px, transparent 1px)',
+              backgroundSize: '24px 24px',
+            }}
+          />
+          <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-vision-cyan/5 blur-[100px]" />
+          <div className="absolute -bottom-24 -left-24 w-60 h-60 rounded-full bg-vision-crimson/5 blur-[80px]" />
+        </div>
+
+        {/* Mouse-following glow */}
+        <div className="absolute inset-0 pointer-events-none z-[2]">
+          <div
+            className="absolute w-[500px] h-[500px] rounded-full opacity-0 group-hover/hero:opacity-100 transition-opacity duration-500"
+            style={{
+              background: 'radial-gradient(circle, rgba(34,211,238,0.1) 0%, transparent 60%)',
+              left: 'var(--glow-x, 50%)',
+              top: 'var(--glow-y, 50%)',
+              transform: 'translate(-50%, -50%)',
+            }}
+          />
+        </div>
+
+        {/* Content layer — NO parallax, stable */}
+        <div className="relative z-10 p-8 md:p-12 flex flex-col justify-between" style={{ minHeight: '420px' }}>
+          {/* Top bar */}
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ delay: 0.1 }}
+              className="flex items-center gap-3"
+            >
+              <div className="h-2 w-2 rounded-full bg-vision-cyan animate-pulse shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
+              <span className="text-[9px] font-mono font-black text-slate-400 dark:text-white/30 uppercase tracking-[0.5em]">
+                System / Arsenal / Manifest
+              </span>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ delay: 0.2 }}
+              className="flex items-center gap-3"
+            >
+              {[
+                { label: 'NODES', value: animatedCount, color: 'text-vision-cyan' },
+                { label: 'CATEGORIES', value: 7, color: 'text-vision-orange' },
+                { label: 'STATUS', value: 'ONLINE', color: 'text-emerald-400' },
+              ].map((chip) => (
+                <span
+                  key={chip.label}
+                  className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-white/[0.06] text-[8px] font-mono font-black tracking-[0.3em] uppercase text-slate-500 dark:text-white/25 border border-slate-200/50 dark:border-white/[0.08] backdrop-blur-sm"
+                >
+                  {chip.label}: <span className={chip.color}>{chip.value}</span>
+                </span>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Title Row — stable, no parallax */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
+            <div className="space-y-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.15 }}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-vision-cyan/5 dark:bg-vision-cyan/10 border border-vision-cyan/20 dark:border-vision-cyan/30 backdrop-blur-sm"
+              >
+                <Icons.Sparkles className="h-3.5 w-3.5 text-vision-cyan" />
+                <span className="text-[9px] font-mono font-black tracking-[0.4em] uppercase text-vision-cyan">
+                  {totalSkills}+ Technologies Indexed
+                </span>
+              </motion.div>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.2 }}
+                className="text-5xl md:text-6xl lg:text-7xl font-display font-black tracking-tighter uppercase italic text-slate-900 dark:text-white leading-[0.9]"
+              >
+                Technical <br className="hidden md:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-vision-crimson via-vision-orange to-vision-cyan drop-shadow-[0_0_40px_rgba(34,211,238,0.3)]">
+                  Arsenal.
+                </span>
+              </motion.h1>
+
+              {/* Typing terminal line */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ delay: 0.4 }}
+                className="font-mono text-xs text-vision-cyan/60 dark:text-vision-cyan/80 h-5"
+              >
+                {typedText}
+                <span className="inline-block w-[2px] h-3.5 bg-vision-cyan ml-0.5 animate-pulse" />
+              </motion.div>
+
+              <motion.p
+                initial={{ opacity: 0, y: 15 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.3 }}
+                className="text-sm font-bold text-slate-500 dark:text-white/40 max-w-lg leading-relaxed"
+              >
+                Full-spectrum engineering skillset spanning frontend, backend, databases, DevOps,
+                and beyond. Each node represents hands-on deployment experience.
+              </motion.p>
+            </div>
+
+            {/* Search */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.35 }}
+              className="w-full lg:w-80 shrink-0"
+            >
+              <div className="relative">
+                <Icons.Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-white/30" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => onSearchChange(e.target.value)}
+                  placeholder="Search nodes..."
+                  className={cn(
+                    'w-full pl-11 pr-10 py-3.5 rounded-xl',
+                    'bg-slate-50 dark:bg-white/[0.05] border border-slate-200/80 dark:border-white/[0.12]',
+                    'text-slate-900 dark:text-white font-mono text-xs placeholder:text-slate-400 dark:placeholder:text-white/25',
+                    'focus:outline-none focus:ring-2 focus:ring-vision-cyan/30 focus:border-vision-cyan/40',
+                    'transition-all duration-200 backdrop-blur-sm',
+                    'shadow-[0_0_0_0_rgba(34,211,238,0)] focus:shadow-[0_0_20px_rgba(34,211,238,0.15)]'
+                  )}
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => onSearchChange('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-md hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+                    aria-label="Clear search"
+                  >
+                    <Icons.Clear className="h-3.5 w-3.5 text-slate-400 dark:text-white/30" />
+                  </button>
+                )}
+              </div>
+              <span className="block text-[8px] font-mono font-black text-slate-300 dark:text-white/15 mt-2 pl-1 uppercase tracking-[0.3em]">
+                Filter by name, category, or keyword
+              </span>
+            </motion.div>
+          </div>
+
+          {/* Bottom status bar */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ delay: 0.5 }}
+            className="flex items-center justify-between pt-4 border-t border-slate-200/60 dark:border-white/[0.08]"
+          >
+            <div className="flex items-center gap-4 text-[9px] font-mono tracking-[0.3em] text-slate-400 dark:text-white/20 uppercase">
+              <span className="flex items-center gap-1.5">
+                <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.6)]" />
+                ARSENAL ONLINE
+              </span>
+              <span>CLEARANCE: SIGMA</span>
+            </div>
+            <div className="text-[9px] font-mono tracking-[0.3em] text-slate-400 dark:text-white/20 uppercase">
+              {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).toUpperCase()}
+            </div>
+          </motion.div>
+        </div>
+      </div>
     </motion.div>
   );
 });
@@ -1115,12 +1242,12 @@ const CategoryFilters = memo(function CategoryFilters({
             transition={{ duration: 0.3, delay: 0.5 + index * 0.05 }}
             onClick={() => onSelectCategory(category)}
             className={cn(
-              'inline-flex items-center gap-2 px-4 py-2 rounded-full',
-              'text-sm font-medium transition-all duration-200',
+              'inline-flex items-center gap-2 px-5 py-2.5 rounded-full',
+              'text-xs font-mono font-black tracking-[0.2em] uppercase transition-all duration-300',
               'border',
               isSelected
-                ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/25'
-                : 'bg-muted/50 text-muted-foreground border-border/50 hover:bg-muted hover:text-foreground'
+                ? 'bg-vision-cyan/10 text-vision-cyan border-vision-cyan/40 shadow-lg shadow-vision-cyan/10'
+                : 'glassmorphism text-slate-500 dark:text-text-dark/40 border-slate-200 dark:border-white/10 hover:border-vision-cyan/30 hover:text-vision-cyan'
             )}
           >
             {category}
@@ -1164,9 +1291,9 @@ const SortDropdown = memo(function SortDropdown({
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          'inline-flex items-center gap-2 px-4 py-2 rounded-lg',
-          'bg-muted/50 border border-border/50 text-sm font-medium',
-          'hover:bg-muted transition-colors duration-200'
+          'inline-flex items-center gap-2 px-5 py-2.5 rounded-full',
+          'glassmorphism border border-slate-200 dark:border-white/10 text-xs font-mono font-black uppercase tracking-[0.2em]',
+          'text-slate-500 dark:text-text-dark/40 hover:border-vision-cyan/30 hover:text-vision-cyan transition-all duration-300'
         )}
       >
         <Icons.Sort className="h-4 w-4" />
@@ -1192,7 +1319,7 @@ const SortDropdown = memo(function SortDropdown({
               exit={{ opacity: 0, y: -10 }}
               className={cn(
                 'absolute right-0 top-full mt-2 z-50',
-                'w-56 rounded-lg border border-border bg-card shadow-lg'
+                'w-56 rounded-2xl glassmorphism border border-slate-200 dark:border-white/10 shadow-xl overflow-hidden'
               )}
             >
               {options.map((option) => (
@@ -1262,7 +1389,15 @@ const SkillCard = memo(function SkillCard({
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
+
+  const handleCardMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    cardRef.current.style.setProperty('--card-glow-x', `${e.clientX - rect.left}px`);
+    cardRef.current.style.setProperty('--card-glow-y', `${e.clientY - rect.top}px`);
+  }, []);
 
   return (
     <motion.div
@@ -1270,110 +1405,181 @@ const SkillCard = memo(function SkillCard({
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ duration: 0.4, delay: (index % 12) * 0.05 }}
-      className={cn(
-        'group relative p-8 rounded-[3rem] glassmorphism border-2 transition-all duration-700 overflow-hidden cursor-pointer will-change-transform',
-        'bg-white/[0.05] dark:bg-space-black/40 border-slate-200 dark:border-white/10 hover:border-vision-cyan/40 hover:-translate-y-1'
-      )}
-      onClick={() => setIsExpanded(!isExpanded)}
     >
-      {/* Header */}
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-3">
-          {/* Icon */}
-          <SkillIcon skill={skill} />
-          {/* Name & Category */}
-          <div>
-            <h3 className="text-xl font-display font-black text-slate-900 dark:text-text-dark tracking-tighter uppercase italic group-hover:text-vision-cyan transition-colors">
-              {skill.name}
-            </h3>
-            <span className="text-[10px] font-mono font-black text-slate-400 dark:text-text-dark/20 uppercase tracking-[0.4em]">
-              {skill.category}
-            </span>
-          </div>
+      {/* Outer wrapper — border beam container */}
+      <div
+        ref={cardRef}
+        onMouseMove={handleCardMouseMove}
+        onClick={() => setIsExpanded(!isExpanded)}
+        className={cn(
+          'group/card relative rounded-2xl cursor-pointer hover:z-30',
+          'transition-shadow duration-500',
+          'hover:shadow-[0_0_50px_rgba(34,211,238,0.2),_0_0_100px_rgba(34,211,238,0.08)]'
+        )}
+      >
+        {/* ── Rotating Border Beam ── */}
+        {/* Outer glow frame: conic gradient that spins, masked to border only */}
+        <div className="absolute -inset-[1px] rounded-2xl overflow-hidden opacity-0 group-hover/card:opacity-100 transition-opacity duration-500">
+          {/* The spinning gradient background */}
+          <div
+            className="absolute inset-0 animate-spin-slow"
+            style={{
+              background:
+                'conic-gradient(from 0deg, transparent 0%, rgba(34,211,238,1) 10%, transparent 20%, transparent 40%, rgba(225,29,72,1) 50%, transparent 60%, transparent 80%, rgba(251,146,60,1) 90%, transparent 100%)',
+            }}
+          />
+          {/* Inner cutout — leaves only the border visible */}
+          <div className="absolute inset-[1.5px] rounded-[calc(1rem-1.5px)] bg-white dark:bg-space-black" />
         </div>
-        {/* Expand Indicator */}
-        <motion.div animate={{ rotate: isExpanded ? 90 : 0 }} transition={{ duration: 0.2 }}>
-          <Icons.ChevronRight className="h-4 w-4 text-slate-400 dark:text-text-dark/30" />
-        </motion.div>
-      </div>
 
-      {/* Proficiency */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <span
-            className={cn(
-              'text-xs font-mono font-black uppercase tracking-widest',
-              getProficiencyColor(skill.proficiency)
-            )}
-          >
-            {getProficiencyLevel(skill.proficiency)}
-          </span>
-          <span className="text-xs font-mono font-black text-vision-cyan text-glow-cyan">
-            {skill.proficiency}%
-          </span>
+        {/* Beam dot — a bright spot traveling along the border path */}
+        <div className="absolute inset-0 rounded-2xl overflow-hidden opacity-0 group-hover/card:opacity-100 transition-opacity duration-700 pointer-events-none">
+          <div
+            className="absolute h-[8px] w-[80px] animate-border-beam"
+            style={{
+              background: 'linear-gradient(90deg, transparent, rgba(34,211,238,1), transparent)',
+              offsetPath: `rect(0 100% 100% 0 round 16px)`,
+              boxShadow: '0 0 40px 10px rgba(34,211,238,0.9), 0 0 80px 20px rgba(34,211,238,0.4)',
+              filter: 'blur(0.3px)',
+            }}
+          />
+          <div
+            className="absolute h-[10px] w-[60px] animate-border-beam"
+            style={{
+              background: 'linear-gradient(90deg, transparent, rgba(225,29,72,1), transparent)',
+              offsetPath: `rect(0 100% 100% 0 round 16px)`,
+              animationDelay: '-1.5s',
+              animationDuration: '4s',
+              boxShadow: '0 0 35px 8px rgba(225,29,72,0.8), 0 0 70px 16px rgba(225,29,72,0.35)',
+              filter: 'blur(0.3px)',
+            }}
+          />
         </div>
-        <ProficiencyBar proficiency={skill.proficiency} delay={(index % 12) * 0.05} />
-      </div>
 
-      {/* Stats Row */}
-      <div className="flex justify-between text-[10px] font-mono font-black uppercase tracking-widest text-slate-500 dark:text-text-dark/30">
-        <div className="flex items-center gap-2">
-          <Icons.Clock className="h-3.5 w-3.5 text-vision-cyan" />
-          <span>{skill.yearsOfExperience}Y Experience</span>
-        </div>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onProjectsClick(skill.name);
-          }}
-          className="flex items-center gap-2 text-vision-crimson hover:text-vision-cyan transition-colors"
+        {/* ── Card Body ── */}
+        <div
+          className={cn(
+            'relative p-5 rounded-2xl border overflow-hidden transition-all duration-500',
+            'bg-white dark:bg-space-black/90 border-slate-200/60 dark:border-white/[0.06]',
+            'group-hover/card:border-transparent group-hover/card:bg-white dark:group-hover/card:bg-space-black'
+          )}
         >
-          <Icons.Briefcase className="h-3.5 w-3.5" />
-          <span>{skill.projectCount} Missions</span>
-          <Icons.ExternalLink className="h-3.5 w-3.5" />
-        </button>
-      </div>
+          {/* Mouse-following glow inside card */}
+          <div
+            className="absolute w-[250px] h-[250px] rounded-full opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none z-0"
+            style={{
+              background: 'radial-gradient(circle, rgba(34,211,238,0.08) 0%, transparent 70%)',
+              left: 'var(--card-glow-x, 50%)',
+              top: 'var(--card-glow-y, 50%)',
+              transform: 'translate(-50%, -50%)',
+            }}
+          />
 
-      {/* Expanded Content */}
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
-          >
-            <div className="pt-4 mt-6 border-t border-slate-200 dark:border-white/5">
-              {/* Description */}
-              {skill.description && (
-                <p className="text-sm font-bold leading-relaxed text-slate-600 dark:text-text-dark/50 mb-4">
-                  {skill.description}
-                </p>
-              )}
-
-              {/* Related Skills */}
-              {skill.relatedSkills && skill.relatedSkills.length > 0 && (
-                <div>
-                  <p className="text-[9px] font-mono font-black text-slate-400 dark:text-text-dark/30 uppercase tracking-[0.4em] mb-3">
-                    Related_Skills
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {skill.relatedSkills.map((related) => (
-                      <span
-                        key={related}
-                        className="px-3 py-1 bg-vision-cyan/5 border border-vision-cyan/20 rounded-lg text-[9px] font-mono font-black text-vision-cyan uppercase"
-                      >
-                        {related}
-                      </span>
-                    ))}
+          {/* Content */}
+          <div className="relative z-10">
+            {/* Header */}
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex items-center gap-3">
+                {/* Icon with glow */}
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-xl bg-vision-cyan/0 group-hover/card:bg-vision-cyan/10 blur-xl transition-all duration-500" />
+                  <div className="relative">
+                    <SkillIcon skill={skill} size="lg" />
                   </div>
                 </div>
-              )}
+                {/* Name & Category */}
+                <div>
+                  <h3 className="text-lg font-display font-black text-slate-900 dark:text-text-dark tracking-tighter uppercase italic group-hover/card:text-vision-cyan transition-colors duration-300">
+                    {skill.name}
+                  </h3>
+                  <span className="text-[9px] font-mono font-black text-slate-400 dark:text-text-dark/20 uppercase tracking-[0.4em]">
+                    {skill.category}
+                  </span>
+                </div>
+              </div>
+              {/* Expand Indicator */}
+              <motion.div animate={{ rotate: isExpanded ? 90 : 0 }} transition={{ duration: 0.2 }}>
+                <Icons.ChevronRight className="h-4 w-4 text-slate-300 dark:text-text-dark/20 group-hover/card:text-vision-cyan/60 transition-colors" />
+              </motion.div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
+            {/* Proficiency */}
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-1.5">
+                <span
+                  className={cn(
+                    'text-[10px] font-mono font-black uppercase tracking-widest',
+                    getProficiencyColor(skill.proficiency)
+                  )}
+                >
+                  {getProficiencyLevel(skill.proficiency)}
+                </span>
+                <span className="text-[10px] font-mono font-black text-vision-cyan">
+                  {skill.proficiency}%
+                </span>
+              </div>
+              <ProficiencyBar proficiency={skill.proficiency} delay={(index % 12) * 0.05} />
+            </div>
+
+            {/* Stats Row */}
+            <div className="flex justify-between text-[9px] font-mono font-black uppercase tracking-widest text-slate-500 dark:text-text-dark/30">
+              <div className="flex items-center gap-1.5">
+                <Icons.Clock className="h-3 w-3 text-vision-cyan/60" />
+                <span>{skill.yearsOfExperience}Y Experience</span>
+              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onProjectsClick(skill.name);
+                }}
+                className="flex items-center gap-1.5 text-vision-crimson hover:text-vision-cyan transition-colors"
+              >
+                <Icons.Briefcase className="h-3 w-3" />
+                <span>{skill.projectCount} Missions</span>
+                <Icons.ExternalLink className="h-3 w-3" />
+              </button>
+            </div>
+
+            {/* Expanded Content */}
+            <AnimatePresence>
+              {isExpanded && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="pt-3 mt-4 border-t border-slate-200/60 dark:border-white/5">
+                    {skill.description && (
+                      <p className="text-xs font-bold leading-relaxed text-slate-600 dark:text-text-dark/50 mb-3">
+                        {skill.description}
+                      </p>
+                    )}
+                    {skill.relatedSkills && skill.relatedSkills.length > 0 && (
+                      <div>
+                        <p className="text-[8px] font-mono font-black text-slate-400 dark:text-text-dark/30 uppercase tracking-[0.4em] mb-2">
+                          Related_Skills
+                        </p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {skill.relatedSkills.map((related) => (
+                            <span
+                              key={related}
+                              className="px-2.5 py-0.5 bg-vision-cyan/5 border border-vision-cyan/15 rounded-lg text-[8px] font-mono font-black text-vision-cyan uppercase"
+                            >
+                              {related}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 });
@@ -1403,26 +1609,28 @@ const CategorySection = memo(function CategorySection({
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{ duration: 0.5 }}
-      className="mb-8"
+      className="mb-16"
     >
       {/* Category Header */}
       <button
         onClick={onToggle}
         className={cn(
           'w-full flex items-center justify-between',
-          'p-4 rounded-xl mb-4',
-          'bg-muted/30 hover:bg-muted/50',
-          'transition-colors duration-200'
+          'p-5 rounded-2xl mb-6',
+          'bg-white dark:bg-white/[0.03] glassmorphism border border-slate-200/80 dark:border-white/10 hover:border-vision-cyan/30',
+          'transition-all duration-300'
         )}
       >
         <div className="flex items-center gap-3">
-          <h2 className="text-xl font-bold">{category}</h2>
-          <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+          <h2 className="text-lg font-display font-black text-slate-900 dark:text-text-dark uppercase tracking-tight">
+            {category}
+          </h2>
+          <span className="px-3 py-1 rounded-full bg-vision-cyan/10 text-vision-cyan text-[10px] font-mono font-black tracking-[0.2em] uppercase">
             {skills.length} skills
           </span>
         </div>
         <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.2 }}>
-          <Icons.ChevronDown className="h-5 w-5 text-muted-foreground" />
+          <Icons.ChevronDown className="h-5 w-5 text-slate-400 dark:text-text-dark/30" />
         </motion.div>
       </button>
 
@@ -1436,7 +1644,7 @@ const CategorySection = memo(function CategorySection({
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {skills.map((skill, index) => (
                 <SkillCard
                   key={skill.id}
@@ -1669,95 +1877,108 @@ export default function SkillsPage() {
   }, [searchQuery, selectedCategory, categories]);
 
   return (
-    <div className="min-h-screen py-24 px-4 sm:px-6 lg:px-8">
-      <div className="container mx-auto max-w-7xl">
-        {/* Back Button */}
-        <div className="mb-8">
-          <BackButton />
-        </div>
-
-        {/* Hero Section */}
-        <HeroSection
-          totalSkills={allSkills.length}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-        />
-
-        {/* Category Filters */}
-        <CategoryFilters
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
-          skillCounts={skillCounts}
-        />
-
-        {/* Sort & Results Info */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
-          <p className="text-sm text-muted-foreground">
-            Showing <span className="font-medium text-foreground">{filteredSkills.length}</span>{' '}
-            {filteredSkills.length === 1 ? 'skill' : 'skills'}
-            {selectedCategory !== 'All' && ` in ${selectedCategory}`}
-            {searchQuery && ` matching "${searchQuery}"`}
-          </p>
-          <SortDropdown sortBy={sortBy} onSortChange={setSortBy} />
-        </div>
-
-        {/* Content */}
-        {loading ? (
-          <LoadingSkeleton />
-        ) : filteredSkills.length === 0 ? (
-          <EmptyState searchQuery={searchQuery} onClear={() => setSearchQuery('')} />
-        ) : (
-          <div className="space-y-2">
-            {skillsByCategory.map(({ category, skills }) => (
-              <CategorySection
-                key={category}
-                category={category}
-                skills={skills}
-                isExpanded={expandedCategories.has(category)}
-                onToggle={() => toggleCategory(category)}
-                onProjectsClick={handleProjectsClick}
-              />
-            ))}
+    <main className="relative min-h-screen bg-stone-50 dark:bg-space-black text-text-light dark:text-text-dark overflow-hidden transition-colors duration-1000">
+      <PageStarfield density={70} />
+      <div className="relative z-10 py-24 px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto max-w-7xl">
+          {/* Back Button */}
+          <div className="mb-8">
+            <BackButton />
           </div>
-        )}
 
-        {/* Footer Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-16 text-center"
-        >
-          <div className="inline-flex flex-wrap justify-center gap-6 p-6 rounded-2xl bg-muted/30 border border-border/50">
-            <div className="text-center px-4">
-              <p className="text-3xl font-bold text-primary">{allSkills.length}+</p>
-              <p className="text-sm text-muted-foreground">Technologies</p>
-            </div>
-            <div className="h-12 w-px bg-border/50 hidden sm:block" />
-            <div className="text-center px-4">
-              <p className="text-3xl font-bold text-primary">
-                {Math.max(...allSkills.map((s) => s.yearsOfExperience))}+
-              </p>
-              <p className="text-sm text-muted-foreground">Years Experience</p>
-            </div>
-            <div className="h-12 w-px bg-border/50 hidden sm:block" />
-            <div className="text-center px-4">
-              <p className="text-3xl font-bold text-primary">
-                {allSkills.reduce((sum, s) => sum + s.projectCount, 0)}+
-              </p>
-              <p className="text-sm text-muted-foreground">Total Projects</p>
-            </div>
-            <div className="h-12 w-px bg-border/50 hidden sm:block" />
-            <div className="text-center px-4">
-              <p className="text-3xl font-bold text-primary">
-                {categories.filter((cat) => cat !== 'All').length}
-              </p>
-              <p className="text-sm text-muted-foreground">Categories</p>
-            </div>
+          {/* Hero Section */}
+          <HeroSection
+            totalSkills={allSkills.length}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
+
+          {/* Category Filters */}
+          <CategoryFilters
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+            skillCounts={skillCounts}
+          />
+
+          {/* Sort & Results Info */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+            <p className="text-sm text-muted-foreground">
+              Showing <span className="font-medium text-foreground">{filteredSkills.length}</span>{' '}
+              {filteredSkills.length === 1 ? 'skill' : 'skills'}
+              {selectedCategory !== 'All' && ` in ${selectedCategory}`}
+              {searchQuery && ` matching "${searchQuery}"`}
+            </p>
+            <SortDropdown sortBy={sortBy} onSortChange={setSortBy} />
           </div>
-        </motion.div>
+
+          {/* Content */}
+          {loading ? (
+            <LoadingSkeleton />
+          ) : filteredSkills.length === 0 ? (
+            <EmptyState searchQuery={searchQuery} onClear={() => setSearchQuery('')} />
+          ) : (
+            <div className="space-y-12">
+              {skillsByCategory.map(({ category, skills }) => (
+                <CategorySection
+                  key={category}
+                  category={category}
+                  skills={skills}
+                  isExpanded={expandedCategories.has(category)}
+                  onToggle={() => toggleCategory(category)}
+                  onProjectsClick={handleProjectsClick}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Footer Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="mt-16 text-center"
+          >
+            <div className="inline-flex flex-wrap justify-center gap-6 p-8 rounded-[2rem] glassmorphism border border-slate-200 dark:border-white/10">
+              <div className="text-center px-4">
+                <p className="text-3xl font-display font-black text-vision-cyan">
+                  {allSkills.length}+
+                </p>
+                <p className="text-[10px] font-mono font-black uppercase tracking-[0.3em] text-slate-400 dark:text-text-dark/30">
+                  Technologies
+                </p>
+              </div>
+              <div className="h-12 w-px bg-slate-200 dark:bg-white/10 hidden sm:block" />
+              <div className="text-center px-4">
+                <p className="text-3xl font-display font-black text-vision-cyan">
+                  {Math.max(...allSkills.map((s) => s.yearsOfExperience))}+
+                </p>
+                <p className="text-[10px] font-mono font-black uppercase tracking-[0.3em] text-slate-400 dark:text-text-dark/30">
+                  Years Experience
+                </p>
+              </div>
+              <div className="h-12 w-px bg-slate-200 dark:bg-white/10 hidden sm:block" />
+              <div className="text-center px-4">
+                <p className="text-3xl font-display font-black text-vision-cyan">
+                  {allSkills.reduce((sum, s) => sum + s.projectCount, 0)}+
+                </p>
+                <p className="text-[10px] font-mono font-black uppercase tracking-[0.3em] text-slate-400 dark:text-text-dark/30">
+                  Total Projects
+                </p>
+              </div>
+              <div className="h-12 w-px bg-slate-200 dark:bg-white/10 hidden sm:block" />
+              <div className="text-center px-4">
+                <p className="text-3xl font-display font-black text-vision-cyan">
+                  {categories.filter((cat) => cat !== 'All').length}
+                </p>
+                <p className="text-[10px] font-mono font-black uppercase tracking-[0.3em] text-slate-400 dark:text-text-dark/30">
+                  Categories
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }

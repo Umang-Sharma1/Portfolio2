@@ -328,31 +328,52 @@ import { Skill } from '../models/Skill';
 
 /**
  * Pre-populate cache with frequently accessed data
- * Called on server startup
+ * Called on server startup — runs in parallel for speed
  */
 export async function warmCache(): Promise<void> {
   try {
+    if (!isRedisConnected()) {
+      logger.warn('⚠️ Redis not connected, skipping cache warming');
+      return;
+    }
+
     logger.info('🔥 Starting cache warming...');
     const startTime = Date.now();
 
-    // 1. Cache featured projects
-    const featuredProjects = await Project.find({ featured: true, status: 'COMPLETED' })
-      .sort({ order: 1, createdAt: -1 })
-      .limit(10)
-      .lean();
+    // Select only fields needed by GraphQL fragments (avoid fetching entire documents)
+    const projectProjection = {
+      title: 1, slug: 1, description: 1, category: 1, status: 1,
+      featured: 1, technologies: 1, images: 1, links: 1, metrics: 1,
+      timeline: 1, views: 1, clicks: 1, features: 1, createdAt: 1, updatedAt: 1,
+    };
+    const skillProjection = {
+      name: 1, category: 1, proficiency: 1, yearsOfExperience: 1,
+      projectCount: 1, status: 1, relatedSkills: 1, icon: 1, color: 1,
+      description: 1, views: 1, lastUsedDate: 1, featured: 1, order: 1,
+      createdAt: 1, updatedAt: 1,
+    };
 
-    await cacheSet('projects:featured', JSON.stringify(featuredProjects), CACHE_TTL.PROJECTS);
-    logger.debug(`Warmed: ${featuredProjects.length} featured projects`);
+    // Run all cache warming queries in parallel
+    const [featuredProjects, skills, recentProjects] = await Promise.all([
+      // 1. Featured projects
+      Project.find({ featured: true, status: 'COMPLETED' }, projectProjection)
+        .sort({ order: 1, createdAt: -1 })
+        .limit(10)
+        .lean(),
 
-    // 2. Cache all active skills
-    const skills = await Skill.find({ status: { $ne: 'ARCHIVED' } })
-      .sort({ proficiency: -1, name: 1 })
-      .lean();
+      // 2. All active skills
+      Skill.find({ status: { $ne: 'ARCHIVED' } }, skillProjection)
+        .sort({ proficiency: -1, name: 1 })
+        .lean(),
 
-    await cacheSet('skills:all', JSON.stringify(skills), CACHE_TTL.SKILLS);
-    logger.debug(`Warmed: ${skills.length} skills`);
+      // 3. Recent projects (for homepage)
+      Project.find({ status: 'COMPLETED' }, projectProjection)
+        .sort({ createdAt: -1 })
+        .limit(6)
+        .lean(),
+    ]);
 
-    // 3. Cache skills grouped by category
+    // Cache everything in parallel
     const skillsByCategory = skills.reduce((acc: Record<string, any[]>, skill: any) => {
       const category = skill.category;
       if (!acc[category]) acc[category] = [];
@@ -360,25 +381,15 @@ export async function warmCache(): Promise<void> {
       return acc;
     }, {});
 
-    await cacheSet('skills:by-category', JSON.stringify(skillsByCategory), CACHE_TTL.SKILLS);
-    logger.debug(`Warmed: Skills by ${Object.keys(skillsByCategory).length} categories`);
-
-    // 4. Cache recent projects (for homepage)
-    const recentProjects = await Project.find({ status: 'COMPLETED' })
-      .sort({ createdAt: -1 })
-      .limit(6)
-      .lean();
-
-    await cacheSet('projects:recent', JSON.stringify(recentProjects), CACHE_TTL.PROJECTS);
-    logger.debug(`Warmed: ${recentProjects.length} recent projects`);
-
-    // 5. Cache project count by category
-    const projectStats = await Project.getStats();
-    await cacheSet('projects:stats', JSON.stringify(projectStats), CACHE_TTL.ANALYTICS);
-    logger.debug(`Warmed: Project statistics`);
+    await Promise.all([
+      cacheSet('projects:featured', JSON.stringify(featuredProjects), CACHE_TTL.PROJECTS),
+      cacheSet('skills:all', JSON.stringify(skills), CACHE_TTL.SKILLS),
+      cacheSet('skills:by-category', JSON.stringify(skillsByCategory), CACHE_TTL.SKILLS),
+      cacheSet('projects:recent', JSON.stringify(recentProjects), CACHE_TTL.PROJECTS),
+    ]);
 
     const duration = Date.now() - startTime;
-    logger.info(`🔥 Cache warming completed in ${duration}ms`);
+    logger.info(`🔥 Cache warming completed in ${duration}ms (${featuredProjects.length} featured, ${skills.length} skills, ${recentProjects.length} recent)`);
   } catch (error) {
     logger.error('Cache warming failed:', error);
     // Don't throw - cache warming failure shouldn't prevent server startup

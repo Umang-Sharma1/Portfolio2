@@ -12,42 +12,42 @@ import { GameLeaderboard } from '../models/GameLeaderboard';
 
 // Batch function for Projects
 const batchProjects = async (ids: readonly string[]) => {
-  const projects = await Project.find({ _id: { $in: ids as string[] } });
+  const projects = await Project.find({ _id: { $in: ids as string[] } }).lean();
 
   // Map results to maintain order of input IDs
-  const projectMap = new Map(projects.map((p) => [p._id.toString(), p]));
+  const projectMap = new Map(projects.map((p: any) => [p._id.toString(), p]));
   return ids.map((id) => projectMap.get(id) || null);
 };
 
 // Batch function for Skills
 const batchSkills = async (ids: readonly string[]) => {
-  const skills = await Skill.find({ _id: { $in: ids as string[] } });
+  const skills = await Skill.find({ _id: { $in: ids as string[] } }).lean();
 
-  const skillMap = new Map(skills.map((s) => [s._id.toString(), s]));
+  const skillMap = new Map(skills.map((s: any) => [s._id.toString(), s]));
   return ids.map((id) => skillMap.get(id) || null);
 };
 
 // Batch function for ContactMessages
 const batchContactMessages = async (ids: readonly string[]) => {
-  const messages = await ContactMessage.find({ _id: { $in: ids as string[] } });
+  const messages = await ContactMessage.find({ _id: { $in: ids as string[] } }).lean();
 
-  const messageMap = new Map(messages.map((m) => [m._id.toString(), m]));
+  const messageMap = new Map(messages.map((m: any) => [m._id.toString(), m]));
   return ids.map((id) => messageMap.get(id) || null);
 };
 
 // Batch function for Analytics
 const batchAnalytics = async (ids: readonly string[]) => {
-  const analytics = await Analytics.find({ _id: { $in: ids as string[] } });
+  const analytics = await Analytics.find({ _id: { $in: ids as string[] } }).lean();
 
-  const analyticsMap = new Map(analytics.map((a) => [a._id.toString(), a]));
+  const analyticsMap = new Map(analytics.map((a: any) => [a._id.toString(), a]));
   return ids.map((id) => analyticsMap.get(id) || null);
 };
 
 // Batch function for Leaderboard Entries
 const batchLeaderboardEntries = async (ids: readonly string[]) => {
-  const entries = await GameLeaderboard.find({ _id: { $in: ids as string[] } });
+  const entries = await GameLeaderboard.find({ _id: { $in: ids as string[] } }).lean();
 
-  const entryMap = new Map(entries.map((e) => [e._id.toString(), e]));
+  const entryMap = new Map(entries.map((e: any) => [e._id.toString(), e]));
   return ids.map((id) => entryMap.get(id) || null);
 };
 
@@ -56,9 +56,9 @@ const batchLeaderboardEntries = async (ids: readonly string[]) => {
  * Useful for SEO-friendly URLs
  */
 const batchProjectsBySlug = async (slugs: readonly string[]) => {
-  const projects = await Project.find({ slug: { $in: slugs as string[] } });
+  const projects = await Project.find({ slug: { $in: slugs as string[] } }).lean();
 
-  const projectMap = new Map(projects.map((p) => [p.slug, p]));
+  const projectMap = new Map(projects.map((p: any) => [p.slug, p]));
   return slugs.map((slug) => projectMap.get(slug) || null);
 };
 
@@ -67,23 +67,40 @@ const batchProjectsBySlug = async (slugs: readonly string[]) => {
  * Useful for related skills lookup
  */
 const batchSkillsByName = async (names: readonly string[]) => {
-  const skills = await Skill.find({ name: { $in: names as string[] } });
+  const skills = await Skill.find({ name: { $in: names as string[] } }).lean();
 
-  const skillMap = new Map(skills.map((s) => [s.name, s]));
+  const skillMap = new Map(skills.map((s: any) => [s.name, s]));
   return names.map((name) => skillMap.get(name) || null);
 };
 
 /**
  * Batch function for Projects by Technology
- * Load all projects that use a specific technology
+ * Load all projects that use specific technologies in a SINGLE query
+ * instead of one query per technology (N+1 fix)
  */
 const batchProjectsByTechnology = async (technologies: readonly string[]) => {
-  // For each technology, find all projects that use it
-  const results = await Promise.all(
-    technologies.map((tech) => Project.find({ technologies: tech }).sort({ createdAt: -1 }))
-  );
+  // Single query: find ALL projects matching ANY of the requested technologies
+  const allProjects = await Project.find({
+    technologies: { $in: technologies as string[] },
+  })
+    .sort({ createdAt: -1 })
+    .lean();
 
-  return results;
+  // Group results by technology
+  const techMap = new Map<string, any[]>();
+  for (const tech of technologies) {
+    techMap.set(tech, []);
+  }
+
+  for (const project of allProjects) {
+    for (const tech of project.technologies) {
+      if (techMap.has(tech)) {
+        techMap.get(tech)!.push(project);
+      }
+    }
+  }
+
+  return technologies.map((tech) => techMap.get(tech) || []);
 };
 
 /**

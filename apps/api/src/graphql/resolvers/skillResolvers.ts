@@ -108,11 +108,25 @@ export const skillResolvers = {
 
         // Execute query with pagination
         const { skip, limit: pageLimit } = getPagination(page, limit);
+        const queryStart = Date.now();
+
+        // Select only fields needed by SkillFields fragment
+        const projection = {
+          name: 1, category: 1, proficiency: 1, yearsOfExperience: 1,
+          projectCount: 1, status: 1, relatedSkills: 1, icon: 1, color: 1,
+          description: 1, views: 1, lastUsedDate: 1, featured: 1, order: 1,
+          createdAt: 1, updatedAt: 1,
+        };
 
         const [skills, totalCount] = await Promise.all([
-          Skill.find(query).sort(sortObj).skip(skip).limit(pageLimit).lean(),
-          Skill.countDocuments(query),
+          Skill.find(query, projection).sort(sortObj).skip(skip).limit(pageLimit).lean(),
+          // Use estimatedDocumentCount when no filters (reads metadata, O(1))
+          Object.keys(query).length === 0
+            ? Skill.estimatedDocumentCount()
+            : Skill.countDocuments(query),
         ]);
+
+        logger.debug(`Skills query: ${Date.now() - queryStart}ms (${totalCount} total, page ${page})`);
 
         // Build connection response
         const result = buildConnection(skills, totalCount, page, pageLimit);
@@ -189,32 +203,34 @@ export const skillResolvers = {
         let totalCount;
 
         try {
-          // Try text search first
-          skills = await Skill.find(
-            { $text: { $search: searchQuery } },
-            { score: { $meta: 'textScore' } }
-          )
-            .sort({ score: { $meta: 'textScore' } })
-            .lean();
-          totalCount = skills.length;
+          // Try text search first — use skip/limit for proper pagination
+          const textQuery = { $text: { $search: searchQuery } };
+          [skills, totalCount] = await Promise.all([
+            Skill.find(textQuery, { score: { $meta: 'textScore' } })
+              .sort({ score: { $meta: 'textScore' } })
+              .skip(skip)
+              .limit(pageLimit)
+              .lean(),
+            Skill.countDocuments(textQuery),
+          ]);
         } catch {
           // Fallback to regex search
           const regex = new RegExp(searchQuery, 'i');
+          const regexQuery = {
+            $or: [{ name: regex }, { description: regex }, { category: regex }],
+          };
           [skills, totalCount] = await Promise.all([
-            Skill.find({
-              $or: [{ name: regex }, { description: regex }, { category: regex }],
-            })
+            Skill.find(regexQuery)
               .sort({ proficiency: -1 })
+              .skip(skip)
+              .limit(pageLimit)
               .lean(),
-            Skill.countDocuments({
-              $or: [{ name: regex }, { description: regex }, { category: regex }],
-            }),
+            Skill.countDocuments(regexQuery),
           ]);
         }
 
-        // Paginate results
-        const paginatedResults = skills.slice(skip, skip + pageLimit);
-        const result = buildConnection(paginatedResults, totalCount, page, pageLimit);
+        // Build connection from already-paginated results
+        const result = buildConnection(skills, totalCount, page, pageLimit);
 
         // Cache result
         await cacheSet(cacheKey, JSON.stringify(result), CACHE_TTL.SEARCH_RESULTS);
@@ -437,6 +453,32 @@ export const skillResolvers = {
    * Field resolvers for Skill type
    */
   Skill: {
+    /**
+     * Map MongoDB _id to GraphQL id field
+     */
+    id: (parent: any) => parent._id?.toString() || parent.id,
+
+    /**
+     * Resolve proficiencyLevel (virtual stripped by .lean())
+     */
+    proficiencyLevel: (parent: any) => {
+      if (parent.proficiencyLevel) return parent.proficiencyLevel;
+      const p = parent.proficiency || 0;
+      if (p >= 90) return 'Expert';
+      if (p >= 75) return 'Advanced';
+      if (p >= 60) return 'Intermediate';
+      if (p >= 40) return 'Beginner';
+      return 'Novice';
+    },
+
+    /**
+     * Resolve isActive (virtual stripped by .lean())
+     */
+    isActive: (parent: any) => {
+      if (typeof parent.isActive === 'boolean') return parent.isActive;
+      return parent.status !== 'ARCHIVED';
+    },
+
     /**
      * Resolve related projects using DataLoader
      */

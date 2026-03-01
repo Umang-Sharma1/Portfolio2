@@ -126,11 +126,24 @@ export const projectResolvers = {
 
         // Execute query with pagination
         const { skip, limit: pageLimit } = getPagination(page, limit);
+        const queryStart = Date.now();
+
+        // Select only fields needed by ProjectFields fragment
+        const projection = {
+          title: 1, slug: 1, description: 1, category: 1, status: 1,
+          featured: 1, technologies: 1, images: 1, links: 1, metrics: 1,
+          timeline: 1, views: 1, clicks: 1, features: 1, createdAt: 1, updatedAt: 1,
+        };
 
         const [projects, totalCount] = await Promise.all([
-          Project.find(query).sort(sortObj).skip(skip).limit(pageLimit).lean(),
-          Project.countDocuments(query),
+          Project.find(query, projection).sort(sortObj).skip(skip).limit(pageLimit).lean(),
+          // Use estimatedDocumentCount when no filters (reads metadata, O(1))
+          Object.keys(query).length === 0
+            ? Project.estimatedDocumentCount()
+            : Project.countDocuments(query),
         ]);
+
+        logger.debug(`Projects query: ${Date.now() - queryStart}ms (${totalCount} total, page ${page})`);
 
         // Build connection response
         const result = buildConnection(projects, totalCount, page, pageLimit);
@@ -232,17 +245,20 @@ export const projectResolvers = {
           return JSON.parse(cached);
         }
 
-        // Use MongoDB text search with static method
+        // Use MongoDB text search with proper pagination
         const { skip, limit: pageLimit } = getPagination(page, limit);
+        const textQuery = { $text: { $search: searchQuery } };
 
-        const searchResults = await (Project as any).search(searchQuery, {
-          limit: pageLimit * 10, // Get more results for pagination
-        });
+        const [searchResults, totalCount] = await Promise.all([
+          Project.find(textQuery, { score: { $meta: 'textScore' } })
+            .sort({ score: { $meta: 'textScore' } })
+            .skip(skip)
+            .limit(pageLimit)
+            .lean(),
+          Project.countDocuments(textQuery),
+        ]);
 
-        // Get total and paginate
-        const totalCount = searchResults.length;
-        const paginatedResults = searchResults.slice(skip, skip + pageLimit);
-        const result = buildConnection(paginatedResults, totalCount, page, pageLimit);
+        const result = buildConnection(searchResults, totalCount, page, pageLimit);
 
         // Cache for shorter duration (search results change more frequently)
         await cacheSet(cacheKey, JSON.stringify(result), CACHE_TTL.SEARCH_RESULTS);
@@ -270,7 +286,11 @@ export const projectResolvers = {
           return JSON.parse(cached);
         }
 
-        const projects = await Project.find({ featured: true, status: 'COMPLETED' })
+        const projects = await Project.find(
+          { featured: true, status: 'COMPLETED' },
+          { title: 1, slug: 1, description: 1, category: 1, status: 1, featured: 1,
+            technologies: 1, images: 1, links: 1, metrics: 1, views: 1, createdAt: 1 }
+        )
           .sort({ 'metrics.stars': -1, createdAt: -1 })
           .limit(safeLimit)
           .lean();
@@ -332,13 +352,20 @@ export const projectResolvers = {
 
         const { skip, limit: pageLimit } = getPagination(page, limit);
 
+        const categoryQuery = { category, status: 'COMPLETED' };
+        const projection = {
+          title: 1, slug: 1, description: 1, category: 1, status: 1,
+          featured: 1, technologies: 1, images: 1, links: 1, metrics: 1,
+          timeline: 1, views: 1, clicks: 1, features: 1, createdAt: 1, updatedAt: 1,
+        };
+
         const [projects, totalCount] = await Promise.all([
-          Project.find({ category, status: 'COMPLETED' })
+          Project.find(categoryQuery, projection)
             .sort({ 'metrics.stars': -1, createdAt: -1 })
             .skip(skip)
             .limit(pageLimit)
             .lean(),
-          Project.countDocuments({ category, status: 'COMPLETED' }),
+          Project.countDocuments(categoryQuery),
         ]);
 
         const result = buildConnection(projects, totalCount, page, pageLimit);

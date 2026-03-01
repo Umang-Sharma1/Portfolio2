@@ -16,9 +16,9 @@ const SpaceBackground: React.FC = () => {
     return (
       <div className="fixed inset-0 pointer-events-none -z-10">
         {/* Light mode: subtle gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,0.1)_0%,transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(139,92,246,0.08)_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-stone-50 via-white to-stone-100" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(14,165,233,0.06)_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(225,29,72,0.04)_0%,transparent_50%)]" />
         {/* Subtle grid pattern */}
         <div
           className="absolute inset-0 opacity-[0.03]"

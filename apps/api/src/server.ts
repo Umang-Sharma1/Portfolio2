@@ -134,12 +134,23 @@ const searchLimiter = rateLimit({
 
 async function startServer() {
   try {
-    // Connect to databases
+    const serverStart = Date.now();
+
+    // Connect to databases with timing
+    const dbStart = Date.now();
     await connectDatabase();
+    logger.info(`⏱️ MongoDB connection: ${Date.now() - dbStart}ms`);
+
+    const redisStart = Date.now();
     await connectRedis();
+    logger.info(`⏱️ Redis connection: ${Date.now() - redisStart}ms`);
 
     // Warm cache after connections are established
+    const cacheStart = Date.now();
     await warmCache();
+    logger.info(`⏱️ Cache warming: ${Date.now() - cacheStart}ms`);
+
+    logger.info(`⏱️ Total startup initialization: ${Date.now() - serverStart}ms`);
 
     const app = express();
 
@@ -240,16 +251,20 @@ async function startServer() {
       },
       introspection: config.features.enableIntrospection,
       plugins: [
-        // Request logging plugin
+        // Request timing plugin
         {
           async requestDidStart() {
             const start = Date.now();
             return {
               async willSendResponse(requestContext) {
                 const duration = Date.now() - start;
-                logger.debug(`GraphQL request completed in ${duration}ms`, {
-                  operationName: requestContext.request.operationName,
-                });
+                const opName = requestContext.request.operationName || 'anonymous';
+                // Log slow queries prominently
+                if (duration > 1000) {
+                  logger.warn(`🐢 SLOW GraphQL: ${opName} took ${duration}ms`);
+                } else {
+                  logger.debug(`GraphQL: ${opName} completed in ${duration}ms`);
+                }
               },
             };
           },
