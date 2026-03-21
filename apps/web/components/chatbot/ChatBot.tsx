@@ -3,12 +3,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Inline SVG icons to avoid dependency issues
+const MotionDiv = motion.div as any;
+
+function cn(...inputs: any[]) {
+  return inputs.filter(Boolean).join(' ');
+}
+
+// Inline SVG icons
 const MessageSquareIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
+    width="22"
+    height="22"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -23,12 +29,12 @@ const MessageSquareIcon = () => (
 const XIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
+    width="14"
+    height="14"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2"
+    strokeWidth="2.5"
     strokeLinecap="round"
     strokeLinejoin="round"
   >
@@ -43,10 +49,14 @@ const SendIcon = () => (
     width="14"
     height="14"
     viewBox="0 0 24 24"
-    fill="currentColor"
-    stroke="none"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
   >
-    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+    <path d="m22 2-7 20-4-9-9-4Z" />
+    <path d="M22 2 11 13" />
   </svg>
 );
 
@@ -57,8 +67,8 @@ interface Message {
   timestamp: Date;
 }
 
-// Portfolio knowledge base for smart responses
-const PORTFOLIO_KNOWLEDGE = {
+// Enhanced portfolio knowledge base
+const KNOWLEDGE = {
   skills: [
     'TypeScript',
     'React',
@@ -70,73 +80,103 @@ const PORTFOLIO_KNOWLEDGE = {
     'Tailwind CSS',
     'Docker',
     'AWS',
+    'Python',
+    'PostgreSQL',
   ],
   projects: [
     {
       name: 'Portfolio Website',
-      tech: 'Next.js, Three.js, GraphQL',
-      description: 'This very website you are exploring',
+      tech: 'Next.js, Three.js, GraphQL, Framer Motion',
+      description: 'This immersive portfolio with Voyager OS design language',
     },
     {
       name: 'API Backend',
-      tech: 'Node.js, Express, MongoDB',
-      description: 'RESTful and GraphQL API services',
+      tech: 'Node.js, Express, MongoDB, GraphQL',
+      description:
+        'Full-featured GraphQL API with authentication, analytics, and game leaderboards',
     },
   ],
-  contact: 'You can reach out through the contact form or connect on LinkedIn and GitHub',
+  experience: [
+    'Full-stack development with modern web technologies',
+    'Building scalable APIs and microservices',
+    'Creating immersive 3D web experiences',
+    'Cloud infrastructure with AWS and Docker',
+  ],
+  contact:
+    'You can reach out through the Contact page, connect on LinkedIn, or check out my GitHub repositories.',
   about:
-    'A passionate full-stack developer focused on creating immersive digital experiences with cutting-edge web technologies',
+    'A passionate full-stack developer focused on creating immersive digital experiences with cutting-edge web technologies. Currently open to new opportunities.',
+  game: 'Try the Code Sprint typing game! Navigate to /game to test your coding speed against the leaderboard.',
+  sections: {
+    home: 'The home page features a 3D hero scene, skills overview with holographic cards, project showcase, experience timeline, and contact form.',
+    skills:
+      'The Skills page shows a comprehensive breakdown of all technologies and tools I work with, organized by category.',
+    projects:
+      'The Projects page displays all my work with detailed modals showing architecture, tech stack, and performance metrics.',
+    contact:
+      'The Contact page has a secure transmission form with real-time validation and a Voyager OS terminal aesthetic.',
+  },
 };
 
 const generateResponse = (message: string): string => {
-  const lowerMessage = message.toLowerCase();
+  const lower = message.toLowerCase();
 
-  if (
-    lowerMessage.includes('skill') ||
-    lowerMessage.includes('tech') ||
-    lowerMessage.includes('stack')
-  ) {
-    return `🚀 SKILL MATRIX ONLINE: ${PORTFOLIO_KNOWLEDGE.skills.join(' • ')}. All systems operational and ready for deployment.`;
+  // Greetings
+  if (/^(hi|hello|hey|greetings|sup|yo)\b/.test(lower)) {
+    return 'GREETINGS, VOYAGER. Welcome to Mission Control. I can brief you on: Skills, Projects, Experience, Contact info, or help you Navigate the site. What sector?';
   }
 
-  if (
-    lowerMessage.includes('project') ||
-    lowerMessage.includes('work') ||
-    lowerMessage.includes('portfolio')
-  ) {
-    return `📡 PROJECT DATABASE ACCESSED: ${PORTFOLIO_KNOWLEDGE.projects.map((p) => `${p.name} (${p.tech})`).join(' | ')}. More intel available in the Projects sector.`;
+  // Skills
+  if (/skill|tech|stack|language|framework|tool/.test(lower)) {
+    return `SKILL MATRIX — Core Arsenal: ${KNOWLEDGE.skills.join(' · ')}. Navigate to the Skills sector for the full manifest.`;
   }
 
-  if (
-    lowerMessage.includes('contact') ||
-    lowerMessage.includes('reach') ||
-    lowerMessage.includes('hire') ||
-    lowerMessage.includes('email')
-  ) {
-    return `📨 COMMUNICATION CHANNEL: ${PORTFOLIO_KNOWLEDGE.contact}. Navigate to the Contact sector for direct transmission.`;
+  // Projects
+  if (/project|work|portfolio|build|made|create/.test(lower)) {
+    return `PROJECT DATABASE — ${KNOWLEDGE.projects.map((p) => `${p.name} [${p.tech}]`).join(' | ')}. Open the Projects sector for architecture details and live demos.`;
   }
 
-  if (
-    lowerMessage.includes('who') ||
-    lowerMessage.includes('about') ||
-    lowerMessage.includes('tell me')
-  ) {
-    return `👨‍🚀 VOYAGER PROFILE: ${PORTFOLIO_KNOWLEDGE.about}. Explore the Skills and Projects sectors for mission details.`;
+  // Experience
+  if (/experience|background|career|job|history/.test(lower)) {
+    return `FLIGHT LOG — ${KNOWLEDGE.experience.join(' · ')}. Check the Timeline section on the home page for the full career trajectory.`;
   }
 
-  if (
-    lowerMessage.includes('hello') ||
-    lowerMessage.includes('hi') ||
-    lowerMessage.includes('hey')
-  ) {
-    return `👋 GREETINGS, VOYAGER! Welcome to Mission Control. I can assist with: Skills • Projects • Contact • About. What sector shall we explore?`;
+  // Contact
+  if (/contact|reach|hire|email|connect|message/.test(lower)) {
+    return `COMM CHANNEL — ${KNOWLEDGE.contact} Navigate to /contact for the secure transmission form.`;
   }
 
-  if (lowerMessage.includes('help')) {
-    return `🆘 NAVIGATION ASSIST: Ask me about skills, projects, how to contact, or learn more about the developer. I'm here to guide your journey through this digital space.`;
+  // About
+  if (/who|about|tell me|yourself|you/.test(lower)) {
+    return `VOYAGER PROFILE — ${KNOWLEDGE.about}`;
   }
 
-  return `🛸 SIGNAL RECEIVED. I can provide intel on: Skills & Technologies • Projects & Work • Contact Information • About the Developer. What interests you, Voyager?`;
+  // Game
+  if (/game|play|typing|speed|challenge|sprint/.test(lower)) {
+    return `MISSION AVAILABLE — ${KNOWLEDGE.game}`;
+  }
+
+  // Navigation
+  if (/navigate|go to|where|find|page|section|home/.test(lower)) {
+    return 'NAVIGATION — Home (/) · Skills (/skills) · Projects (/projects) · Contact (/contact) · Code Sprint (/game). The home page has sections: Hero, Skills Overview, Projects, Timeline, and Contact.';
+  }
+
+  // Design
+  if (/design|theme|ui|ux|style|voyager/.test(lower)) {
+    return 'DESIGN SYSTEM — Voyager OS uses: vision-cyan (#22D3EE), vision-crimson (#E11D48), vision-orange (#FB923C). Features glassmorphism, corner brackets, mono typography, and a space-command aesthetic throughout.';
+  }
+
+  // Help
+  if (/help|command|option|what can/.test(lower)) {
+    return 'MISSION CONTROL — Available queries: Skills · Projects · Experience · Contact · About · Game · Navigation · Design. Ask anything about the portfolio!';
+  }
+
+  // Thank you
+  if (/thank|thanks|cheers|appreciate/.test(lower)) {
+    return 'ACKNOWLEDGED. Happy to assist, Voyager. Any other sector to explore?';
+  }
+
+  return 'SIGNAL RECEIVED. I can provide intel on: Skills · Projects · Experience · Contact · About · Game · Navigation. What interests you, Voyager?';
 };
 
 export const ChatBot: React.FC = () => {
@@ -176,8 +216,7 @@ export const ChatBot: React.FC = () => {
     setInput('');
     setIsTyping(true);
 
-    // Simulate typing delay for more natural feel
-    await new Promise((resolve) => setTimeout(resolve, 800 + Math.random() * 500));
+    await new Promise((resolve) => setTimeout(resolve, 600 + Math.random() * 400));
 
     const response = generateResponse(userMessage.content);
 
@@ -196,30 +235,39 @@ export const ChatBot: React.FC = () => {
     'What skills do you have?',
     'Tell me about projects',
     'How can I contact you?',
+    'Play CodeSprint',
   ];
 
   return (
     <div className="fixed bottom-6 right-6 z-[100]">
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ duration: 0.2 }}
-            className="absolute bottom-20 right-0 w-80 md:w-96 bg-space-dark/95 backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl border border-neon-cyan/20"
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute bottom-20 right-0 w-80 md:w-96 overflow-hidden rounded-[2rem] shadow-[0_30px_60px_rgba(0,0,0,0.3)] border border-slate-200 dark:border-white/10 bg-white dark:bg-space-black glassmorphism"
           >
             {/* Header */}
-            <div className="p-4 bg-gradient-to-r from-neon-cyan/10 to-neon-purple/10 border-b border-white/10 flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-neon-cyan rounded-full animate-pulse" />
-                <span className="text-xs font-mono font-bold tracking-widest uppercase text-white">
-                  Mission Control
-                </span>
+            <div className="p-4 px-6 border-b border-slate-100 dark:border-white/5 flex justify-between items-center bg-slate-50/50 dark:bg-black/20 backdrop-blur-xl">
+              <div className="flex items-center gap-3">
+                <div className="h-7 w-7 rounded-xl bg-vision-cyan/10 flex items-center justify-center text-vision-cyan border border-vision-cyan/20">
+                  <span className="text-[10px] font-display font-black italic">V</span>
+                </div>
+                <div>
+                  <div className="text-[10px] font-mono font-black tracking-[0.3em] uppercase text-slate-800 dark:text-text-dark">
+                    Mission Control
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[8px] font-mono font-black text-vision-cyan tracking-widest uppercase">
+                    <div className="w-1.5 h-1.5 bg-vision-cyan rounded-full animate-pulse" />
+                    Online
+                  </div>
+                </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 hover:bg-white/10 rounded-full transition-colors"
+                className="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-colors text-slate-400 dark:text-white/30 hover:text-vision-crimson"
                 aria-label="Close chat"
               >
                 <XIcon />
@@ -227,17 +275,19 @@ export const ChatBot: React.FC = () => {
             </div>
 
             {/* Messages */}
-            <div className="h-72 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-neon-cyan/20 scrollbar-track-transparent">
+            <div className="h-72 overflow-y-auto p-4 space-y-3 custom-scrollbar">
               {messages.length === 0 && (
-                <div className="text-center py-6">
-                  <div className="text-4xl mb-3">🛸</div>
-                  <p className="text-gray-400 text-sm mb-4">Welcome, Voyager! How can I assist?</p>
+                <div className="text-center py-6 space-y-4">
+                  <div className="text-3xl">🛸</div>
+                  <p className="text-xs font-mono font-bold text-slate-500 dark:text-white/30">
+                    Welcome, Voyager. How can I assist?
+                  </p>
                   <div className="flex flex-wrap gap-2 justify-center">
                     {quickQuestions.map((q) => (
                       <button
                         key={q}
                         onClick={() => setInput(q)}
-                        className="text-[10px] px-3 py-1.5 bg-neon-cyan/10 hover:bg-neon-cyan/20 border border-neon-cyan/20 rounded-full text-neon-cyan transition-colors"
+                        className="text-[9px] px-3 py-1.5 rounded-full font-mono font-black uppercase tracking-wider border border-vision-cyan/20 text-vision-cyan/60 hover:text-vision-cyan hover:bg-vision-cyan/10 hover:border-vision-cyan/40 transition-all"
                       >
                         {q}
                       </button>
@@ -247,47 +297,44 @@ export const ChatBot: React.FC = () => {
               )}
 
               {messages.map((msg) => (
-                <motion.div
+                <MotionDiv
                   key={msg.id}
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  transition={{ duration: 0.2 }}
+                  className={cn('flex', msg.role === 'user' ? 'justify-end' : 'justify-start')}
                 >
                   <div
-                    className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm ${
+                    className={cn(
+                      'max-w-[85%] px-4 py-3 text-xs font-mono font-bold leading-relaxed',
                       msg.role === 'user'
-                        ? 'bg-neon-cyan text-space-black rounded-br-sm'
-                        : 'bg-white/5 text-gray-200 border border-white/10 rounded-bl-sm'
-                    }`}
+                        ? 'bg-vision-cyan text-space-black rounded-[1.2rem] rounded-br-md shadow-[0_4px_12px_rgba(var(--glow-cyan),0.2)]'
+                        : 'bg-slate-100 dark:bg-white/[0.04] text-slate-700 dark:text-text-dark/80 border border-slate-200 dark:border-white/5 rounded-[1.2rem] rounded-bl-md'
+                    )}
                   >
                     {msg.content}
                   </div>
-                </motion.div>
+                </MotionDiv>
               ))}
 
               {isTyping && (
-                <motion.div
+                <MotionDiv
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="flex justify-start"
                 >
-                  <div className="bg-white/5 border border-white/10 px-4 py-3 rounded-2xl rounded-bl-sm">
-                    <div className="flex gap-1">
-                      <span
-                        className="w-2 h-2 bg-neon-cyan rounded-full animate-bounce"
-                        style={{ animationDelay: '0ms' }}
-                      />
-                      <span
-                        className="w-2 h-2 bg-neon-cyan rounded-full animate-bounce"
-                        style={{ animationDelay: '150ms' }}
-                      />
-                      <span
-                        className="w-2 h-2 bg-neon-cyan rounded-full animate-bounce"
-                        style={{ animationDelay: '300ms' }}
-                      />
+                  <div className="bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/5 px-4 py-3 rounded-[1.2rem] rounded-bl-md">
+                    <div className="flex gap-1.5">
+                      {[0, 150, 300].map((delay) => (
+                        <span
+                          key={delay}
+                          className="w-1.5 h-1.5 bg-vision-cyan rounded-full animate-bounce"
+                          style={{ animationDelay: `${delay}ms` }}
+                        />
+                      ))}
                     </div>
                   </div>
-                </motion.div>
+                </MotionDiv>
               )}
               <div ref={messagesEndRef} />
             </div>
@@ -295,25 +342,25 @@ export const ChatBot: React.FC = () => {
             {/* Input */}
             <form
               onSubmit={handleSubmit}
-              className="p-3 bg-black/40 border-t border-white/10 flex gap-2"
+              className="p-3 bg-slate-50/80 dark:bg-black/30 border-t border-slate-100 dark:border-white/5 flex gap-2"
             >
               <input
                 ref={inputRef}
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Enter your command..."
-                className="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan/50 transition-colors"
+                placeholder="Enter command..."
+                className="flex-1 bg-white dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-slate-800 dark:text-text-dark placeholder-slate-400 dark:placeholder-white/15 focus:outline-none focus:border-vision-cyan/50 transition-colors"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isTyping}
-                className="w-10 h-10 bg-neon-cyan text-space-black rounded-full flex items-center justify-center hover:bg-neon-cyan/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95"
+                className="w-10 h-10 bg-vision-cyan text-space-black rounded-xl flex items-center justify-center hover:scale-105 disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95 shadow-[0_4px_12px_rgba(var(--glow-cyan),0.2)]"
               >
                 <SendIcon />
               </button>
             </form>
-          </motion.div>
+          </MotionDiv>
         )}
       </AnimatePresence>
 
@@ -322,7 +369,7 @@ export const ChatBot: React.FC = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-space-dark/90 backdrop-blur-xl rounded-full flex items-center justify-center text-neon-cyan border border-neon-cyan/30 shadow-[0_0_20px_rgba(0,243,255,0.2)] hover:border-neon-cyan/50 transition-colors"
+        className="w-14 h-14 rounded-2xl flex items-center justify-center text-vision-cyan border border-vision-cyan/20 shadow-[0_0_25px_rgba(var(--glow-cyan),0.15)] hover:border-vision-cyan/40 transition-all glassmorphism bg-white/80 dark:bg-space-black/80 backdrop-blur-xl"
         aria-label={isOpen ? 'Close chat' : 'Open chat'}
       >
         <motion.div animate={{ rotate: isOpen ? 90 : 0 }} transition={{ duration: 0.2 }}>

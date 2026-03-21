@@ -3,6 +3,7 @@
 import React, { useState, useEffect, memo, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Spinner } from '../ui/loaders';
+import { useModalContext } from '@/lib/modal-context';
 
 function cn(...inputs: any[]) {
   return inputs.filter(Boolean).join(' ');
@@ -195,7 +196,7 @@ const Gauge = memo(({ label, score }: { label: string; score: number }) => {
             fill="none"
             strokeWidth="5"
             strokeLinecap="round"
-            className="stroke-vision-cyan drop-shadow-[0_0_12px_#22D3EE]"
+            className="stroke-vision-cyan drop-shadow-[0_0_12px_rgba(var(--glow-cyan),1)]"
             style={{ strokeDasharray: circumference }}
           />
         </svg>
@@ -226,7 +227,7 @@ const ArchitectureMap = memo(
 
     return (
       <div className="relative bg-slate-100/50 dark:bg-space-black/30 rounded-[3rem] border-2 border-slate-200 dark:border-white/10 p-12 overflow-hidden min-h-[400px] shadow-inner backdrop-blur-3xl">
-        <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[radial-gradient(#22D3EE_2px,transparent_2px)] bg-[size:32px_32px]" />
+        <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[radial-gradient(rgba(var(--glow-cyan),1)_2px,transparent_2px)] bg-[size:32px_32px]" />
 
         <div className="absolute top-8 left-8 flex items-center gap-4">
           <Icons.Cpu className="text-vision-cyan w-5 h-5" />
@@ -266,7 +267,7 @@ const ArchitectureMap = memo(
                   fill="none"
                 />
                 {conn.animated && (
-                  <circle r="4" fill="#22D3EE" filter="url(#ultra-glow-modal)">
+                  <circle r="4" className="fill-vision-cyan" filter="url(#ultra-glow-modal)">
                     <animateMotion
                       dur="2s"
                       repeatCount="indefinite"
@@ -327,16 +328,29 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
   const [activeTab, setActiveTab] = useState<TabType>('Overview');
   const [isHoveringLaunch, setIsHoveringLaunch] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const { setModalOpen } = useModalContext();
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       setActiveTab('Overview');
-      triggerLoading();
+      setIsInitialLoad(true);
+      setIsLoading(true);
+      setModalOpen(true);
+      // Longer initial load with staged reveal
+      setTimeout(() => {
+        setIsInitialLoad(false);
+        setIsLoading(false);
+      }, 1800);
     } else {
       document.body.style.overflow = 'auto';
+      setModalOpen(false);
     }
-  }, [isOpen]);
+    return () => {
+      setModalOpen(false);
+    };
+  }, [isOpen, setModalOpen]);
 
   const triggerLoading = () => {
     setIsLoading(true);
@@ -417,7 +431,7 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
                 className={cn(
                   'px-6 py-2.5 rounded-xl text-[9px] font-mono font-black uppercase tracking-[0.4em] transition-all duration-400 border',
                   activeTab === t
-                    ? 'bg-vision-cyan text-space-black border-vision-cyan shadow-[0_0_20px_rgba(34,211,238,0.2)] scale-105'
+                    ? 'bg-vision-cyan text-space-black border-vision-cyan shadow-[0_0_20px_rgba(var(--glow-cyan),0.2)] scale-105'
                     : 'text-slate-500 dark:text-text-dark/30 border-slate-100 dark:border-transparent hover:text-slate-900 dark:hover:text-text-dark hover:bg-slate-100 dark:hover:bg-white/5'
                 )}
               >
@@ -437,7 +451,27 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
                   exit={{ opacity: 0 }}
                   className="absolute inset-0 flex flex-col items-center justify-center bg-white/50 dark:bg-space-black/50 backdrop-blur-sm z-50"
                 >
-                  <Spinner size="md" showText variant="cyan" />
+                  <Spinner size={isInitialLoad ? 'lg' : 'md'} showText variant="cyan" />
+                  {isInitialLoad && (
+                    <MotionDiv
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="mt-8 space-y-3 flex flex-col items-center"
+                    >
+                      <div className="text-[9px] font-mono font-black text-vision-crimson/60 uppercase tracking-[0.6em]">
+                        Loading Mission Profile
+                      </div>
+                      <div className="w-48 h-[2px] bg-white/5 overflow-hidden rounded-full">
+                        <MotionDiv
+                          className="h-full bg-gradient-to-r from-vision-cyan to-vision-crimson"
+                          initial={{ width: '0%' }}
+                          animate={{ width: '100%' }}
+                          transition={{ duration: 1.6, ease: 'easeInOut' }}
+                        />
+                      </div>
+                    </MotionDiv>
+                  )}
                 </MotionDiv>
               ) : (
                 <MotionDiv

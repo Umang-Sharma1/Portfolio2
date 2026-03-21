@@ -118,7 +118,7 @@ export const contactResolvers = {
           return JSON.parse(cached);
         }
 
-        const messages = await ContactMessage.find({ status: 'PENDING' })
+        const messages = await ContactMessage.find({ status: 'NEW' })
           .sort({ createdAt: -1 })
           .lean();
 
@@ -195,7 +195,7 @@ export const contactResolvers = {
           userAgent: context.userAgent,
           isSpam,
           spamReason,
-          status: isSpam ? 'SPAM' : 'PENDING',
+          status: isSpam ? 'SPAM' : 'NEW',
           // Auto-detect priority based on content
           priority: detectPriority(validatedInput.message, validatedInput.subject),
         });
@@ -234,7 +234,7 @@ export const contactResolvers = {
 
         const updateData: any = {
           status: input.status,
-          respondedAt: input.status === 'RESPONDED' ? new Date() : undefined,
+          respondedAt: input.status === 'REPLIED' ? new Date() : undefined,
         };
 
         if (input.adminNotes) {

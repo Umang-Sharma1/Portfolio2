@@ -1,5 +1,5 @@
-import { GraphQLError } from "graphql";
-import { AuthenticationError, AuthorizationError } from "./errors";
+import { GraphQLError } from 'graphql';
+import { AuthenticationError, AuthorizationError } from './errors';
 
 /**
  * Authentication and Authorization Utilities
@@ -8,7 +8,7 @@ import { AuthenticationError, AuthorizationError } from "./errors";
 export interface User {
   id: string;
   email: string;
-  role: "USER" | "ADMIN";
+  role: 'USER' | 'ADMIN';
   name?: string;
 }
 
@@ -17,6 +17,8 @@ export interface Context {
   ip: string;
   userAgent: string;
   loaders: any;
+  req: any;
+  res: any;
 }
 
 /**
@@ -24,9 +26,7 @@ export interface Context {
  */
 export const requireAuth = (context: Context): User => {
   if (!context.user) {
-    throw new AuthenticationError(
-      "You must be logged in to perform this action",
-    );
+    throw new AuthenticationError('You must be logged in to perform this action');
   }
   return context.user;
 };
@@ -34,16 +34,11 @@ export const requireAuth = (context: Context): User => {
 /**
  * Check if user has required role
  */
-export const requireRole = (
-  context: Context,
-  requiredRole: "USER" | "ADMIN",
-): User => {
+export const requireRole = (context: Context, requiredRole: 'USER' | 'ADMIN'): User => {
   const user = requireAuth(context);
 
-  if (requiredRole === "ADMIN" && user.role !== "ADMIN") {
-    throw new AuthorizationError(
-      "You do not have permission to perform this action",
-    );
+  if (requiredRole === 'ADMIN' && user.role !== 'ADMIN') {
+    throw new AuthorizationError('You do not have permission to perform this action');
   }
 
   return user;
@@ -53,13 +48,8 @@ export const requireRole = (
  * GraphQL Directive for Authentication
  * Usage: @auth(requires: ADMIN) on field definition
  */
-export const authDirective = (
-  next: any,
-  source: any,
-  args: any,
-  context: Context,
-) => {
-  const requiredRole = args.requires || "USER";
+export const authDirective = (next: any, source: any, args: any, context: Context) => {
+  const requiredRole = args.requires || 'USER';
 
   requireRole(context, requiredRole);
 
@@ -81,10 +71,10 @@ export const getUserFromToken = (token: string | undefined): User | null => {
     // For development: Check for admin token
     if (token === process.env.ADMIN_TOKEN) {
       return {
-        id: "admin",
-        email: "admin@portfolio.com",
-        role: "ADMIN",
-        name: "Admin User",
+        id: 'admin',
+        email: 'admin@portfolio.com',
+        role: 'ADMIN',
+        name: 'Admin User',
       };
     }
 
@@ -104,9 +94,7 @@ export const getUser = (req: any): User | null => {
   if (!authHeader) return null;
 
   // Extract token (format: "Bearer <token>")
-  const token = authHeader.startsWith("Bearer ")
-    ? authHeader.slice(7)
-    : authHeader;
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
 
   return getUserFromToken(token);
 };
@@ -117,10 +105,10 @@ export const getUser = (req: any): User | null => {
 export const getClientIp = (req: any): string => {
   return (
     req.ip ||
-    req.headers["x-forwarded-for"]?.split(",")[0] ||
-    req.headers["x-real-ip"] ||
+    req.headers['x-forwarded-for']?.split(',')[0] ||
+    req.headers['x-real-ip'] ||
     req.connection.remoteAddress ||
-    "unknown"
+    'unknown'
   );
 };
 
@@ -128,21 +116,20 @@ export const getClientIp = (req: any): string => {
  * Get user agent
  */
 export const getUserAgent = (req: any): string => {
-  return req.headers["user-agent"] || "unknown";
+  return req.headers['user-agent'] || 'unknown';
 };
 
 /**
  * Build GraphQL context with authentication
  */
-export const buildContext = async (
-  { req }: any,
-  loaders: any,
-): Promise<Context> => {
+export const buildContext = async ({ req, res }: any, loaders: any): Promise<Context> => {
   return {
     user: getUser(req),
     ip: getClientIp(req),
     userAgent: getUserAgent(req),
     loaders,
+    req,
+    res,
   };
 };
 

@@ -42,11 +42,12 @@ const config: Config = {
           purple: '#BC13FE',
           blue: '#2C58F7',
         },
-        // Vision HUD color palette - brighter values for better visibility
+        // Vision HUD color palette — theme-aware via CSS variables
+        // Dark: cyan #22D3EE | Light: crimson-rose #BE123C
         vision: {
-          cyan: '#22D3EE',
-          crimson: '#E11D48',
-          orange: '#FB923C',
+          cyan: 'rgb(var(--vision-cyan) / <alpha-value>)',
+          crimson: 'rgb(var(--vision-crimson) / <alpha-value>)',
+          orange: 'rgb(var(--vision-orange) / <alpha-value>)',
         },
         // Text colors for light/dark modes - high contrast
         text: {

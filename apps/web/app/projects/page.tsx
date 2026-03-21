@@ -222,7 +222,7 @@ const HeroSection = memo(
 
     // Typing effect
     const [typedCmd, setTypedCmd] = useState('');
-    const cmdText = '> ls --all --missions --status=active';
+    const cmdText = '> ls --all --projects --status=active';
     useEffect(() => {
       let i = 0;
       const interval = setInterval(() => {
@@ -245,7 +245,7 @@ const HeroSection = memo(
           radarBeamRef.current.style.transform = `rotate(${radarAngle.current}deg)`;
         }
         if (radarConeRef.current) {
-          radarConeRef.current.style.background = `conic-gradient(from ${radarAngle.current - 30}deg at 50% 50%, rgba(34,211,238,0.08), transparent 30deg)`;
+          radarConeRef.current.style.background = `conic-gradient(from ${radarAngle.current - 30}deg at 50% 50%, rgba(var(--glow-cyan),0.08), transparent 30deg)`;
         }
         raf = requestAnimationFrame(animate);
       };
@@ -253,16 +253,13 @@ const HeroSection = memo(
       return () => cancelAnimationFrame(raf);
     }, []);
 
-    const handleMouseMove = useCallback(
-      (e: React.MouseEvent) => {
-        if (!heroRef.current) return;
-        const rect = heroRef.current.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width;
-        const y = (e.clientY - rect.top) / rect.height;
-        setGlowPos({ x: x * 100, y: y * 100 });
-      },
-      []
-    );
+    const handleMouseMove = useCallback((e: React.MouseEvent) => {
+      if (!heroRef.current) return;
+      const rect = heroRef.current.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      setGlowPos({ x: x * 100, y: y * 100 });
+    }, []);
 
     return (
       <MotionDiv
@@ -287,7 +284,7 @@ const HeroSection = memo(
           <div
             className="absolute inset-0 opacity-0 dark:opacity-100 transition-opacity"
             style={{
-              background: `radial-gradient(600px circle at ${glowPos.x}% ${glowPos.y}%, rgba(34,211,238,0.08), transparent 60%)`,
+              background: `radial-gradient(600px circle at ${glowPos.x}% ${glowPos.y}%, rgba(var(--glow-cyan),0.08), transparent 60%)`,
             }}
           />
           {/* Ambient blurs */}
@@ -303,7 +300,7 @@ const HeroSection = memo(
                 SYS://ROOT
               </Link>
               <Icons.ChevronRight />
-              <span className="text-vision-cyan">MISSION_ARCHIVES</span>
+              <span className="text-vision-cyan">PROJECT_ARCHIVES</span>
             </div>
             <div className="flex items-center gap-1.5 text-[9px] font-mono tracking-[0.3em] text-text-light/30 dark:text-text-dark/20 uppercase">
               <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.5)]" />
@@ -316,8 +313,8 @@ const HeroSection = memo(
             {/* Left: Title + typing — stable, no parallax */}
             <div className="flex-1 space-y-5">
               <h1 className="font-display font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter text-text-light dark:text-text-dark uppercase italic leading-[0.95]">
-                MISSION{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-vision-crimson via-vision-orange to-vision-cyan drop-shadow-[0_0_40px_rgba(34,211,238,0.3)]">
+                PROJECT{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-vision-crimson via-vision-orange to-vision-cyan drop-shadow-[0_0_40px_rgba(var(--glow-cyan),0.3)]">
                   ARCHIVES
                 </span>
               </h1>
@@ -329,7 +326,7 @@ const HeroSection = memo(
               </div>
 
               <p className="font-mono text-xs md:text-sm leading-relaxed text-text-light/50 dark:text-text-dark/40 max-w-xl">
-                Deployed systems, active operations, and archived missions — all logged, verified,
+                Deployed systems, active operations, and archived projects — all logged, verified,
                 and battle-tested.
               </p>
             </div>
@@ -356,22 +353,25 @@ const HeroSection = memo(
                   ref={radarBeamRef}
                   className="absolute top-1/2 left-1/2 w-1/2 h-0.5 origin-left"
                   style={{
-                    background: 'linear-gradient(90deg, rgba(34,211,238,0.5), transparent)',
+                    background: 'linear-gradient(90deg, rgba(var(--glow-cyan),0.5), transparent)',
                   }}
                 />
                 {/* Sweep cone */}
-                <div
-                  ref={radarConeRef}
-                  className="absolute inset-0 rounded-full"
-                />
+                <div ref={radarConeRef} className="absolute inset-0 rounded-full" />
                 {/* Center dot */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-2 w-2 rounded-full bg-vision-cyan shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-2 w-2 rounded-full bg-vision-cyan shadow-[0_0_12px_rgba(var(--glow-cyan),0.8)]" />
                 {/* Blip dots */}
                 {totalCount > 0 && (
                   <>
-                    <div className="absolute top-[25%] left-[60%] h-1.5 w-1.5 rounded-full bg-vision-crimson shadow-[0_0_8px_#E11D48] animate-pulse" />
-                    <div className="absolute top-[55%] left-[30%] h-1 w-1 rounded-full bg-vision-orange shadow-[0_0_6px_#FB923C] animate-pulse" style={{ animationDelay: '0.5s' }} />
-                    <div className="absolute top-[70%] left-[65%] h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34D399] animate-pulse" style={{ animationDelay: '1s' }} />
+                    <div className="absolute top-[25%] left-[60%] h-1.5 w-1.5 rounded-full bg-vision-crimson shadow-[0_0_8px_rgba(var(--glow-crimson),0.7)] animate-pulse" />
+                    <div
+                      className="absolute top-[55%] left-[30%] h-1 w-1 rounded-full bg-vision-orange shadow-[0_0_6px_rgba(var(--glow-orange),0.7)] animate-pulse"
+                      style={{ animationDelay: '0.5s' }}
+                    />
+                    <div
+                      className="absolute top-[70%] left-[65%] h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34D399] animate-pulse"
+                      style={{ animationDelay: '1s' }}
+                    />
                   </>
                 )}
               </div>
@@ -387,7 +387,9 @@ const HeroSection = memo(
                     key={stat.label}
                     className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-stone-200/60 dark:border-white/[0.08] bg-stone-50 dark:bg-white/[0.04] font-mono text-[10px] backdrop-blur-sm"
                   >
-                    <div className={`h-1.5 w-1.5 rounded-full ${stat.dotColor} animate-pulse shadow-[0_0_6px_currentColor]`} />
+                    <div
+                      className={`h-1.5 w-1.5 rounded-full ${stat.dotColor} animate-pulse shadow-[0_0_6px_currentColor]`}
+                    />
                     <span className="text-text-light/40 dark:text-text-dark/30 tracking-[0.2em] uppercase">
                       {stat.label}
                     </span>
@@ -453,14 +455,14 @@ const CategoryFilters = memo(
           relative px-5 py-2.5 font-mono text-[10px] tracking-[0.3em] uppercase border rounded-xl transition-all duration-300
           ${
             selected === cat
-              ? 'border-vision-cyan/60 text-vision-cyan bg-vision-cyan/10 dark:bg-vision-cyan/[0.07] shadow-[0_0_20px_rgba(34,211,238,0.1)]'
+              ? 'border-vision-cyan/60 text-vision-cyan bg-vision-cyan/10 dark:bg-vision-cyan/[0.07] shadow-[0_0_20px_rgba(var(--glow-cyan),0.1)]'
               : 'border-stone-200/60 dark:border-white/[0.08] text-text-light/50 dark:text-text-dark/35 bg-white dark:bg-white/[0.02] hover:border-stone-300 dark:hover:border-white/15 hover:text-text-light/70 dark:hover:text-text-dark/50'
           }
         `}
         >
           <span className="flex items-center gap-2">
             {cat !== 'All' && <span className="opacity-60">{categoryIcons[cat]}</span>}
-            {cat === 'All' ? 'ALL MISSIONS' : cat}
+            {cat === 'All' ? 'ALL PROJECTS' : cat}
           </span>
           {selected === cat && (
             <MotionDiv
@@ -545,7 +547,7 @@ const ProjectCard = memo(
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={{ rotateX, rotateY }}
-          className="relative rounded-[2.5rem] h-full transition-shadow duration-700 hover:shadow-[0_0_60px_rgba(34,211,238,0.2),_0_0_120px_rgba(34,211,238,0.08)]"
+          className="relative rounded-[2.5rem] h-full transition-shadow duration-700 hover:shadow-[0_0_60px_rgba(var(--glow-cyan),0.2),_0_0_120px_rgba(var(--glow-cyan),0.08)]"
         >
           {/* Spinning conic-gradient border */}
           <div className="absolute -inset-[1px] rounded-[2.5rem] overflow-hidden opacity-0 group-hover/card:opacity-100 transition-opacity duration-500">
@@ -553,7 +555,7 @@ const ProjectCard = memo(
               className="absolute inset-0 animate-spin-slow"
               style={{
                 background:
-                  'conic-gradient(from 0deg, transparent 0%, rgba(34,211,238,1) 10%, transparent 20%, transparent 40%, rgba(225,29,72,1) 50%, transparent 60%, transparent 80%, rgba(251,146,60,1) 90%, transparent 100%)',
+                  'conic-gradient(from 0deg, transparent 0%, rgba(var(--glow-cyan),1) 10%, transparent 20%, transparent 40%, rgba(var(--glow-crimson),1) 50%, transparent 60%, transparent 80%, rgba(var(--glow-orange),1) 90%, transparent 100%)',
               }}
             />
             <div className="absolute inset-[1.5px] rounded-[calc(1.25rem-1.5px)] bg-white dark:bg-space-black" />
@@ -564,20 +566,24 @@ const ProjectCard = memo(
             <div
               className="absolute h-[10px] w-[100px] animate-border-beam"
               style={{
-                background: 'linear-gradient(90deg, transparent, rgba(34,211,238,1), transparent)',
+                background:
+                  'linear-gradient(90deg, transparent, rgba(var(--glow-cyan),1), transparent)',
                 offsetPath: 'rect(0 100% 100% 0 round 20px)',
-                boxShadow: '0 0 40px 10px rgba(34,211,238,0.9), 0 0 80px 20px rgba(34,211,238,0.4)',
+                boxShadow:
+                  '0 0 40px 10px rgba(var(--glow-cyan),0.9), 0 0 80px 20px rgba(var(--glow-cyan),0.4)',
                 filter: 'blur(0.3px)',
               }}
             />
             <div
               className="absolute h-[10px] w-[60px] animate-border-beam"
               style={{
-                background: 'linear-gradient(90deg, transparent, rgba(225,29,72,1), transparent)',
+                background:
+                  'linear-gradient(90deg, transparent, rgba(var(--glow-crimson),1), transparent)',
                 offsetPath: 'rect(0 100% 100% 0 round 20px)',
                 animationDelay: '-1.5s',
                 animationDuration: '4s',
-                boxShadow: '0 0 35px 8px rgba(225,29,72,0.8), 0 0 70px 16px rgba(225,29,72,0.35)',
+                boxShadow:
+                  '0 0 35px 8px rgba(var(--glow-crimson),0.8), 0 0 70px 16px rgba(var(--glow-crimson),0.35)',
                 filter: 'blur(0.3px)',
               }}
             />
@@ -615,8 +621,8 @@ const ProjectCard = memo(
               <div className="flex justify-between items-start mb-10">
                 <div className="space-y-2">
                   <div className="inline-flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-vision-crimson shadow-[0_0_12px_#E11D48] animate-pulse" />
-                    <span className="text-[11px] font-mono font-black text-vision-crimson uppercase tracking-[0.6em] drop-shadow-[0_0_10px_rgba(225,29,72,0.5)]">
+                    <div className="h-2 w-2 rounded-full bg-vision-crimson shadow-[0_0_12px_rgba(var(--glow-crimson),0.7)] animate-pulse" />
+                    <span className="text-[11px] font-mono font-black text-vision-crimson uppercase tracking-[0.6em] drop-shadow-[0_0_10px_rgba(var(--glow-crimson),0.5)]">
                       LOG_{String(project.id).slice(-6).toUpperCase()}
                     </span>
                   </div>
@@ -666,7 +672,9 @@ const ProjectCard = memo(
                     Status
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className={`h-2 w-2 rounded-full ${statusColor} shadow-[0_0_14px_currentColor] animate-pulse`} />
+                    <div
+                      className={`h-2 w-2 rounded-full ${statusColor} shadow-[0_0_14px_currentColor] animate-pulse`}
+                    />
                     <span className="text-[11px] font-mono font-black tracking-[0.2em] text-slate-900 dark:text-text-dark uppercase">
                       {project.status}
                     </span>
@@ -681,9 +689,8 @@ const ProjectCard = memo(
               </div>
             </div>
 
-            {/* HUD Brackets — Crimson & Cyan with Glow */}
-            <div className="absolute top-5 left-5 w-8 h-8 border-t-[3px] border-l-[3px] border-vision-crimson/40 rounded-tl-xl group-hover/card:border-vision-crimson group-hover/card:shadow-[0_0_20px_#E11D48] transition-all duration-500" />
-            <div className="absolute bottom-5 right-5 w-8 h-8 border-b-[3px] border-r-[3px] border-vision-cyan/40 rounded-br-xl group-hover/card:border-vision-cyan group-hover/card:shadow-[0_0_20px_#22D3EE] transition-all duration-500" />
+            {/* Inner border accent — subtle rounded inset */}
+            <div className="absolute inset-[5px] rounded-[2.2rem] border border-vision-cyan/0 group-hover/card:border-vision-cyan/20 transition-all duration-700 pointer-events-none" />
           </div>
         </MotionDiv>
       </MotionDiv>
@@ -762,7 +769,7 @@ const Pagination = memo(
             initial={{ width: '0%' }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            style={{ boxShadow: '0 0 12px rgba(34,211,238,0.4)' }}
+            style={{ boxShadow: '0 0 12px rgba(var(--glow-cyan),0.4)' }}
           />
         </div>
 
@@ -772,7 +779,11 @@ const Pagination = memo(
             onClick={onPrev}
             disabled={!pageInfo?.hasPreviousPage}
             className="group relative px-6 py-3 rounded-xl border border-stone-200/60 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-[10px] font-mono tracking-[0.3em] uppercase text-text-light/50 dark:text-text-dark/35 overflow-hidden disabled:opacity-20 disabled:cursor-not-allowed backdrop-blur-sm"
-            whileHover={!pageInfo?.hasPreviousPage ? {} : { scale: 1.05, borderColor: 'rgba(34,211,238,0.4)' }}
+            whileHover={
+              !pageInfo?.hasPreviousPage
+                ? {}
+                : { scale: 1.05, borderColor: 'rgba(var(--glow-cyan),0.4)' }
+            }
             whileTap={!pageInfo?.hasPreviousPage ? {} : { scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
           >
@@ -800,15 +811,17 @@ const Pagination = memo(
             <span className="text-[10px] font-mono tracking-[0.3em] text-text-light/40 dark:text-text-dark/25 uppercase">
               PAGE
             </span>
-            <span className="text-base font-mono font-black text-vision-cyan drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]">
+            <span className="text-base font-mono font-black text-vision-cyan drop-shadow-[0_0_8px_rgba(var(--glow-cyan),0.4)]">
               {String(current).padStart(2, '0')}
             </span>
-            <span className="text-[10px] font-mono text-text-light/30 dark:text-text-dark/20">/</span>
+            <span className="text-[10px] font-mono text-text-light/30 dark:text-text-dark/20">
+              /
+            </span>
             <span className="text-base font-mono font-black text-text-light/50 dark:text-text-dark/30">
               {String(total).padStart(2, '0')}
             </span>
             {/* Scanline effect */}
-            <div className="absolute inset-0 bg-[linear-gradient(transparent_49%,rgba(34,211,238,0.03)_50%,transparent_51%)] bg-[size:100%_4px] pointer-events-none" />
+            <div className="absolute inset-0 bg-[linear-gradient(transparent_49%,rgba(var(--glow-cyan),0.03)_50%,transparent_51%)] bg-[size:100%_4px] pointer-events-none" />
           </MotionDiv>
 
           {/* Next button */}
@@ -816,7 +829,11 @@ const Pagination = memo(
             onClick={onNext}
             disabled={!pageInfo?.hasNextPage}
             className="group relative px-6 py-3 rounded-xl border border-stone-200/60 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-[10px] font-mono tracking-[0.3em] uppercase text-text-light/50 dark:text-text-dark/35 overflow-hidden disabled:opacity-20 disabled:cursor-not-allowed backdrop-blur-sm"
-            whileHover={!pageInfo?.hasNextPage ? {} : { scale: 1.05, borderColor: 'rgba(34,211,238,0.4)' }}
+            whileHover={
+              !pageInfo?.hasNextPage
+                ? {}
+                : { scale: 1.05, borderColor: 'rgba(var(--glow-cyan),0.4)' }
+            }
             whileTap={!pageInfo?.hasNextPage ? {} : { scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
           >
@@ -900,7 +917,7 @@ export default function ProjectsPage() {
             className="text-center py-20 rounded-2xl border border-stone-200/60 dark:border-white/[0.06] bg-white dark:bg-white/[0.02]"
           >
             <p className="text-sm font-mono text-text-light/50 dark:text-text-dark/30">
-              ⚠ Error loading mission logs. Retry connection.
+              ⚠ Error loading project logs. Retry connection.
             </p>
           </MotionDiv>
         ) : projects.length === 0 ? (
@@ -910,7 +927,7 @@ export default function ProjectsPage() {
             className="text-center py-20 rounded-2xl border border-stone-200/60 dark:border-white/[0.06] bg-white dark:bg-white/[0.02]"
           >
             <p className="text-sm font-mono text-text-light/50 dark:text-text-dark/30">
-              No missions found in this category.
+              No projects found in this category.
             </p>
           </MotionDiv>
         ) : (
@@ -965,7 +982,7 @@ export default function ProjectsPage() {
           <Link href="/" className="group">
             <MotionDiv
               className="relative px-8 py-4 font-mono text-[10px] tracking-[0.3em] text-text-light/50 dark:text-text-dark/35 uppercase border border-stone-200/60 dark:border-white/[0.08] rounded-xl bg-white dark:bg-white/[0.03] overflow-hidden backdrop-blur-sm"
-              whileHover={{ scale: 1.03, borderColor: 'rgba(34,211,238,0.4)' }}
+              whileHover={{ scale: 1.03, borderColor: 'rgba(var(--glow-cyan),0.4)' }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 400, damping: 20 }}
             >
@@ -982,7 +999,7 @@ export default function ProjectsPage() {
               {/* Glow overlay */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-r from-vision-cyan/10 via-vision-cyan/5 to-vision-crimson/10" />
               {/* Bottom glow line */}
-              <div className="absolute bottom-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-vision-cyan/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 shadow-[0_0_12px_rgba(34,211,238,0.5)]" />
+              <div className="absolute bottom-0 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-vision-cyan/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 shadow-[0_0_12px_rgba(var(--glow-cyan),0.5)]" />
             </MotionDiv>
           </Link>
         </MotionDiv>

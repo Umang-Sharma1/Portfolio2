@@ -342,15 +342,40 @@ export async function warmCache(): Promise<void> {
 
     // Select only fields needed by GraphQL fragments (avoid fetching entire documents)
     const projectProjection = {
-      title: 1, slug: 1, description: 1, category: 1, status: 1,
-      featured: 1, technologies: 1, images: 1, links: 1, metrics: 1,
-      timeline: 1, views: 1, clicks: 1, features: 1, createdAt: 1, updatedAt: 1,
+      title: 1,
+      slug: 1,
+      description: 1,
+      category: 1,
+      status: 1,
+      featured: 1,
+      technologies: 1,
+      images: 1,
+      links: 1,
+      metrics: 1,
+      timeline: 1,
+      views: 1,
+      clicks: 1,
+      features: 1,
+      createdAt: 1,
+      updatedAt: 1,
     };
     const skillProjection = {
-      name: 1, category: 1, proficiency: 1, yearsOfExperience: 1,
-      projectCount: 1, status: 1, relatedSkills: 1, icon: 1, color: 1,
-      description: 1, views: 1, lastUsedDate: 1, featured: 1, order: 1,
-      createdAt: 1, updatedAt: 1,
+      name: 1,
+      category: 1,
+      proficiency: 1,
+      yearsOfExperience: 1,
+      projectCount: 1,
+      status: 1,
+      relatedSkills: 1,
+      icon: 1,
+      color: 1,
+      description: 1,
+      views: 1,
+      lastUsedDate: 1,
+      featured: 1,
+      order: 1,
+      createdAt: 1,
+      updatedAt: 1,
     };
 
     // Run all cache warming queries in parallel
@@ -389,7 +414,9 @@ export async function warmCache(): Promise<void> {
     ]);
 
     const duration = Date.now() - startTime;
-    logger.info(`🔥 Cache warming completed in ${duration}ms (${featuredProjects.length} featured, ${skills.length} skills, ${recentProjects.length} recent)`);
+    logger.info(
+      `🔥 Cache warming completed in ${duration}ms (${featuredProjects.length} featured, ${skills.length} skills, ${recentProjects.length} recent)`
+    );
   } catch (error) {
     logger.error('Cache warming failed:', error);
     // Don't throw - cache warming failure shouldn't prevent server startup

@@ -158,7 +158,7 @@ export const PageLoader = memo(function PageLoader({
           exit={{ opacity: 0, transition: { duration: 1.5, ease: [0.16, 1, 0.3, 1] } }}
         >
           <div className="absolute inset-0 pointer-events-none z-50 overflow-hidden opacity-20">
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(34,211,238,0.05),transparent,rgba(34,211,238,0.05))] bg-[length:100%_4px,100%_100%] animate-scan" />
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(var(--glow-cyan),0.05),transparent,rgba(var(--glow-cyan),0.05))] bg-[length:100%_4px,100%_100%] animate-scan" />
           </div>
 
           <div className="relative flex flex-col items-center">
@@ -169,7 +169,7 @@ export const PageLoader = memo(function PageLoader({
                 key={logIndex}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-[11px] font-mono text-vision-cyan font-black uppercase tracking-[0.8em] bg-vision-cyan/10 px-8 py-3 rounded-full border border-vision-cyan/30 shadow-[0_0_30px_rgba(34,211,238,0.2)]"
+                className="text-[11px] font-mono text-vision-cyan font-black uppercase tracking-[0.8em] bg-vision-cyan/10 px-8 py-3 rounded-full border border-vision-cyan/30 shadow-[0_0_30px_rgba(var(--glow-cyan),0.2)]"
               >
                 {logs[logIndex]}
               </MotionDiv>
@@ -206,7 +206,7 @@ export const PageLoader = memo(function PageLoader({
 
             <div className="mt-20 w-96 h-[3px] bg-white/5 relative overflow-hidden rounded-full">
               <MotionDiv
-                className="absolute inset-y-0 left-0 bg-gradient-to-r from-vision-cyan via-vision-crimson to-vision-cyan shadow-[0_0_30px_rgba(34,211,238,0.8)]"
+                className="absolute inset-y-0 left-0 bg-gradient-to-r from-vision-cyan via-vision-crimson to-vision-cyan shadow-[0_0_30px_rgba(var(--glow-cyan),0.8)]"
                 initial={{ width: '0%' }}
                 animate={{ width: '100%' }}
                 transition={{ duration: 5, ease: 'easeInOut' }}

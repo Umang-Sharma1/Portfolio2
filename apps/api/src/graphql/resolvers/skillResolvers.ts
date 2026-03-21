@@ -112,10 +112,22 @@ export const skillResolvers = {
 
         // Select only fields needed by SkillFields fragment
         const projection = {
-          name: 1, category: 1, proficiency: 1, yearsOfExperience: 1,
-          projectCount: 1, status: 1, relatedSkills: 1, icon: 1, color: 1,
-          description: 1, views: 1, lastUsedDate: 1, featured: 1, order: 1,
-          createdAt: 1, updatedAt: 1,
+          name: 1,
+          category: 1,
+          proficiency: 1,
+          yearsOfExperience: 1,
+          projectCount: 1,
+          status: 1,
+          relatedSkills: 1,
+          icon: 1,
+          color: 1,
+          description: 1,
+          views: 1,
+          lastUsedDate: 1,
+          featured: 1,
+          order: 1,
+          createdAt: 1,
+          updatedAt: 1,
         };
 
         const [skills, totalCount] = await Promise.all([
@@ -126,7 +138,9 @@ export const skillResolvers = {
             : Skill.countDocuments(query),
         ]);
 
-        logger.debug(`Skills query: ${Date.now() - queryStart}ms (${totalCount} total, page ${page})`);
+        logger.debug(
+          `Skills query: ${Date.now() - queryStart}ms (${totalCount} total, page ${page})`
+        );
 
         // Build connection response
         const result = buildConnection(skills, totalCount, page, pageLimit);
@@ -220,11 +234,7 @@ export const skillResolvers = {
             $or: [{ name: regex }, { description: regex }, { category: regex }],
           };
           [skills, totalCount] = await Promise.all([
-            Skill.find(regexQuery)
-              .sort({ proficiency: -1 })
-              .skip(skip)
-              .limit(pageLimit)
-              .lean(),
+            Skill.find(regexQuery).sort({ proficiency: -1 }).skip(skip).limit(pageLimit).lean(),
             Skill.countDocuments(regexQuery),
           ]);
         }
@@ -477,6 +487,18 @@ export const skillResolvers = {
     isActive: (parent: any) => {
       if (typeof parent.isActive === 'boolean') return parent.isActive;
       return parent.status !== 'ARCHIVED';
+    },
+
+    /**
+     * Dynamically compute project count from actual projects
+     */
+    projectCount: async (parent: any, _: any, context: Context) => {
+      try {
+        const projects = await context.loaders.projectsByTechnologyLoader.load(parent.name);
+        return projects?.length ?? parent.projectCount ?? 0;
+      } catch {
+        return parent.projectCount ?? 0;
+      }
     },
 
     /**

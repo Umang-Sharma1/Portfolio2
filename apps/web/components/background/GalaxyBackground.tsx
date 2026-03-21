@@ -45,12 +45,7 @@ const Stars = () => {
           array={positions}
           itemSize={3}
         />
-        <bufferAttribute
-          attach="attributes-color"
-          count={count}
-          array={colors}
-          itemSize={3}
-        />
+        <bufferAttribute attach="attributes-color" count={count} array={colors} itemSize={3} />
       </bufferGeometry>
       <pointsMaterial size={0.1} vertexColors transparent opacity={0.6} sizeAttenuation />
     </points>
@@ -70,12 +65,9 @@ const MilkyWay = () => {
       const spinAngle = radius * 5;
       const branchAngle = ((i % 3) * 2 * Math.PI) / 3;
 
-      const randomX =
-        Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 0.3 * radius;
-      const randomY =
-        Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 0.3 * radius;
-      const randomZ =
-        Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 0.3 * radius;
+      const randomX = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 0.3 * radius;
+      const randomY = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 0.3 * radius;
+      const randomZ = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? 1 : -1) * 0.3 * radius;
 
       pos[i3] = Math.cos(branchAngle + spinAngle) * radius + randomX;
       pos[i3 + 1] = randomY;
@@ -107,12 +99,7 @@ const MilkyWay = () => {
           array={positions}
           itemSize={3}
         />
-        <bufferAttribute
-          attach="attributes-color"
-          count={count}
-          array={colors}
-          itemSize={3}
-        />
+        <bufferAttribute attach="attributes-color" count={count} array={colors} itemSize={3} />
       </bufferGeometry>
       <pointsMaterial
         size={0.05}

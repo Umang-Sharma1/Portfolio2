@@ -77,25 +77,61 @@ const batchSkillsByName = async (names: readonly string[]) => {
  * Batch function for Projects by Technology
  * Load all projects that use specific technologies in a SINGLE query
  * instead of one query per technology (N+1 fix)
+ * Supports flexible matching via aliases for skill→technology name mismatches
  */
+
+// Skill name → project technology aliases (bidirectional matching)
+const TECH_ALIASES: Record<string, string[]> = {
+  'Express.js': ['Express'],
+  CSS3: ['CSS', 'CSS Modules'],
+  GraphQL: ['Apollo GraphQL'],
+  'JWT Authentication': ['JWT'],
+  AWS: ['AWS S3'],
+  'Sass/SCSS': ['Sass', 'SCSS', 'Styled Components'],
+  JavaScript: ['JS'],
+  HTML5: ['HTML'],
+};
+
 const batchProjectsByTechnology = async (technologies: readonly string[]) => {
-  // Single query: find ALL projects matching ANY of the requested technologies
+  // Build expanded list: original names + all aliases (for the $in query)
+  const expandedNames = new Set<string>();
+  // Map: lowercased tech/alias → original requested skill name(s)
+  const aliasToSkill = new Map<string, Set<string>>();
+
+  for (const tech of technologies) {
+    const variants = [tech, ...(TECH_ALIASES[tech] || [])];
+    for (const v of variants) {
+      expandedNames.add(v);
+      const key = v.toLowerCase();
+      if (!aliasToSkill.has(key)) aliasToSkill.set(key, new Set());
+      aliasToSkill.get(key)!.add(tech);
+    }
+  }
+
+  // Single query: find ALL projects matching ANY name or alias
   const allProjects = await Project.find({
-    technologies: { $in: technologies as string[] },
+    technologies: { $in: Array.from(expandedNames) },
   })
     .sort({ createdAt: -1 })
     .lean();
 
-  // Group results by technology
+  // Group results by requested technology (through aliases, case-insensitive)
   const techMap = new Map<string, any[]>();
   for (const tech of technologies) {
     techMap.set(tech, []);
   }
 
   for (const project of allProjects) {
-    for (const tech of project.technologies) {
-      if (techMap.has(tech)) {
-        techMap.get(tech)!.push(project);
+    const seen = new Set<string>(); // avoid duplicate project per skill
+    for (const projTech of project.technologies) {
+      const skills = aliasToSkill.get(projTech.toLowerCase());
+      if (skills) {
+        for (const skill of skills) {
+          if (!seen.has(skill)) {
+            seen.add(skill);
+            techMap.get(skill)!.push(project);
+          }
+        }
       }
     }
   }

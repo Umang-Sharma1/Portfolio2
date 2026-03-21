@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from 'next-themes';
+import { useModalContext } from '@/lib/modal-context';
 
 function cn(...inputs: any[]) {
   return inputs.filter(Boolean).join(' ');
@@ -131,20 +132,12 @@ const NavItem = ({
   return (
     <button
       onClick={onClick}
-      style={
-        isActive
-          ? {
-              color: '#22D3EE',
-              backgroundColor: 'rgba(34,211,238,0.12)',
-              border: '1px solid rgba(34,211,238,0.4)',
-              boxShadow:
-                '0 0 20px rgba(34,211,238,0.25), inset 0 0 12px rgba(34,211,238,0.06)',
-            }
-          : { border: '1px solid transparent' }
-      }
+      data-active={isActive ? 'true' : undefined}
       className={cn(
-        'relative px-4 py-2 text-[10px] font-mono font-black tracking-[0.3em] uppercase rounded-lg transition-all duration-300',
-        !isActive && 'text-slate-600 dark:text-slate-400 hover:text-vision-cyan'
+        'nav-glow-item relative px-4 py-2 text-[10px] font-mono font-black tracking-[0.3em] uppercase rounded-lg transition-all duration-300',
+        isActive
+          ? 'text-vision-cyan bg-vision-cyan/12 border border-vision-cyan/40 shadow-[0_0_20px_rgba(var(--glow-cyan),0.25),inset_0_0_12px_rgba(var(--glow-cyan),0.06)]'
+          : 'text-slate-600 dark:text-slate-400 hover:text-vision-cyan border border-transparent'
       )}
     >
       <span className="flex items-center gap-2">
@@ -158,19 +151,20 @@ const NavItem = ({
 export const Header = () => {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
+  const { isModalOpen } = useModalContext();
   const isHomePage = pathname === '/';
   const [navContext, setNavContext] = useState<NavContext>(isHomePage ? 'LOCAL' : 'GLOBAL');
   const [isHidden, setIsHidden] = useState(false);
   const [currentSection, setCurrentSection] = useState(
     isHomePage
-      ? 'CORE_SINGULARITY'
+      ? 'HOME'
       : pathname === '/skills'
-        ? 'ARSENAL_MANIFEST'
+        ? 'SKILLS'
         : pathname === '/projects'
-          ? 'MISSION_ARCHIVES'
+          ? 'PROJECTS'
           : pathname === '/contact'
-            ? 'UPLINK_CHANNEL'
-            : 'CORE_SINGULARITY'
+            ? 'CONTACT'
+            : 'HOME'
   );
   const [memory, setMemory] = useState('12.4MB');
   const [uptime, setUptime] = useState('00:00:00');
@@ -186,12 +180,12 @@ export const Header = () => {
   useEffect(() => {
     if (pathname === '/') {
       setNavContext('LOCAL');
-      setCurrentSection('CORE_SINGULARITY');
+      setCurrentSection('HOME');
     } else {
       setNavContext('GLOBAL');
-      if (pathname === '/skills') setCurrentSection('ARSENAL_MANIFEST');
-      else if (pathname === '/projects') setCurrentSection('MISSION_ARCHIVES');
-      else if (pathname === '/contact') setCurrentSection('UPLINK_CHANNEL');
+      if (pathname === '/skills') setCurrentSection('SKILLS');
+      else if (pathname === '/projects') setCurrentSection('PROJECTS');
+      else if (pathname === '/contact') setCurrentSection('CONTACT');
       else setCurrentSection(pathname.replace('/', '').toUpperCase());
     }
   }, [pathname]);
@@ -215,11 +209,11 @@ export const Header = () => {
         // Section tracking (only on home page)
         if (pathname === '/') {
           const sectionMap: Record<string, string> = {
-            home: 'CORE_SINGULARITY',
-            skills: 'ARSENAL_MANIFEST',
-            projects: 'MISSION_ARCHIVES',
-            timeline: 'FLIGHT_PATH',
-            contact: 'UPLINK_CHANNEL',
+            home: 'HOME',
+            skills: 'SKILLS',
+            projects: 'PROJECTS',
+            timeline: 'EXPERIENCE',
+            contact: 'CONTACT',
           };
           // Iterate in reverse so deeper sections are matched first
           const sections = ['contact', 'timeline', 'projects', 'skills', 'home'];
@@ -235,7 +229,7 @@ export const Header = () => {
               }
             }
           }
-          if (!found || current < 200) setCurrentSection('CORE_SINGULARITY');
+          if (!found || current < 200) setCurrentSection('HOME');
         }
 
         ticking = false;
@@ -272,18 +266,18 @@ export const Header = () => {
   }, [pathname]);
 
   const localItems = [
-    { name: 'Core', id: 'home' },
-    { name: 'Arsenal', id: 'skills' },
-    { name: 'Missions', id: 'projects' },
-    { name: 'Timeline', id: 'timeline' },
-    { name: 'Uplink', id: 'contact' },
+    { name: 'Home', id: 'home' },
+    { name: 'Skills', id: 'skills' },
+    { name: 'Projects', id: 'projects' },
+    { name: 'Experience', id: 'timeline' },
+    { name: 'Contact', id: 'contact' },
   ];
 
   const globalItems = [
-    { name: 'Main Core', id: '/', external: false },
-    { name: 'Archives', id: '/projects', external: true },
-    { name: 'Manifest', id: '/skills', external: true },
-    { name: 'Uplink', id: '/contact', external: true },
+    { name: 'Home', id: '/', external: false },
+    { name: 'Skills', id: '/skills', external: true },
+    { name: 'Projects', id: '/projects', external: true },
+    { name: 'Contact', id: '/contact', external: true },
   ];
 
   const handleAction = (id: string, external: boolean) => {
@@ -298,11 +292,11 @@ export const Header = () => {
 
   // Derive active nav id from currentSection — computed fresh every render
   const sectionToNavId: Record<string, string> = {
-    core_singularity: 'home',
-    arsenal_manifest: 'skills',
-    mission_archives: 'projects',
-    flight_path: 'timeline',
-    uplink_channel: 'contact',
+    home: 'home',
+    skills: 'skills',
+    projects: 'projects',
+    experience: 'timeline',
+    contact: 'contact',
   };
   const activeNavId = sectionToNavId[currentSection.toLowerCase()] || 'home';
 
@@ -311,8 +305,8 @@ export const Header = () => {
       <header className="fixed top-0 left-0 right-0 z-[1000] p-4 md:p-6 pointer-events-none">
         <motion.div
           animate={{
-            y: isHidden ? -120 : 0,
-            opacity: isHidden ? 0 : 1,
+            y: isHidden || isModalOpen ? -120 : 0,
+            opacity: isHidden || isModalOpen ? 0 : 1,
           }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-[1500px] mx-auto flex items-center justify-between pointer-events-auto"
@@ -323,7 +317,7 @@ export const Header = () => {
               className="flex items-center gap-3 md:gap-4 group cursor-pointer bg-white/80 dark:bg-black/20 p-2 pr-4 md:pr-6 rounded-2xl border border-slate-200 dark:border-white/10 glassmorphism transition-all hover:border-vision-cyan/40 shadow-lg"
               onClick={() => setNavContext(navContext === 'LOCAL' ? 'GLOBAL' : 'LOCAL')}
             >
-              <div className="h-9 w-9 md:h-10 md:w-10 glassmorphism rounded-xl flex items-center justify-center text-vision-cyan border border-vision-cyan/20 group-hover:scale-105 transition-transform shadow-[0_0_15px_rgba(34,211,238,0.15)]">
+              <div className="h-9 w-9 md:h-10 md:w-10 glassmorphism rounded-xl flex items-center justify-center text-vision-cyan border border-vision-cyan/20 group-hover:scale-105 transition-transform shadow-[0_0_10px_rgba(190,18,60,0.12)] dark:shadow-[0_0_15px_rgba(34,211,238,0.15)]">
                 <span className="font-display font-black text-base md:text-lg italic">V</span>
               </div>
               <div className="space-y-0.5">
@@ -372,15 +366,18 @@ export const Header = () => {
                 })}
               </div>
 
-              <div className="h-6 w-[1px] bg-slate-200 dark:bg-white/10 mx-2" />
-
-              <button
-                onClick={() => setNavContext(navContext === 'LOCAL' ? 'GLOBAL' : 'LOCAL')}
-                className="p-2 text-slate-500 dark:text-slate-400 hover:text-vision-cyan transition-colors"
-                title="Toggle Navigation Mode"
-              >
-                <Icons.Command />
-              </button>
+              {isHomePage && (
+                <>
+                  <div className="h-6 w-[1px] bg-slate-200 dark:bg-white/10 mx-2" />
+                  <button
+                    onClick={() => setNavContext(navContext === 'LOCAL' ? 'GLOBAL' : 'LOCAL')}
+                    className="p-2 text-slate-500 dark:text-slate-400 hover:text-vision-cyan transition-colors"
+                    title="Toggle Navigation Mode"
+                  >
+                    <Icons.Command />
+                  </button>
+                </>
+              )}
             </div>
           </nav>
 
@@ -416,7 +413,7 @@ export const Header = () => {
                       className={cn(
                         'w-2 h-1 rounded-full',
                         b
-                          ? 'bg-vision-cyan shadow-[0_0_5px_#22D3EE]'
+                          ? 'bg-vision-cyan shadow-[0_0_5px_rgba(190,18,60,0.4)] dark:shadow-[0_0_5px_rgba(var(--glow-cyan),1)]'
                           : 'bg-slate-300 dark:bg-white/5'
                       )}
                     />
@@ -479,15 +476,17 @@ export const Header = () => {
               ))}
             </div>
 
-            <div className="mt-auto pt-8 border-t border-slate-200 dark:border-white/10">
-              <button
-                onClick={() => setNavContext(navContext === 'LOCAL' ? 'GLOBAL' : 'LOCAL')}
-                className="text-sm font-mono font-bold text-slate-500 dark:text-white/40 hover:text-vision-cyan transition-colors flex items-center gap-3"
-              >
-                <Icons.Command />
-                Switch to {navContext === 'LOCAL' ? 'Global' : 'Local'} Navigation
-              </button>
-            </div>
+            {isHomePage && (
+              <div className="mt-auto pt-8 border-t border-slate-200 dark:border-white/10">
+                <button
+                  onClick={() => setNavContext(navContext === 'LOCAL' ? 'GLOBAL' : 'LOCAL')}
+                  className="text-sm font-mono font-bold text-slate-500 dark:text-white/40 hover:text-vision-cyan transition-colors flex items-center gap-3"
+                >
+                  <Icons.Command />
+                  Switch to {navContext === 'LOCAL' ? 'Pages' : 'Sections'}
+                </button>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

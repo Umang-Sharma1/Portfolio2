@@ -130,9 +130,22 @@ export const projectResolvers = {
 
         // Select only fields needed by ProjectFields fragment
         const projection = {
-          title: 1, slug: 1, description: 1, category: 1, status: 1,
-          featured: 1, technologies: 1, images: 1, links: 1, metrics: 1,
-          timeline: 1, views: 1, clicks: 1, features: 1, createdAt: 1, updatedAt: 1,
+          title: 1,
+          slug: 1,
+          description: 1,
+          category: 1,
+          status: 1,
+          featured: 1,
+          technologies: 1,
+          images: 1,
+          links: 1,
+          metrics: 1,
+          timeline: 1,
+          views: 1,
+          clicks: 1,
+          features: 1,
+          createdAt: 1,
+          updatedAt: 1,
         };
 
         const [projects, totalCount] = await Promise.all([
@@ -143,7 +156,9 @@ export const projectResolvers = {
             : Project.countDocuments(query),
         ]);
 
-        logger.debug(`Projects query: ${Date.now() - queryStart}ms (${totalCount} total, page ${page})`);
+        logger.debug(
+          `Projects query: ${Date.now() - queryStart}ms (${totalCount} total, page ${page})`
+        );
 
         // Build connection response
         const result = buildConnection(projects, totalCount, page, pageLimit);
@@ -288,8 +303,20 @@ export const projectResolvers = {
 
         const projects = await Project.find(
           { featured: true, status: 'COMPLETED' },
-          { title: 1, slug: 1, description: 1, category: 1, status: 1, featured: 1,
-            technologies: 1, images: 1, links: 1, metrics: 1, views: 1, createdAt: 1 }
+          {
+            title: 1,
+            slug: 1,
+            description: 1,
+            category: 1,
+            status: 1,
+            featured: 1,
+            technologies: 1,
+            images: 1,
+            links: 1,
+            metrics: 1,
+            views: 1,
+            createdAt: 1,
+          }
         )
           .sort({ 'metrics.stars': -1, createdAt: -1 })
           .limit(safeLimit)
@@ -354,9 +381,22 @@ export const projectResolvers = {
 
         const categoryQuery = { category, status: 'COMPLETED' };
         const projection = {
-          title: 1, slug: 1, description: 1, category: 1, status: 1,
-          featured: 1, technologies: 1, images: 1, links: 1, metrics: 1,
-          timeline: 1, views: 1, clicks: 1, features: 1, createdAt: 1, updatedAt: 1,
+          title: 1,
+          slug: 1,
+          description: 1,
+          category: 1,
+          status: 1,
+          featured: 1,
+          technologies: 1,
+          images: 1,
+          links: 1,
+          metrics: 1,
+          timeline: 1,
+          views: 1,
+          clicks: 1,
+          features: 1,
+          createdAt: 1,
+          updatedAt: 1,
         };
 
         const [projects, totalCount] = await Promise.all([

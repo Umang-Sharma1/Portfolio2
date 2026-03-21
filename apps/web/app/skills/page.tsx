@@ -968,18 +968,26 @@ const HeroSection = memo(function HeroSection({
     return () => clearInterval(interval);
   }, [isInView]);
 
-  // Animated count
+  // Animated count — ease-out cubic like home page
   const [animatedCount, setAnimatedCount] = useState(0);
   useEffect(() => {
     if (!isInView || totalSkills === 0) return;
-    let current = 0;
-    const step = Math.max(1, Math.floor(totalSkills / 40));
-    const interval = setInterval(() => {
-      current = Math.min(current + step, totalSkills);
-      setAnimatedCount(current);
-      if (current >= totalSkills) clearInterval(interval);
-    }, 30);
-    return () => clearInterval(interval);
+    const duration = 1800;
+    const startTime = performance.now();
+    let cancelled = false;
+
+    function tick(now: number) {
+      if (cancelled) return;
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setAnimatedCount(Math.round(eased * totalSkills));
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    return () => {
+      cancelled = true;
+    };
   }, [isInView, totalSkills]);
 
   // Mouse glow only (no parallax)
@@ -1011,7 +1019,7 @@ const HeroSection = memo(function HeroSection({
             className="absolute inset-0 opacity-[0.06]"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(34,211,238,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.3) 1px, transparent 1px)',
+                'linear-gradient(rgba(var(--glow-cyan),0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--glow-cyan),0.3) 1px, transparent 1px)',
               backgroundSize: '60px 60px',
             }}
           />
@@ -1039,7 +1047,7 @@ const HeroSection = memo(function HeroSection({
           <div
             className="absolute inset-0 opacity-[0.03]"
             style={{
-              backgroundImage: 'radial-gradient(rgba(34,211,238,0.5) 1px, transparent 1px)',
+              backgroundImage: 'radial-gradient(rgba(var(--glow-cyan),0.5) 1px, transparent 1px)',
               backgroundSize: '24px 24px',
             }}
           />
@@ -1052,7 +1060,7 @@ const HeroSection = memo(function HeroSection({
           <div
             className="absolute w-[500px] h-[500px] rounded-full opacity-0 group-hover/hero:opacity-100 transition-opacity duration-500"
             style={{
-              background: 'radial-gradient(circle, rgba(34,211,238,0.1) 0%, transparent 60%)',
+              background: 'radial-gradient(circle, rgba(var(--glow-cyan),0.1) 0%, transparent 60%)',
               left: 'var(--glow-x, 50%)',
               top: 'var(--glow-y, 50%)',
               transform: 'translate(-50%, -50%)',
@@ -1061,7 +1069,10 @@ const HeroSection = memo(function HeroSection({
         </div>
 
         {/* Content layer — NO parallax, stable */}
-        <div className="relative z-10 p-8 md:p-12 flex flex-col justify-between" style={{ minHeight: '420px' }}>
+        <div
+          className="relative z-10 p-8 md:p-12 flex flex-col justify-between"
+          style={{ minHeight: '420px' }}
+        >
           {/* Top bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
             <motion.div
@@ -1070,7 +1081,7 @@ const HeroSection = memo(function HeroSection({
               transition={{ delay: 0.1 }}
               className="flex items-center gap-3"
             >
-              <div className="h-2 w-2 rounded-full bg-vision-cyan animate-pulse shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
+              <div className="h-2 w-2 rounded-full bg-vision-cyan animate-pulse shadow-[0_0_12px_rgba(var(--glow-cyan),0.8)]" />
               <span className="text-[9px] font-mono font-black text-slate-400 dark:text-white/30 uppercase tracking-[0.5em]">
                 System / Arsenal / Manifest
               </span>
@@ -1119,7 +1130,7 @@ const HeroSection = memo(function HeroSection({
                 className="text-5xl md:text-6xl lg:text-7xl font-display font-black tracking-tighter uppercase italic text-slate-900 dark:text-white leading-[0.9]"
               >
                 Technical <br className="hidden md:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-vision-crimson via-vision-orange to-vision-cyan drop-shadow-[0_0_40px_rgba(34,211,238,0.3)]">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-vision-crimson via-vision-orange to-vision-cyan drop-shadow-[0_0_40px_rgba(var(--glow-cyan),0.3)]">
                   Arsenal.
                 </span>
               </motion.h1>
@@ -1166,7 +1177,7 @@ const HeroSection = memo(function HeroSection({
                     'text-slate-900 dark:text-white font-mono text-xs placeholder:text-slate-400 dark:placeholder:text-white/25',
                     'focus:outline-none focus:ring-2 focus:ring-vision-cyan/30 focus:border-vision-cyan/40',
                     'transition-all duration-200 backdrop-blur-sm',
-                    'shadow-[0_0_0_0_rgba(34,211,238,0)] focus:shadow-[0_0_20px_rgba(34,211,238,0.15)]'
+                    'shadow-[0_0_0_0_rgba(var(--glow-cyan),0)] focus:shadow-[0_0_20px_rgba(var(--glow-cyan),0.15)]'
                   )}
                 />
                 {searchQuery && (
@@ -1200,7 +1211,9 @@ const HeroSection = memo(function HeroSection({
               <span>CLEARANCE: SIGMA</span>
             </div>
             <div className="text-[9px] font-mono tracking-[0.3em] text-slate-400 dark:text-white/20 uppercase">
-              {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).toUpperCase()}
+              {new Date()
+                .toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+                .toUpperCase()}
             </div>
           </motion.div>
         </div>
@@ -1414,7 +1427,7 @@ const SkillCard = memo(function SkillCard({
         className={cn(
           'group/card relative rounded-2xl cursor-pointer hover:z-30',
           'transition-shadow duration-500',
-          'hover:shadow-[0_0_50px_rgba(34,211,238,0.2),_0_0_100px_rgba(34,211,238,0.08)]'
+          'hover:shadow-[0_0_50px_rgba(var(--glow-cyan),0.2),_0_0_100px_rgba(var(--glow-cyan),0.08)]'
         )}
       >
         {/* ── Rotating Border Beam ── */}
@@ -1425,7 +1438,7 @@ const SkillCard = memo(function SkillCard({
             className="absolute inset-0 animate-spin-slow"
             style={{
               background:
-                'conic-gradient(from 0deg, transparent 0%, rgba(34,211,238,1) 10%, transparent 20%, transparent 40%, rgba(225,29,72,1) 50%, transparent 60%, transparent 80%, rgba(251,146,60,1) 90%, transparent 100%)',
+                'conic-gradient(from 0deg, transparent 0%, rgba(var(--glow-cyan),1) 10%, transparent 20%, transparent 40%, rgba(var(--glow-crimson),1) 50%, transparent 60%, transparent 80%, rgba(var(--glow-orange),1) 90%, transparent 100%)',
             }}
           />
           {/* Inner cutout — leaves only the border visible */}
@@ -1437,20 +1450,24 @@ const SkillCard = memo(function SkillCard({
           <div
             className="absolute h-[8px] w-[80px] animate-border-beam"
             style={{
-              background: 'linear-gradient(90deg, transparent, rgba(34,211,238,1), transparent)',
+              background:
+                'linear-gradient(90deg, transparent, rgba(var(--glow-cyan),1), transparent)',
               offsetPath: `rect(0 100% 100% 0 round 16px)`,
-              boxShadow: '0 0 40px 10px rgba(34,211,238,0.9), 0 0 80px 20px rgba(34,211,238,0.4)',
+              boxShadow:
+                '0 0 40px 10px rgba(var(--glow-cyan),0.9), 0 0 80px 20px rgba(var(--glow-cyan),0.4)',
               filter: 'blur(0.3px)',
             }}
           />
           <div
             className="absolute h-[10px] w-[60px] animate-border-beam"
             style={{
-              background: 'linear-gradient(90deg, transparent, rgba(225,29,72,1), transparent)',
+              background:
+                'linear-gradient(90deg, transparent, rgba(var(--glow-crimson),1), transparent)',
               offsetPath: `rect(0 100% 100% 0 round 16px)`,
               animationDelay: '-1.5s',
               animationDuration: '4s',
-              boxShadow: '0 0 35px 8px rgba(225,29,72,0.8), 0 0 70px 16px rgba(225,29,72,0.35)',
+              boxShadow:
+                '0 0 35px 8px rgba(var(--glow-crimson),0.8), 0 0 70px 16px rgba(var(--glow-crimson),0.35)',
               filter: 'blur(0.3px)',
             }}
           />
@@ -1468,7 +1485,8 @@ const SkillCard = memo(function SkillCard({
           <div
             className="absolute w-[250px] h-[250px] rounded-full opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none z-0"
             style={{
-              background: 'radial-gradient(circle, rgba(34,211,238,0.08) 0%, transparent 70%)',
+              background:
+                'radial-gradient(circle, rgba(var(--glow-cyan),0.08) 0%, transparent 70%)',
               left: 'var(--card-glow-x, 50%)',
               top: 'var(--card-glow-y, 50%)',
               transform: 'translate(-50%, -50%)',
@@ -1535,7 +1553,7 @@ const SkillCard = memo(function SkillCard({
                 className="flex items-center gap-1.5 text-vision-crimson hover:text-vision-cyan transition-colors"
               >
                 <Icons.Briefcase className="h-3 w-3" />
-                <span>{skill.projectCount} Missions</span>
+                <span>{skill.projectCount} Projects</span>
                 <Icons.ExternalLink className="h-3 w-3" />
               </button>
             </div>

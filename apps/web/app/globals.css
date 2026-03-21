@@ -27,9 +27,19 @@
     --input: 240 20% 18%;
     --ring: 187 92% 69%;
     --radius: 0.75rem;
+
+    /* Vision palette — RGB channels for Tailwind alpha support */
+    --vision-cyan: 34 211 238; /* #22D3EE — electric cyan */
+    --vision-crimson: 225 29 72; /* #E11D48 — hot crimson */
+    --vision-orange: 251 146 60; /* #FB923C — warm orange */
+
+    /* Glow color for inline styles (comma-separated for rgba() use) */
+    --glow-cyan: 34, 211, 238;
+    --glow-crimson: 225, 29, 72;
+    --glow-orange: 251, 146, 60;
   }
 
-  /* Light mode - warm professional theme with refined contrast */
+  /* Light mode - crimson-rose signature with warm professional tones */
   .light {
     --background: 30 25% 98%;
     --foreground: 222 47% 11%;
@@ -37,19 +47,29 @@
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 195 85% 40%; /* Teal-cyan for brand consistency */
+    --primary: 345 83% 41%; /* Crimson-rose #BE123C — the signature */
     --primary-foreground: 0 0% 100%;
-    --secondary: 340 70% 48%; /* Crimson-rose accent */
+    --secondary: 244 55% 51%; /* Indigo #4338CA — cool contrast */
     --secondary-foreground: 0 0% 100%;
     --muted: 220 14% 95%;
     --muted-foreground: 220 9% 40%;
-    --accent: 195 85% 40%;
+    --accent: 345 83% 41%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --border: 220 13% 90%;
     --input: 220 13% 90%;
-    --ring: 195 85% 40%;
+    --ring: 345 83% 41%;
+
+    /* Vision palette — crimson rose identity for light mode */
+    --vision-cyan: 190 18 60; /* #BE123C — crimson rose (replaces cyan) */
+    --vision-crimson: 67 56 202; /* #4338CA — indigo (cool contrast) */
+    --vision-orange: 194 65 12; /* #C2410C — deep orange */
+
+    /* Glow color for inline styles (comma-separated for rgba() use) */
+    --glow-cyan: 190, 18, 60;
+    --glow-crimson: 67, 56, 202;
+    --glow-orange: 194, 65, 12;
   }
 
   /* Base HTML styling */
@@ -71,9 +91,9 @@
     @apply bg-black/60 backdrop-blur-2xl border border-white/10 shadow-xl;
   }
 
-  /* Light mode glassmorphism - translucent refined glass */
+  /* Light mode glassmorphism - warm-tinted translucent glass */
   .light .glassmorphism {
-    @apply bg-white/50 backdrop-blur-xl border border-slate-200/80 shadow-lg;
+    @apply bg-white/60 backdrop-blur-xl border border-rose-200/40 shadow-lg;
   }
 
   /* Text glow utilities */
@@ -89,10 +109,17 @@
       0 0 24px rgba(225, 29, 72, 0.15);
   }
 
-  /* Light mode: disable neon glows */
-  .light .text-glow-cyan,
+  /* Light mode: swap neon glows for crimson-rose radiance */
+  .light .text-glow-cyan {
+    text-shadow:
+      0 0 10px rgba(190, 18, 60, 0.25),
+      0 0 20px rgba(190, 18, 60, 0.1);
+  }
+
   .light .text-glow-crimson {
-    text-shadow: none;
+    text-shadow:
+      0 0 10px rgba(67, 56, 202, 0.25),
+      0 0 20px rgba(67, 56, 202, 0.1);
   }
 
   /* HUD corners styling */
@@ -110,10 +137,10 @@
     @apply absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-purple-400/60 pointer-events-none;
   }
 
-  /* Light mode corners - professional blue */
+  /* Light mode corners - crimson-rose accent */
   .light .hud-corners::before,
   .light .hud-corners::after {
-    @apply border-blue-500/30;
+    @apply border-rose-700/30;
   }
 
   /* Section headings - better visibility */
@@ -127,7 +154,7 @@
   }
 
   .light .gradient-text {
-    @apply bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600;
+    @apply bg-gradient-to-r from-rose-700 via-rose-500 to-indigo-600;
   }
 
   /* Card hover effects */
@@ -170,7 +197,7 @@ body {
 }
 
 .light ::selection {
-  @apply bg-blue-500/30 text-foreground;
+  @apply bg-rose-500/30 text-foreground;
 }
 
 /* Custom scrollbar - dark mode */
@@ -191,19 +218,70 @@ body {
   @apply bg-cyan-500/50;
 }
 
-/* Light mode scrollbar */
+/* Light mode scrollbar — crimson-rose tint */
 .light ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 rounded-full;
+  @apply bg-rose-300/50 rounded-full;
 }
 
 .light ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400;
+  @apply bg-rose-400/60;
 }
 
 /* Shimmer animation for skeleton loaders */
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
+  }
+}
+
+/* Glitch animation layers */
+@keyframes glitch1 {
+  0%,
+  90%,
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: translate(0);
+  }
+  91% {
+    clip-path: inset(20% 0 60% 0);
+    transform: translate(-3px, 1px);
+  }
+  93% {
+    clip-path: inset(50% 0 20% 0);
+    transform: translate(3px, -1px);
+  }
+  95% {
+    clip-path: inset(10% 0 70% 0);
+    transform: translate(-2px, 0);
+  }
+  97% {
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(2px, 1px);
+  }
+}
+
+@keyframes glitch2 {
+  0%,
+  88%,
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: translate(0);
+  }
+  89% {
+    clip-path: inset(60% 0 10% 0);
+    transform: translate(3px, -1px);
+  }
+  92% {
+    clip-path: inset(30% 0 40% 0);
+    transform: translate(-3px, 1px);
+  }
+  94% {
+    clip-path: inset(70% 0 15% 0);
+    transform: translate(2px, 0);
+  }
+  96% {
+    clip-path: inset(5% 0 85% 0);
+    transform: translate(-2px, -1px);
   }
 }
 
@@ -261,8 +339,8 @@ body {
 
 .light .cyber-grid {
   background-image:
-    linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(190, 18, 60, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(190, 18, 60, 0.04) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
@@ -275,19 +353,28 @@ body {
 
 .light .shadow-glow {
   box-shadow:
-    0 0 6px rgba(14, 165, 233, 0.3),
-    0 0 16px rgba(14, 165, 233, 0.15);
+    0 0 6px rgba(190, 18, 60, 0.3),
+    0 0 16px rgba(190, 18, 60, 0.15);
 }
 
-/* Light mode refinements for vision colors */
-.light .border-vision-cyan\/40 {
-  border-color: rgba(14, 165, 233, 0.4);
+/* Light mode — vision colors now handled by CSS variables in :root/.light
+   No manual class overrides needed since Tailwind uses rgb(var(--vision-cyan) / alpha) */
+
+/* Nav glow active state - uses data-attribute for robustness */
+.nav-glow-item[data-active='true'] {
+  color: #22d3ee !important;
+  background-color: rgba(34, 211, 238, 0.12) !important;
+  border-color: rgba(34, 211, 238, 0.4) !important;
+  box-shadow:
+    0 0 20px rgba(34, 211, 238, 0.25),
+    inset 0 0 12px rgba(34, 211, 238, 0.06) !important;
 }
 
-.light .text-vision-cyan {
-  color: #0891b2;
-}
-
-.light .text-vision-crimson {
-  color: #be123c;
+.light .nav-glow-item[data-active='true'] {
+  color: #be123c !important;
+  background-color: rgba(190, 18, 60, 0.08) !important;
+  border-color: rgba(190, 18, 60, 0.3) !important;
+  box-shadow:
+    0 0 15px rgba(190, 18, 60, 0.15),
+    inset 0 0 8px rgba(190, 18, 60, 0.04) !important;
 }

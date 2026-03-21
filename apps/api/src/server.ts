@@ -4,6 +4,7 @@ import { expressMiddleware } from '@apollo/server/express4';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
+import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import { config, securityConfig } from './config';
 import { connectDatabase } from './config/database';
@@ -177,6 +178,9 @@ async function startServer() {
     // Compression
     app.use(compression());
 
+    // Cookie parsing
+    app.use(cookieParser());
+
     // CORS with enhanced configuration
     app.use(cors(config.isProduction ? securityConfig.cors : { origin: true, credentials: true }));
 
@@ -278,7 +282,7 @@ async function startServer() {
     app.use(
       '/graphql',
       expressMiddleware(apolloServer, {
-        context: async ({ req }): Promise<Context> => {
+        context: async ({ req, res }): Promise<Context> => {
           // Extract IP address (trust proxy)
           const ip =
             (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() ||
@@ -296,6 +300,8 @@ async function startServer() {
 
           return {
             user,
+            req,
+            res,
             ip,
             userAgent,
             loaders,

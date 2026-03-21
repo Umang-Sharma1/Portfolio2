@@ -59,6 +59,9 @@ const envSchema = z.object({
   ADMIN_EMAIL: z.string().email().optional(),
   ADMIN_PASSWORD: z.string().min(8).optional(),
 
+  // Email (Web3Forms)
+  WEB3FORMS_ACCESS_KEY: z.string().optional(),
+
   // Feature Flags
   ENABLE_PLAYGROUND: z.coerce.boolean().default(true),
   ENABLE_INTROSPECTION: z.coerce.boolean().default(true),
@@ -124,6 +127,11 @@ export const config = {
   admin: {
     email: env.ADMIN_EMAIL,
     password: env.ADMIN_PASSWORD,
+  },
+
+  // Email (Web3Forms)
+  email: {
+    web3formsAccessKey: env.WEB3FORMS_ACCESS_KEY,
   },
 
   // Feature Flags

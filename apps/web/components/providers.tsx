@@ -5,6 +5,7 @@ import { ApolloNextAppProvider } from '@apollo/experimental-nextjs-app-support/s
 import { Suspense } from 'react';
 import { initializeApollo } from '@/lib/apollo-client';
 import { AuthProvider } from '@/lib/auth';
+import { ModalProvider } from '@/lib/modal-context';
 import type { ApolloClient } from '@apollo/client-react-streaming';
 
 /**
@@ -48,7 +49,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
           disableTransitionOnChange
           storageKey="portfolio-theme"
         >
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <ModalProvider>{children}</ModalProvider>
+          </AuthProvider>
         </ThemeProvider>
       </ApolloNextAppProvider>
     </Suspense>

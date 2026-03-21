@@ -11,6 +11,60 @@ function cn(...inputs: any[]) {
   return inputs.filter(Boolean).join(' ');
 }
 
+// ============================================================================
+// TEXT MORPH ANIMATION
+// ============================================================================
+
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*!?';
+
+function useTextMorph(from: string, to: string, trigger: boolean, duration = 1400) {
+  const [display, setDisplay] = useState(from);
+  const frameRef = useRef<number>(0);
+
+  useEffect(() => {
+    if (!trigger) {
+      setDisplay(from);
+      return;
+    }
+    const start = performance.now();
+    let cancelled = false;
+    function tick(now: number) {
+      if (cancelled) return;
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      if (progress < 0.35) {
+        const scrambleFactor = progress / 0.35;
+        let result = '';
+        for (let i = 0; i < from.length; i++) {
+          if (from[i] === ' ') result += ' ';
+          else if (Math.random() < scrambleFactor)
+            result += CHARS[Math.floor(Math.random() * CHARS.length)];
+          else result += from[i];
+        }
+        setDisplay(result);
+      } else {
+        const resolveProgress = (progress - 0.35) / 0.65;
+        const resolved = Math.floor(resolveProgress * to.length);
+        let result = '';
+        for (let i = 0; i < to.length; i++) {
+          if (to[i] === ' ') result += ' ';
+          else if (i < resolved) result += to[i];
+          else result += CHARS[Math.floor(Math.random() * CHARS.length)];
+        }
+        setDisplay(result);
+      }
+      if (progress < 1) frameRef.current = requestAnimationFrame(tick);
+      else setDisplay(to);
+    }
+    frameRef.current = requestAnimationFrame(tick);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frameRef.current);
+    };
+  }, [trigger, from, to, duration]);
+  return display;
+}
+
 const Icons = {
   External: () => (
     <svg
@@ -402,8 +456,8 @@ const ProjectCard = memo(
             <div className="flex justify-between items-start mb-12">
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-vision-crimson shadow-[0_0_12px_#E11D48] animate-pulse" />
-                  <span className="text-[11px] font-mono font-black text-vision-crimson uppercase tracking-[0.6em] drop-shadow-[0_0_10px_rgba(225,29,72,0.5)]">
+                  <div className="h-2 w-2 rounded-full bg-vision-crimson shadow-[0_0_12px_rgba(var(--glow-crimson),1)] animate-pulse" />
+                  <span className="text-[11px] font-mono font-black text-vision-crimson uppercase tracking-[0.6em] drop-shadow-[0_0_10px_rgba(var(--glow-crimson),0.5)]">
                     {mission.id}
                   </span>
                 </div>
@@ -444,7 +498,7 @@ const ProjectCard = memo(
                   Node_Ping
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="h-2 w-2 rounded-full bg-vision-cyan shadow-[0_0_14px_#22D3EE] animate-pulse" />
+                  <div className="h-2 w-2 rounded-full bg-vision-cyan shadow-[0_0_14px_rgba(var(--glow-cyan),1)] animate-pulse" />
                   <span className="text-[12px] font-mono font-black tracking-[0.2em] text-slate-900 dark:text-text-dark uppercase">
                     {mission.metrics?.responseTime}
                   </span>
@@ -459,9 +513,8 @@ const ProjectCard = memo(
             </div>
           </div>
 
-          {/* HUD Brackets - Crimson & Cyan with Glow */}
-          <div className="absolute top-6 left-6 w-10 h-10 border-t-[3px] border-l-[3px] border-vision-crimson/40 rounded-tl-xl group-hover:border-vision-crimson group-hover:shadow-[0_0_20px_#E11D48] transition-all duration-500" />
-          <div className="absolute bottom-6 right-6 w-10 h-10 border-b-[3px] border-r-[3px] border-vision-cyan/40 rounded-br-xl group-hover:border-vision-cyan group-hover:shadow-[0_0_20px_#22D3EE] transition-all duration-500" />
+          {/* Inner border accent — subtle rounded inset */}
+          <div className="absolute inset-[6px] rounded-[2.2rem] border border-vision-cyan/0 group-hover:border-vision-cyan/20 transition-all duration-700 pointer-events-none" />
         </MotionDiv>
       </MotionDiv>
     );
@@ -474,8 +527,11 @@ const ProjectCard = memo(
 
 export const ProjectsSection = ({ onModalToggle }: { onModalToggle?: (open: boolean) => void }) => {
   const containerRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-10%' });
+  const headingInView = useInView(headingRef, { once: true, margin: '-20%' });
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
+  const morphedText = useTextMorph('Digital Vessels.', 'PROJECTS', headingInView, 1400);
 
   useEffect(() => {
     onModalToggle?.(!!selectedProject);
@@ -490,30 +546,67 @@ export const ProjectsSection = ({ onModalToggle }: { onModalToggle?: (open: bool
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-7xl h-96 bg-vision-cyan/[0.04] dark:bg-vision-cyan/[0.02] blur-[180px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="flex flex-col lg:flex-row justify-between items-end mb-16 gap-10">
-          <div className="space-y-6">
-            <MotionDiv
-              initial={{ opacity: 0, x: -30 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              className="inline-flex items-center gap-4 px-6 py-2 rounded-full glassmorphism border border-vision-cyan/20 text-vision-cyan font-mono text-[10px] font-black tracking-[0.5em] uppercase shadow-md dark:shadow-[0_0_30px_rgba(34,211,238,0.2)]"
-            >
-              <Icons.Pulse className="animate-pulse" /> Mission_Vessels // ARC-04
-            </MotionDiv>
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-display font-black leading-[0.9] tracking-tighter text-slate-900 dark:text-text-dark uppercase italic">
-              Digital <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-br from-vision-orange via-vision-cyan to-vision-orange drop-shadow-2xl">
-                Vessels.
-              </span>
-            </h2>
-          </div>
-
-          <a
-            href="/projects"
-            className="group flex items-center gap-6 text-[12px] font-mono font-black uppercase tracking-[0.5em] text-slate-400 dark:text-text-dark/30 hover:text-vision-cyan transition-all duration-700"
+        <div ref={headingRef} className="text-center mb-14 md:mb-16">
+          <MotionDiv
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center gap-4 px-8 py-2.5 mb-6 rounded-full glassmorphism border-2 border-vision-cyan/40 text-vision-cyan font-mono text-[10px] font-black tracking-[0.6em] uppercase shadow-[0_0_30px_rgba(var(--glow-cyan),0.2)]"
           >
-            Establish_Data_Archive{' '}
-            <div className="h-[2px] w-12 bg-current group-hover:w-24 transition-all duration-700 opacity-40 group-hover:opacity-100" />
-          </a>
+            <Icons.Pulse className="animate-pulse" /> Project_Archive // ARC-04
+          </MotionDiv>
+
+          <div className="relative overflow-visible py-4 px-8">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={headingInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 1.2, ease: 'easeOut' }}
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+            >
+              <div className="w-48 h-24 bg-vision-cyan/[0.06] dark:bg-vision-cyan/[0.04] blur-[60px] rounded-full" />
+            </motion.div>
+
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              animate={headingInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-black leading-[0.9] tracking-tighter uppercase italic"
+            >
+              <span className="relative inline-block pr-3">
+                <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-br from-rose-800 via-rose-600 to-rose-800 dark:from-vision-cyan dark:via-white/90 dark:to-vision-cyan">
+                  {morphedText || '\u00A0'}
+                </span>
+                <span
+                  aria-hidden
+                  className="absolute inset-0 text-vision-crimson/30 dark:text-vision-crimson/20 animate-[glitch1_3s_infinite] pointer-events-none select-none mix-blend-darken dark:mix-blend-screen"
+                >
+                  {morphedText || '\u00A0'}
+                </span>
+                <span
+                  aria-hidden
+                  className="absolute inset-0 text-vision-cyan/30 dark:text-vision-cyan/20 animate-[glitch2_3s_infinite] pointer-events-none select-none mix-blend-darken dark:mix-blend-screen"
+                >
+                  {morphedText || '\u00A0'}
+                </span>
+              </span>
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={headingInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-3 text-[10px] md:text-[11px] font-mono font-bold text-slate-400 dark:text-vision-cyan/30 uppercase tracking-[0.35em] max-w-xl mx-auto"
+            >
+              [ Project_Log ] &mdash; Featured builds &amp; production deployments
+            </motion.p>
+
+            <MotionDiv
+              initial={{ scaleX: 0 }}
+              animate={headingInView ? { scaleX: 1 } : {}}
+              transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="mx-auto mt-5 h-px w-24 bg-gradient-to-r from-transparent via-vision-cyan/40 to-transparent"
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -530,7 +623,7 @@ export const ProjectsSection = ({ onModalToggle }: { onModalToggle?: (open: bool
         <div className="mt-10 flex justify-center">
           <Link
             href="/projects"
-            className="px-12 py-5 glassmorphism border-2 border-vision-crimson/30 rounded-2xl text-[12px] font-mono font-black text-vision-crimson uppercase tracking-[0.5em] hover:scale-105 hover:bg-vision-crimson/5 hover:border-vision-crimson/60 transition-all shadow-[0_15px_40px_rgba(225,29,72,0.2)] flex items-center gap-4"
+            className="px-12 py-5 glassmorphism border-2 border-vision-crimson/30 rounded-2xl text-[12px] font-mono font-black text-vision-crimson uppercase tracking-[0.5em] hover:scale-105 hover:bg-vision-crimson/5 hover:border-vision-crimson/60 transition-all shadow-[0_15px_40px_rgba(var(--glow-crimson),0.2)] flex items-center gap-4"
           >
             Show All Archives <Icons.ArrowRight />
           </Link>

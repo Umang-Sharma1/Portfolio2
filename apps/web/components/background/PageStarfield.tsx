@@ -57,11 +57,11 @@ function generateStars(count: number): Star[] {
 
 function generateOrbs(count: number): Orb[] {
   const colors = [
-    'rgba(34,211,238,0.08)',
-    'rgba(225,29,72,0.05)',
-    'rgba(251,146,60,0.06)',
-    'rgba(139,92,246,0.05)',
-    'rgba(34,211,238,0.04)',
+    'rgba(190,18,60,0.07)',
+    'rgba(67,56,202,0.05)',
+    'rgba(194,65,12,0.06)',
+    'rgba(190,18,60,0.04)',
+    'rgba(67,56,202,0.04)',
   ];
   const orbs: Orb[] = [];
   for (let i = 0; i < count; i++) {
@@ -132,6 +132,13 @@ const PageStarfield = memo(function PageStarfield({ density = 60, className = ''
           glowRef.current.style.top = `calc(40% + ${cur.y * 30}px)`;
         }
       } else {
+        // Light mode: parallax on inverted stars + orbs
+        starRefs.current.forEach((el, i) => {
+          if (!el) return;
+          const star = stars[i];
+          const px = PARALLAX[star.layer];
+          el.style.transform = `translate(${cur.x * px * 100}px, ${cur.y * px * 100}px)`;
+        });
         // Update orb positions directly
         orbRefs.current.forEach((el, i) => {
           if (!el) return;
@@ -161,7 +168,9 @@ const PageStarfield = memo(function PageStarfield({ density = 60, className = ''
           {stars.map((star, i) => (
             <span
               key={star.id}
-              ref={(el) => { starRefs.current[i] = el; }}
+              ref={(el) => {
+                starRefs.current[i] = el;
+              }}
               className="absolute rounded-full animate-twinkle bg-white"
               style={{
                 left: `${star.x}%`,
@@ -179,7 +188,7 @@ const PageStarfield = memo(function PageStarfield({ density = 60, className = ''
             ref={glowRef}
             className="absolute w-[600px] h-[600px] rounded-full opacity-[0.04] blur-[120px]"
             style={{
-              background: 'radial-gradient(circle, rgba(34,211,238,1) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(var(--glow-cyan),1) 0%, transparent 70%)',
               left: '50%',
               top: '40%',
               transform: 'translate(-50%, -50%)',
@@ -188,19 +197,47 @@ const PageStarfield = memo(function PageStarfield({ density = 60, className = ''
         </>
       ) : (
         <>
-          <div className="absolute inset-0 bg-gradient-to-br from-stone-50 via-white to-stone-100/80" />
+          <div className="absolute inset-0 bg-gradient-to-br from-rose-50/60 via-white to-stone-50/80" />
           <div
-            className="absolute inset-0 opacity-[0.035]"
+            className="absolute inset-0 opacity-[0.04]"
             style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.08) 1px, transparent 1px),
-                               linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px)`,
+              backgroundImage: `linear-gradient(rgba(190,18,60,0.06) 1px, transparent 1px),
+                               linear-gradient(90deg, rgba(190,18,60,0.06) 1px, transparent 1px)`,
               backgroundSize: '60px 60px',
             }}
           />
+          {/* Inverted starfield — crimson-rose tinted dots on light background */}
+          {stars.map((star, i) => (
+            <span
+              key={star.id}
+              ref={(el) => {
+                starRefs.current[i] = el;
+              }}
+              className="absolute rounded-full animate-twinkle"
+              style={{
+                left: `${star.x}%`,
+                top: `${star.y}%`,
+                width: `${star.size * 1.2}px`,
+                height: `${star.size * 1.2}px`,
+                opacity: star.opacity * 0.9,
+                backgroundColor:
+                  star.layer === 'near'
+                    ? 'rgba(190,18,60,0.35)'
+                    : star.layer === 'mid'
+                      ? 'rgba(190,18,60,0.22)'
+                      : 'rgba(190,18,60,0.12)',
+                animationDelay: `${star.delay}s`,
+                animationDuration: `${star.duration}s`,
+                willChange: 'transform',
+              }}
+            />
+          ))}
           {orbs.map((orb, i) => (
             <div
               key={orb.id}
-              ref={(el) => { orbRefs.current[i] = el; }}
+              ref={(el) => {
+                orbRefs.current[i] = el;
+              }}
               className="absolute rounded-full animate-float-slow"
               style={{
                 left: `${orb.x}%`,
@@ -215,8 +252,8 @@ const PageStarfield = memo(function PageStarfield({ density = 60, className = ''
               }}
             />
           ))}
-          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-vision-cyan/[0.03] blur-[100px]" />
-          <div className="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full bg-vision-crimson/[0.03] blur-[100px]" />
+          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-vision-cyan/[0.04] blur-[100px]" />
+          <div className="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full bg-vision-crimson/[0.04] blur-[100px]" />
         </>
       )}
     </div>

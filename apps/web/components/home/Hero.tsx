@@ -174,7 +174,10 @@ export default function Hero() {
   }
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-space-black transition-colors duration-700">
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-space-black transition-colors duration-700"
+    >
       {/* ── Galaxy 3D Background — dark mode only ── */}
       <div className="absolute inset-0 z-0 hidden dark:block">
         <GalaxyBackground />
@@ -195,7 +198,7 @@ export default function Hero() {
       >
         {/* Status badge */}
         <motion.div variants={staggerItem} className="flex justify-center mb-10">
-          <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full backdrop-blur-xl bg-white/[0.08] dark:bg-white/[0.04] border border-vision-cyan/20">
+          <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full backdrop-blur-xl bg-rose-50/60 dark:bg-white/[0.04] border border-rose-200/40 dark:border-vision-cyan/20">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-vision-cyan opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-vision-cyan" />
@@ -208,13 +211,13 @@ export default function Hero() {
 
         {/* ── Name ── */}
         <motion.div variants={staggerItem} className="space-y-4 mb-8">
-          <div className="font-mono text-xs sm:text-sm text-text-light/35 dark:text-text-dark/25 tracking-[0.25em] uppercase mb-2">
+          <div className="font-mono text-xs sm:text-sm text-text-light/35 dark:text-text-dark/30 tracking-[0.25em] uppercase mb-2">
             {'// Full-Stack Developer'}
           </div>
 
           <h1 className="font-display font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[1.05]">
             <span className="relative inline-block">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-slate-800 to-orange-600 dark:from-vision-cyan dark:via-white dark:to-vision-orange bg-[length:200%_auto] animate-gradient-x">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-700 via-slate-900 to-rose-600 dark:from-vision-cyan dark:via-white dark:to-vision-orange bg-[length:200%_auto] animate-gradient-x">
                 {scrambledName || '\u00A0'}
               </span>
 
@@ -229,21 +232,21 @@ export default function Hero() {
 
           {/* Subtitle */}
           <motion.div
-            className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-sm sm:text-base md:text-lg font-mono text-text-light/55 dark:text-text-dark/45"
+            className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-sm sm:text-base md:text-lg font-mono text-text-light/55 dark:text-text-dark/50"
             variants={staggerItem}
           >
             <div className="flex items-center gap-2">
-              <Briefcase className="w-4 h-4 text-vision-cyan/70 flex-shrink-0" />
+              <Briefcase className="w-4 h-4 text-rose-600 dark:text-vision-cyan/70 flex-shrink-0" />
               <span>Software Engineer @ MAQ Software</span>
             </div>
-            <span className="hidden sm:inline text-text-light/15 dark:text-text-dark/10">|</span>
-            <span className="text-text-light/40 dark:text-text-dark/25">Class of 2025</span>
+            <span className="hidden sm:inline text-text-light/15 dark:text-text-dark/20">|</span>
+            <span className="text-text-light/40 dark:text-text-dark/30">Class of 2025</span>
           </motion.div>
         </motion.div>
 
         {/* ── Typewriter ── */}
         <motion.div variants={staggerItem} className="mb-12 flex justify-center">
-          <div className="relative px-6 py-3 rounded-xl backdrop-blur-md bg-vision-cyan/[0.04] border border-vision-cyan/10 max-w-xl overflow-hidden">
+          <div className="relative px-6 py-3 rounded-xl backdrop-blur-md bg-rose-50/40 dark:bg-vision-cyan/[0.04] border border-rose-200/30 dark:border-vision-cyan/10 max-w-xl overflow-hidden">
             <div className="absolute inset-0 overflow-hidden rounded-xl pointer-events-none opacity-20">
               <div className="h-px w-full bg-gradient-to-r from-transparent via-vision-cyan to-transparent absolute top-0 animate-scan" />
             </div>
@@ -269,7 +272,7 @@ export default function Hero() {
         >
           <motion.a
             href="#projects"
-            className="group relative inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full font-mono font-semibold text-sm overflow-hidden min-w-[200px] bg-gradient-to-r from-vision-cyan to-blue-500 text-white shadow-lg shadow-vision-cyan/20 hover:shadow-vision-cyan/35 transition-shadow"
+            className="group relative inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full font-mono font-semibold text-sm overflow-hidden min-w-[200px] bg-gradient-to-r from-rose-600 to-rose-700 dark:from-vision-cyan dark:to-blue-500 text-white shadow-lg shadow-rose-500/20 dark:shadow-vision-cyan/20 hover:shadow-rose-500/35 dark:hover:shadow-vision-cyan/35 transition-shadow"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
@@ -287,7 +290,7 @@ export default function Hero() {
             href="/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full font-mono font-semibold text-sm min-w-[200px] backdrop-blur-xl bg-white/[0.06] dark:bg-white/[0.03] border border-vision-cyan/20 text-vision-cyan hover:bg-vision-cyan/10 transition-all"
+            className="group inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full font-mono font-semibold text-sm min-w-[200px] backdrop-blur-xl bg-rose-50/60 dark:bg-white/[0.03] border border-rose-200/50 dark:border-vision-cyan/20 text-vision-cyan hover:bg-rose-100/60 dark:hover:bg-vision-cyan/10 transition-all"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >
