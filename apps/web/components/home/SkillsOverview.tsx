@@ -412,7 +412,6 @@ const SkillCard = memo(function SkillCard({
           className="absolute inset-0 blur-[60px] opacity-20"
           style={{ background: `radial-gradient(circle at center, ${skill.color}, transparent)` }}
         />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(var(--glow-cyan),0.02)_50%)] bg-[length:100%_4px] animate-scan" />
       </div>
 
       <div className="relative z-10 h-full flex flex-col">
