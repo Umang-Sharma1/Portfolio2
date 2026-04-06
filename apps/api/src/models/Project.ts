@@ -71,6 +71,25 @@ export interface IProjectBase {
     keywords?: string[];
   };
 
+  // Architecture
+  architecture?: {
+    nodes: Array<{
+      id: string;
+      label: string;
+      type: string;
+      description: string;
+      technologies?: string[];
+      position: { x: number; y: number };
+    }>;
+    connections: Array<{
+      from: string;
+      to: string;
+      label?: string;
+      type?: string;
+      animated?: boolean;
+    }>;
+  };
+
   // Additional Info
   features: string[];
   challenges?: string;
@@ -246,6 +265,27 @@ const projectSchema = new Schema<IProject>(
     },
     challenges: String,
     learnings: String,
+    architecture: {
+      nodes: [
+        {
+          id: String,
+          label: String,
+          type: { type: String },
+          description: String,
+          technologies: [String],
+          position: { x: Number, y: Number },
+        },
+      ],
+      connections: [
+        {
+          from: String,
+          to: String,
+          label: String,
+          type: { type: String },
+          animated: Boolean,
+        },
+      ],
+    },
     status: {
       type: String,
       enum: PROJECT_STATUSES,

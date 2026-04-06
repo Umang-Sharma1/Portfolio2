@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useTheme } from 'next-themes';
 import { useState, useEffect, useMemo, memo } from 'react';
 import dynamic from 'next/dynamic';
 import { Download, Briefcase } from 'lucide-react';
@@ -159,13 +158,28 @@ const staggerItem = {
 // ============================================================================
 
 export default function Hero() {
-  const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const scrambledName = useScrambleText('Umang Sharma', mounted, 1400);
   const typewriterText = useTypewriter(TYPEWRITER_STRINGS, TYPING_SPEED, DELETE_SPEED, PAUSE_MS);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+
+    if (typeof window === 'undefined') return;
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(media.matches);
+
+    const handleChange = (event: MediaQueryListEvent) => setPrefersReducedMotion(event.matches);
+    if (media.addEventListener) {
+      media.addEventListener('change', handleChange);
+      return () => media.removeEventListener('change', handleChange);
+    }
+
+    media.addListener(handleChange);
+    return () => media.removeListener(handleChange);
+  }, []);
 
   if (!mounted) {
     return (
@@ -178,16 +192,37 @@ export default function Hero() {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-space-black transition-colors duration-700"
     >
+      {/* ── Light mode cinematic background video ── */}
+      <div className="absolute inset-0 z-0 dark:hidden overflow-hidden">
+        {!prefersReducedMotion ? (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            className="h-full w-full object-cover scale-105 opacity-85"
+            aria-hidden="true"
+          >
+            <source src="/videos/mixkit-stars-nebulae-14151-720.mp4" type="video/mp4" />
+          </video>
+        ) : (
+          <div className="h-full w-full bg-[radial-gradient(circle_at_30%_20%,rgba(190,18,60,0.14),transparent_45%),radial-gradient(circle_at_70%_60%,rgba(6,182,212,0.12),transparent_45%),linear-gradient(to_bottom,#fff6f8,#ffffff)]" />
+        )}
+      </div>
+
       {/* ── Galaxy 3D Background — dark mode only ── */}
       <div className="absolute inset-0 z-0 hidden dark:block">
         <GalaxyBackground />
       </div>
 
-      {/* ── Starfield background ── */}
-      <Starfield />
+      {/* ── Starfield background (light mode only) ── */}
+      <div className="opacity-40 dark:hidden">
+        <Starfield />
+      </div>
 
       {/* ── Subtle gradient overlay ── */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/60 dark:to-space-black/60 pointer-events-none z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/10 to-white/75 dark:from-transparent dark:via-transparent dark:to-space-black/60 pointer-events-none z-[1]" />
 
       {/* ── Main content ── */}
       <motion.div

@@ -1,6 +1,7 @@
 // Layout Components
 export { Header } from './Header';
 export { Footer } from './Footer';
+export { SplashGate } from './SplashGate';
 export {
   Spinner,
   DotsLoader,

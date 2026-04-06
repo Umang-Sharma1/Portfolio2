@@ -561,6 +561,8 @@ export const projectResolvers = {
      */
     clicks: (parent: any) => parent.clicks || { github: 0, live: 0, demo: 0 },
 
+    architecture: (parent: any) => parent.architecture || null,
+
     /**
      * Resolve related skills using DataLoader
      */

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 
 const MotionDiv = motion.div as any;
 
@@ -282,6 +282,20 @@ const PhaseCard = ({
 }) => {
   const isActive = phase.status === 'ACTIVE';
   const delay = index * 0.2;
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), { damping: 20, stiffness: 200 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), { damping: 20, stiffness: 200 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
 
   return (
     <MotionDiv
@@ -289,14 +303,22 @@ const PhaseCard = ({
       animate={trigger ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, delay: delay + 0.2, ease: [0.16, 1, 0.3, 1] }}
       className={cn('group relative flex-1 min-w-0')}
+      style={{ perspective: '1200px' }}
     >
+      <MotionDiv
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ rotateX, rotateY }}
+        className="h-full"
+      >
       {/* Card shell */}
       <div
         className={cn(
           'relative h-full rounded-[0.5rem] p-6 md:p-8 border transition-all duration-700 overflow-hidden',
           isActive
             ? 'bg-vision-cyan/[0.03] dark:bg-vision-cyan/[0.02] border-vision-cyan/30 shadow-[0_0_40px_rgba(var(--glow-cyan),0.06)]'
-            : 'bg-slate-50/50 dark:bg-white/[0.015] border-slate-200 dark:border-white/[0.06]'
+            : 'bg-slate-50/50 dark:bg-white/[0.015] border-slate-200 dark:border-white/[0.06] hover:border-vision-cyan/25 hover:shadow-[0_20px_50px_rgba(var(--glow-cyan),0.04)]'
         )}
       >
         {/* Scanline overlay for active */}
@@ -460,6 +482,7 @@ const PhaseCard = ({
           )}
         />
       </div>
+      </MotionDiv>
     </MotionDiv>
   );
 };

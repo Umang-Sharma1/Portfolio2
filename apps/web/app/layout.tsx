@@ -3,6 +3,7 @@ import SpaceBackground from '../components/background/SpaceBackground';
 import { ChatBot } from '../components/chatbot/ChatBot';
 import { Header, Footer } from '../components/layout';
 import { Providers } from '../components/providers';
+import { SplashGate } from '../components/layout/SplashGate';
 
 export const metadata = {
   title: 'Portfolio | Developer',
@@ -14,19 +15,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body className="font-sans antialiased overflow-x-hidden">
         <Providers>
-          {/* Background - lowest z-index */}
-          <SpaceBackground />
+          <SplashGate>
+            {/* Background - lowest z-index */}
+            <SpaceBackground />
 
-          {/* Header - highest z-index for sticky behavior */}
-          <Header />
+            {/* Header - highest z-index for sticky behavior */}
+            <Header />
 
-          {/* Main content - between background and header */}
-          <main className="relative z-[1] pt-16">{children}</main>
+            {/* Main content - between background and header */}
+            <main className="relative z-[1]">{children}</main>
 
-          {/* ChatBot - high z-index for overlay */}
-          <ChatBot />
+            {/* ChatBot - high z-index for overlay */}
+            <ChatBot />
 
-          <Footer />
+            <Footer />
+          </SplashGate>
         </Providers>
       </body>
     </html>

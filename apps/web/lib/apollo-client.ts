@@ -375,7 +375,8 @@ function createApolloClient() {
     loggingLink,
     errorLink,
     retryLink,
-    persistedQueriesLink,
+    // persistedQueriesLink disabled: backend does not register APQ hashes,
+    // causing PersistedQueryNotFound noise in server logs.
     httpLink,
   ]);
 

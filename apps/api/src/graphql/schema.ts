@@ -42,6 +42,7 @@ export const typeDefs = `#graphql
     
     # Related data
     relatedSkills: [Skill!]!
+    architecture: ProjectArchitecture
     
     createdAt: String!
     updatedAt: String!
@@ -77,6 +78,33 @@ export const typeDefs = `#graphql
     github: Int!
     live: Int!
     demo: Int!
+  }
+
+  type NodePosition {
+    x: Float!
+    y: Float!
+  }
+
+  type ArchitectureNode {
+    id: String!
+    label: String!
+    type: String!
+    description: String!
+    technologies: [String]
+    position: NodePosition!
+  }
+
+  type ArchitectureConnection {
+    from: String!
+    to: String!
+    label: String
+    type: String
+    animated: Boolean
+  }
+
+  type ProjectArchitecture {
+    nodes: [ArchitectureNode!]!
+    connections: [ArchitectureConnection!]!
   }
 
   # Skill Type (Enhanced)

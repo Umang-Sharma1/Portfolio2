@@ -293,7 +293,7 @@ const Toast = memo(({ message, onExit }: { message: string; onExit: () => void }
         className="absolute -inset-[2px] rounded-2xl bg-gradient-to-br from-vision-cyan/50 via-transparent to-vision-crimson/30 blur-[2px]"
       />
 
-      <div className="relative rounded-2xl border border-vision-cyan/30 bg-slate-950/95 backdrop-blur-[60px] shadow-[0_0_80px_rgba(var(--glow-cyan),0.25),0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden">
+      <div className="relative rounded-2xl border border-vision-cyan/30 bg-white/95 dark:bg-slate-950/95 backdrop-blur-[60px] shadow-[0_0_80px_rgba(var(--glow-cyan),0.25),0_20px_60px_rgba(0,0,0,0.12)] dark:shadow-[0_0_80px_rgba(var(--glow-cyan),0.25),0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden">
         {/* Scanline overlay */}
         <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none z-30">
           <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(var(--glow-cyan),0.03)_2px,rgba(var(--glow-cyan),0.03)_4px)]" />
@@ -318,7 +318,7 @@ const Toast = memo(({ message, onExit }: { message: string; onExit: () => void }
                 />
               ))}
             </div>
-            <span className="text-[8px] font-mono font-black text-vision-cyan/60 uppercase tracking-[0.4em]">
+            <span className="text-[8px] font-mono font-black text-vision-cyan/70 dark:text-vision-cyan/60 uppercase tracking-[0.4em]">
               Signal_Lock
             </span>
           </div>
@@ -328,7 +328,7 @@ const Toast = memo(({ message, onExit }: { message: string; onExit: () => void }
               transition={{ duration: 1, repeat: Infinity }}
               className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]"
             />
-            <span className="text-[8px] font-mono font-black text-emerald-400/80 uppercase tracking-widest">
+            <span className="text-[8px] font-mono font-black text-emerald-600 dark:text-emerald-400/80 uppercase tracking-widest">
               Secure
             </span>
           </div>
@@ -349,9 +349,9 @@ const Toast = memo(({ message, onExit }: { message: string; onExit: () => void }
                 <MotionDiv
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                  className="h-5 w-5 border-2 border-vision-cyan/40 border-t-vision-cyan rounded-full"
+                  className="h-5 w-5 border-2 border-vision-cyan/50 border-t-vision-cyan rounded-full"
                 />
-                <span className="text-[10px] font-mono font-black text-vision-cyan/60 uppercase tracking-[0.3em]">
+                <span className="text-[10px] font-mono font-black text-vision-cyan/80 uppercase tracking-[0.3em]">
                   Decrypting_Payload...
                 </span>
               </MotionDiv>
@@ -395,16 +395,16 @@ const Toast = memo(({ message, onExit }: { message: string; onExit: () => void }
                   className="space-y-3"
                 >
                   <div className="px-4 py-3 rounded-lg bg-vision-cyan/5 border border-vision-cyan/10">
-                    <p className="text-[11px] font-mono font-bold text-slate-300 leading-relaxed">
+                    <p className="text-[11px] font-mono font-bold text-slate-600 dark:text-slate-300 leading-relaxed">
                       {message}
                     </p>
                   </div>
 
                   {/* Telemetry footer */}
                   <div className="flex items-center justify-between text-[7px] font-mono font-black uppercase tracking-[0.3em]">
-                    <span className="text-slate-500">Latency: 42ms</span>
-                    <span className="text-slate-500">Protocol: TLS_1.3</span>
-                    <span className="text-emerald-400/60">Integrity: OK</span>
+                    <span className="text-slate-400 dark:text-slate-500">Latency: 42ms</span>
+                    <span className="text-slate-400 dark:text-slate-500">Protocol: TLS_1.3</span>
+                    <span className="text-emerald-600 dark:text-emerald-400/60">Integrity: OK</span>
                   </div>
                 </MotionDiv>
               )}
@@ -507,7 +507,7 @@ const SystemInput = ({
               onBlur(e);
             }}
             onFocus={() => setIsFocused(true)}
-            className="w-full bg-transparent px-8 py-6 outline-none text-slate-900 dark:text-text-dark font-mono font-bold text-sm resize-none placeholder:text-slate-300 dark:placeholder:text-white/15 transition-colors"
+            className="w-full bg-transparent px-8 py-6 outline-none text-slate-900 dark:text-text-dark font-mono font-bold text-sm resize-none placeholder:text-slate-400 dark:placeholder:text-white/20 transition-colors"
           />
         ) : (
           <input
@@ -522,7 +522,7 @@ const SystemInput = ({
               onBlur(e);
             }}
             onFocus={() => setIsFocused(true)}
-            className="w-full bg-transparent px-8 py-6 outline-none text-slate-900 dark:text-text-dark font-mono font-bold text-sm placeholder:text-slate-300 dark:placeholder:text-white/15 transition-colors"
+            className="w-full bg-transparent px-8 py-6 outline-none text-slate-900 dark:text-text-dark font-mono font-bold text-sm placeholder:text-slate-400 dark:placeholder:text-white/20 transition-colors"
           />
         )}
       </div>

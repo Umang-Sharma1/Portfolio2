@@ -37,52 +37,53 @@ export function ProjectCard({ project }: ProjectCardProps) {
       whileHover={{ y: -4 }}
     >
       <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow">
-        {project.images?.thumbnail && (
+        {project.images?.thumbnail ? (
+          <div className="aspect-video w-full overflow-hidden bg-muted">
+            <img
+              src={project.images.thumbnail}
+              alt={project.title}
+              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          </div>
+        ) : (
           <div className="aspect-video w-full bg-gradient-to-br from-primary/20 to-secondary/20" />
         )}
-        <div className="p-6 space-y-4">
-          <div className="flex items-start justify-between">
-            <div>
-              <h3 className="text-xl font-semibold mb-2">
-                <Link
-                  href={`/projects/${project.slug}`}
-                  className="hover:text-primary transition-colors"
-                >
-                  {project.title}
-                </Link>
-              </h3>
-              <p className="text-sm text-muted-foreground line-clamp-2">{project.description}</p>
-            </div>
-            {project.metrics?.stars && (
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Star className="h-4 w-4" />
-                {project.metrics.stars}
-              </div>
-            )}
-          </div>
+        <div className="p-4 space-y-3">
+          <h3 className="text-lg font-semibold">
+            <Link
+              href={`/projects/${project.slug}`}
+              className="hover:text-primary transition-colors line-clamp-1"
+            >
+              {project.title}
+            </Link>
+          </h3>
+          <p className="text-xs text-muted-foreground line-clamp-1">{project.description}</p>
 
-          <div className="flex flex-wrap gap-2">
-            {project.technologies.slice(0, 3).map((tech) => (
+          <div className="flex flex-wrap gap-1">
+            {project.technologies.slice(0, 2).map((tech) => (
               <Badge key={tech} variant="secondary" className="text-xs">
                 {tech}
               </Badge>
             ))}
-            {project.technologies.length > 3 && (
+            {project.technologies.length > 2 && (
               <Badge variant="secondary" className="text-xs">
-                +{project.technologies.length - 3}
+                +{project.technologies.length - 2}
               </Badge>
             )}
           </div>
 
-          <div className="flex gap-2 pt-2">
+          <div className="flex gap-3 pt-1">
             {project.links?.live && (
               <a
                 href={project.links.live}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
               >
-                <ExternalLink className="h-4 w-4" />
+                <ExternalLink className="h-3 w-3" />
                 Live
               </a>
             )}
@@ -91,9 +92,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
                 href={project.links.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
               >
-                <Github className="h-4 w-4" />
+                <Github className="h-3 w-3" />
                 Code
               </a>
             )}

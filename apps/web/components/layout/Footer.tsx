@@ -112,17 +112,23 @@ const SignalOscilloscope = memo(() => (
 SignalOscilloscope.displayName = 'SignalOscilloscope';
 
 /* ─── Starfield – pure CSS dots generated once ─── */
+const STAR_COLORS = ['#00C8E8', '#FF6B2B', '#FF2A6D', '#00F3FF', '#A78BFA'];
 const Starfield = memo(() => {
   const stars = useMemo(
     () =>
-      Array.from({ length: 60 }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 1.5 + 0.5,
-        delay: Math.random() * 4,
-        duration: Math.random() * 3 + 2,
-      })),
+      Array.from({ length: 60 }, (_, i) => {
+        const color = STAR_COLORS[i % STAR_COLORS.length];
+        const size = Math.random() * 2 + 1;
+        return {
+          id: i,
+          x: Math.random() * 100,
+          y: Math.random() * 100,
+          size,
+          delay: Math.random() * 4,
+          duration: Math.random() * 3 + 2,
+          color,
+        };
+      }),
     []
   );
 
@@ -131,13 +137,14 @@ const Starfield = memo(() => {
       {stars.map((s) => (
         <div
           key={s.id}
-          className="absolute rounded-full bg-white dark:bg-white animate-twinkle"
+          className="absolute rounded-full animate-twinkle"
           style={{
             left: `${s.x}%`,
             top: `${s.y}%`,
             width: s.size,
             height: s.size,
-            opacity: 0,
+            background: s.color,
+            boxShadow: `0 0 ${s.size * 3}px ${s.color}90, 0 0 ${s.size * 6}px ${s.color}40`,
             animationDelay: `${s.delay}s`,
             animationDuration: `${s.duration}s`,
           }}
@@ -151,8 +158,8 @@ Starfield.displayName = 'Starfield';
 /* ─── Nav config ─── */
 const navItems = [
   { label: 'Home', href: '/' },
-  { label: 'Projects', href: '/projects' },
   { label: 'Skills', href: '/skills' },
+  { label: 'Projects', href: '/projects' },
   { label: 'Contact', href: '/#contact' },
 ];
 
@@ -264,7 +271,7 @@ export const Footer = () => {
                     <span className="relative">
                       {navItem.label}
                       {/* Hover underline */}
-                      <span className="absolute -bottom-0.5 left-0 h-[1px] w-0 bg-vision-cyan group-hover:w-full transition-all duration-300" />
+                      <span className="absolute -bottom-0.5 left-0 h-[1px] w-0 bg-vision-cyan group-hover:w-full transition-all duration-150" />
                     </span>
                     {isActive && <span className="h-1 w-1 rounded-full bg-vision-cyan ml-1" />}
                   </Link>

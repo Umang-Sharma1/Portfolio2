@@ -56,6 +56,26 @@ export const PROJECT_DETAIL_FRAGMENT = gql`
     challenges
     learnings
     popularityScore
+    architecture {
+      nodes {
+        id
+        label
+        type
+        description
+        technologies
+        position {
+          x
+          y
+        }
+      }
+      connections {
+        from
+        to
+        label
+        type
+        animated
+      }
+    }
     relatedSkills {
       id
       name

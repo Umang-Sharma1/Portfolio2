@@ -41,6 +41,7 @@ type Project {
 
   # Related data
   relatedSkills: [Skill!]!
+  architecture: ProjectArchitecture
 
   createdAt: String!
   updatedAt: String!
@@ -76,6 +77,33 @@ type ProjectClicks {
   github: Int!
   live: Int!
   demo: Int!
+}
+
+type NodePosition {
+  x: Float!
+  y: Float!
+}
+
+type ArchitectureNode {
+  id: String!
+  label: String!
+  type: String!
+  description: String!
+  technologies: [String]
+  position: NodePosition!
+}
+
+type ArchitectureConnection {
+  from: String!
+  to: String!
+  label: String
+  type: String
+  animated: Boolean
+}
+
+type ProjectArchitecture {
+  nodes: [ArchitectureNode!]!
+  connections: [ArchitectureConnection!]!
 }
 
 # Skill Type (Enhanced)
