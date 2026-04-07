@@ -329,6 +329,19 @@ body {
   animation: scaleIn 0.3s ease-out;
 }
 
+/* Audio/Signal bar animation for waveform effects */
+@keyframes audioBar {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
 /* Cyber grid background pattern */
 .cyber-grid {
   background-image:

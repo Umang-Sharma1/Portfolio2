@@ -3,10 +3,9 @@
 import React, { useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 
-const SplashLoader = dynamic(
-  () => import('./SplashLoader').then((m) => m.SplashLoader),
-  { ssr: false }
-);
+const SplashLoader = dynamic(() => import('./SplashLoader').then((m) => m.SplashLoader), {
+  ssr: false,
+});
 
 /**
  * Wraps children with the SplashLoader boot screen.

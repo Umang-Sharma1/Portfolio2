@@ -9,28 +9,38 @@ function cn(...inputs: any[]) {
   return inputs.filter(Boolean).join(' ');
 }
 
-// Inline SVG icons
-const MessageSquareIcon = () => (
+// ─── Voyager Signal Icon ─────────────────────────────────────────────────────
+// A stylised uplink / transmission node: antenna V-base + radiating arcs + dot
+
+const VoyagerIcon = () => (
   <svg
-    xmlns="http://www.w3.org/2000/svg"
     width="22"
     height="22"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    {/* Inner arc */}
+    <path d="M9 13.5 A4.5 4.5 0 0 1 15 13.5" strokeWidth="1.6" />
+    {/* Outer arc */}
+    <path d="M6.5 11 A7.5 7.5 0 0 1 17.5 11" strokeWidth="1.4" strokeOpacity="0.7" />
+    {/* Far arc */}
+    <path d="M4 8.5 A10.5 10.5 0 0 1 20 8.5" strokeWidth="1.2" strokeOpacity="0.4" />
+    {/* Antenna V-legs down from node */}
+    <path d="M12 17.5 L8.5 21" strokeWidth="1.6" />
+    <path d="M12 17.5 L15.5 21" strokeWidth="1.6" />
+    {/* Node dot */}
+    <circle cx="12" cy="17" r="1.6" fill="currentColor" strokeWidth="0" />
   </svg>
 );
 
 const XIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="14"
-    height="14"
+    width="12"
+    height="12"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -46,8 +56,8 @@ const XIcon = () => (
 const SendIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="14"
-    height="14"
+    width="12"
+    height="12"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -184,6 +194,7 @@ export const ChatBot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [sessionId] = useState(() => Math.random().toString(36).substring(2, 8).toUpperCase());
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -240,55 +251,125 @@ export const ChatBot: React.FC = () => {
 
   return (
     <div className="fixed bottom-6 right-6 z-[100]">
+      {/* ── Chat Window ───────────────────────────────────── */}
       <AnimatePresence>
         {isOpen && (
           <MotionDiv
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.92, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute bottom-20 right-0 w-80 md:w-96 overflow-hidden rounded-[2rem] shadow-[0_30px_60px_rgba(0,0,0,0.3)] border border-slate-200 dark:border-white/10 bg-white dark:bg-space-black glassmorphism"
+            exit={{ opacity: 0, scale: 0.92, y: 16 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute bottom-20 right-0 w-[22rem] md:w-[26rem] overflow-hidden rounded-[2rem] shadow-[0_30px_80px_rgba(0,0,0,0.5),0_0_0_1px_rgba(34,211,238,0.1)] bg-[#050810] border border-white/[0.06]"
           >
-            {/* Header */}
-            <div className="p-4 px-6 border-b border-slate-100 dark:border-white/5 flex justify-between items-center bg-slate-50/50 dark:bg-black/20 backdrop-blur-xl">
-              <div className="flex items-center gap-3">
-                <div className="h-7 w-7 rounded-xl bg-vision-cyan/10 flex items-center justify-center text-vision-cyan border border-vision-cyan/20">
-                  <span className="text-[10px] font-display font-black italic">V</span>
+            {/* Scan grid overlay */}
+            <div className="absolute inset-0 cyber-grid opacity-[0.06] pointer-events-none" />
+
+            {/* HUD corner brackets */}
+            <div className="absolute top-4 left-4 w-5 h-5 border-t-2 border-l-2 border-vision-cyan/40 rounded-tl-lg pointer-events-none" />
+            <div className="absolute top-4 right-16 w-5 h-5 border-t-2 border-r-2 border-vision-crimson/30 rounded-tr-lg pointer-events-none" />
+            <div className="absolute bottom-[70px] left-4 w-5 h-5 border-b-2 border-l-2 border-vision-cyan/20 rounded-bl-lg pointer-events-none" />
+            <div className="absolute bottom-[70px] right-4 w-5 h-5 border-b-2 border-r-2 border-vision-crimson/20 rounded-br-lg pointer-events-none" />
+
+            {/* ── Header ── */}
+            <div className="relative px-5 py-4 border-b border-white/[0.06] bg-black/50 backdrop-blur-xl">
+              {/* Gradient accent line */}
+              <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-vision-cyan/40 to-transparent" />
+
+              <div className="flex items-center justify-between">
+                {/* Left: Logo + info */}
+                <div className="flex items-center gap-3">
+                  <div className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-vision-cyan/20 to-black/60 border border-vision-cyan/30 flex items-center justify-center shadow-[0_0_16px_rgba(34,211,238,0.2)]">
+                    <span className="text-[13px] font-display font-black italic text-vision-cyan relative z-10">
+                      V
+                    </span>
+                    {/* Online dot */}
+                    <div className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-green-500 border-2 border-[#050810] shadow-[0_0_6px_rgba(34,197,94,0.6)]" />
+                  </div>
+
+                  <div>
+                    <div className="text-[9px] font-mono font-black tracking-[0.4em] uppercase text-white/70 mb-1">
+                      Mission Control
+                    </div>
+                    {/* Signal waveform bars */}
+                    <div className="flex items-end gap-[2.5px] h-3.5">
+                      {[3, 7, 5, 10, 4, 8, 5, 3, 7].map((h, i) => (
+                        <div
+                          key={i}
+                          className="w-[2px] rounded-full bg-vision-cyan origin-bottom"
+                          style={{
+                            height: `${h}px`,
+                            animation: `audioBar 1.2s ease-in-out infinite`,
+                            animationDelay: `${i * 0.1}s`,
+                          }}
+                        />
+                      ))}
+                      <span className="ml-1.5 text-[7px] font-mono text-vision-cyan/60 tracking-wider self-end pb-px">
+                        UPLINK ACTIVE
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-[10px] font-mono font-black tracking-[0.3em] uppercase text-slate-800 dark:text-text-dark">
-                    Mission Control
+
+                {/* Right: session ID + close */}
+                <div className="flex items-center gap-2">
+                  <div className="text-[7px] font-mono text-white/20 tracking-wider">
+                    SID#{sessionId}
                   </div>
-                  <div className="flex items-center gap-1.5 text-[8px] font-mono font-black text-vision-cyan tracking-widest uppercase">
-                    <div className="w-1.5 h-1.5 bg-vision-cyan rounded-full animate-pulse" />
-                    Online
-                  </div>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="h-7 w-7 rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-vision-crimson/20 hover:border-vision-crimson/40 flex items-center justify-center text-white/30 hover:text-vision-crimson transition-all"
+                    aria-label="Close"
+                  >
+                    <XIcon />
+                  </button>
                 </div>
               </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-colors text-slate-400 dark:text-white/30 hover:text-vision-crimson"
-                aria-label="Close chat"
-              >
-                <XIcon />
-              </button>
             </div>
 
-            {/* Messages */}
-            <div className="h-72 overflow-y-auto p-4 space-y-3 custom-scrollbar">
+            {/* ── Messages ── */}
+            <div className="h-80 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+              {/* Empty state */}
               {messages.length === 0 && (
-                <div className="text-center py-6 space-y-4">
-                  <div className="text-3xl">🛸</div>
-                  <p className="text-xs font-mono font-bold text-slate-500 dark:text-white/30">
-                    Welcome, Voyager. How can I assist?
-                  </p>
-                  <div className="flex flex-wrap gap-2 justify-center">
+                <div className="text-center py-6 space-y-5">
+                  {/* Orbital animation */}
+                  <div className="relative w-14 h-14 mx-auto">
+                    <div
+                      className="absolute inset-0 rounded-full border border-vision-cyan/25 animate-spin"
+                      style={{ animationDuration: '8s' }}
+                    />
+                    <div
+                      className="absolute inset-[4px] rounded-full border border-vision-crimson/20 animate-spin"
+                      style={{ animationDuration: '5s', animationDirection: 'reverse' }}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-[13px] font-display font-black italic text-vision-cyan">
+                        V
+                      </span>
+                    </div>
+                    {/* Orbit dot */}
+                    <div
+                      className="absolute w-2 h-2 rounded-full bg-vision-cyan shadow-[0_0_6px_rgba(34,211,238,0.9)] top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin"
+                      style={{ animationDuration: '3.5s', transformOrigin: '0 28px' }}
+                    />
+                  </div>
+
+                  <div>
+                    <p className="text-[9px] font-mono font-black text-white/20 tracking-[0.4em] uppercase">
+                      Voyager OS // v2.1
+                    </p>
+                    <p className="text-[10px] font-mono text-white/35 mt-1">
+                      Mission Control Online — awaiting query
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col gap-1.5 px-2">
                     {quickQuestions.map((q) => (
                       <button
                         key={q}
                         onClick={() => setInput(q)}
-                        className="text-[9px] px-3 py-1.5 rounded-full font-mono font-black uppercase tracking-wider border border-vision-cyan/20 text-vision-cyan/60 hover:text-vision-cyan hover:bg-vision-cyan/10 hover:border-vision-cyan/40 transition-all"
+                        className="text-left text-[9px] px-3 py-2 rounded-xl font-mono font-black uppercase tracking-wider border border-vision-cyan/10 text-white/30 hover:text-vision-cyan hover:bg-vision-cyan/[0.06] hover:border-vision-cyan/30 transition-all flex items-center gap-2"
                       >
+                        <span className="text-vision-cyan/40 text-[10px]">&gt;</span>
                         {q}
                       </button>
                     ))}
@@ -296,20 +377,41 @@ export const ChatBot: React.FC = () => {
                 </div>
               )}
 
+              {/* Message list */}
               {messages.map((msg) => (
                 <MotionDiv
                   key={msg.id}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className={cn('flex', msg.role === 'user' ? 'justify-end' : 'justify-start')}
+                  initial={{ opacity: 0, y: 8, x: msg.role === 'user' ? 6 : -6 }}
+                  animate={{ opacity: 1, y: 0, x: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className={cn('flex flex-col', msg.role === 'user' ? 'items-end' : 'items-start')}
                 >
+                  {/* Label row */}
                   <div
                     className={cn(
-                      'max-w-[85%] px-4 py-3 text-xs font-mono font-bold leading-relaxed',
+                      'flex items-center gap-1.5 mb-1 px-1',
+                      msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'
+                    )}
+                  >
+                    <span className="text-[7px] font-mono font-black tracking-[0.3em] uppercase text-white/25">
+                      {msg.role === 'user' ? '» YOU' : 'V// CTRL'}
+                    </span>
+                    <span className="text-[6px] font-mono text-white/15">
+                      {msg.timestamp.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                      })}
+                    </span>
+                  </div>
+
+                  {/* Bubble */}
+                  <div
+                    className={cn(
+                      'max-w-[88%] px-4 py-3 text-[11px] font-mono leading-[1.6]',
                       msg.role === 'user'
-                        ? 'bg-vision-cyan text-space-black rounded-[1.2rem] rounded-br-md shadow-[0_4px_12px_rgba(var(--glow-cyan),0.2)]'
-                        : 'bg-slate-100 dark:bg-white/[0.04] text-slate-700 dark:text-text-dark/80 border border-slate-200 dark:border-white/5 rounded-[1.2rem] rounded-bl-md'
+                        ? 'bg-vision-cyan/15 border border-vision-cyan/25 text-white/85 rounded-[1.2rem] rounded-br-md shadow-[0_0_20px_rgba(34,211,238,0.06)]'
+                        : 'bg-white/[0.03] border border-white/[0.06] border-l-2 border-l-vision-cyan/35 text-white/60 rounded-[1.2rem] rounded-bl-md'
                     )}
                   >
                     {msg.content}
@@ -317,65 +419,146 @@ export const ChatBot: React.FC = () => {
                 </MotionDiv>
               ))}
 
+              {/* Typing indicator — frequency bars */}
               {isTyping && (
                 <MotionDiv
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="flex justify-start"
+                  className="flex items-start"
                 >
-                  <div className="bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/5 px-4 py-3 rounded-[1.2rem] rounded-bl-md">
-                    <div className="flex gap-1.5">
-                      {[0, 150, 300].map((delay) => (
-                        <span
-                          key={delay}
-                          className="w-1.5 h-1.5 bg-vision-cyan rounded-full animate-bounce"
-                          style={{ animationDelay: `${delay}ms` }}
+                  <div className="bg-white/[0.03] border border-white/[0.06] border-l-2 border-l-vision-cyan/35 px-4 py-3 rounded-[1.2rem] rounded-bl-md">
+                    <div className="flex items-end gap-[3px] h-4">
+                      {[3, 7, 5, 9, 4, 8, 3, 6, 4].map((h, i) => (
+                        <div
+                          key={i}
+                          className="w-[2px] rounded-full bg-vision-cyan/60 origin-bottom"
+                          style={{
+                            height: `${h}px`,
+                            animation: `audioBar 0.9s ease-in-out infinite`,
+                            animationDelay: `${i * 0.07}s`,
+                          }}
                         />
                       ))}
                     </div>
                   </div>
                 </MotionDiv>
               )}
+
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input */}
+            {/* ── Input ── */}
             <form
               onSubmit={handleSubmit}
-              className="p-3 bg-slate-50/80 dark:bg-black/30 border-t border-slate-100 dark:border-white/5 flex gap-2"
+              className="relative p-3 bg-black/40 border-t border-white/[0.05] flex gap-2 items-center"
             >
-              <input
-                ref={inputRef}
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Enter command..."
-                className="flex-1 bg-white dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-slate-800 dark:text-text-dark placeholder-slate-400 dark:placeholder-white/15 focus:outline-none focus:border-vision-cyan/50 transition-colors"
-              />
+              {/* Gradient top line */}
+              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-vision-cyan/20 to-transparent" />
+
+              <div className="flex-1 relative flex items-center">
+                <span className="absolute left-3 text-vision-cyan/40 font-mono text-[11px] font-black select-none pointer-events-none">
+                  &gt;
+                </span>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Enter query..."
+                  className="w-full bg-white/[0.04] border border-white/[0.08] focus:border-vision-cyan/40 rounded-xl pl-7 pr-4 py-2.5 text-[11px] font-mono text-white/80 placeholder-white/20 focus:outline-none transition-colors"
+                />
+              </div>
+
               <button
                 type="submit"
                 disabled={!input.trim() || isTyping}
-                className="w-10 h-10 bg-vision-cyan text-space-black rounded-xl flex items-center justify-center hover:scale-105 disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95 shadow-[0_4px_12px_rgba(var(--glow-cyan),0.2)]"
+                className="h-10 px-3.5 bg-vision-cyan/10 border border-vision-cyan/20 hover:bg-vision-cyan/20 hover:border-vision-cyan/40 rounded-xl flex items-center gap-1.5 text-vision-cyan disabled:opacity-20 disabled:cursor-not-allowed transition-all text-[8px] font-mono font-black tracking-wider whitespace-nowrap"
               >
                 <SendIcon />
+                <span>SEND</span>
               </button>
             </form>
           </MotionDiv>
         )}
       </AnimatePresence>
 
-      {/* Toggle Button */}
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 rounded-2xl flex items-center justify-center text-vision-cyan border border-vision-cyan/20 shadow-[0_0_25px_rgba(var(--glow-cyan),0.15)] hover:border-vision-cyan/40 transition-all glassmorphism bg-white/80 dark:bg-space-black/80 backdrop-blur-xl"
-        aria-label={isOpen ? 'Close chat' : 'Open chat'}
-      >
-        <motion.div animate={{ rotate: isOpen ? 90 : 0 }} transition={{ duration: 0.2 }}>
-          {isOpen ? <XIcon /> : <MessageSquareIcon />}
-        </motion.div>
-      </motion.button>
+      {/* ── Toggle Beacon Button ──────────────────────────── */}
+      {/* Wrapper sized to contain the hexagon (56×56 ≈ w-14×h-14 but hex needs no overflow) */}
+      <div className="relative w-[60px] h-[60px] flex items-center justify-center">
+        {/* Soft glow bloom behind hex — animates breathing */}
+        <MotionDiv
+          animate={
+            isOpen
+              ? { opacity: 0.35, scale: 1 }
+              : { opacity: [0.25, 0.55, 0.25], scale: [1, 1.2, 1] }
+          }
+          transition={{ duration: 2.8, repeat: isOpen ? 0 : Infinity, ease: 'easeInOut' }}
+          className="absolute inset-0 blur-xl pointer-events-none"
+          style={{
+            background: isOpen
+              ? 'radial-gradient(circle, rgba(225,29,72,0.55) 0%, transparent 70%)'
+              : 'radial-gradient(circle, rgba(34,211,238,0.55) 0%, transparent 70%)',
+          }}
+        />
+
+        {/* Hexagon button */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => setIsOpen(!isOpen)}
+          className="relative w-[52px] h-[52px] flex items-center justify-center bg-[#050810] overflow-hidden"
+          style={{
+            clipPath: 'polygon(50% 0%, 97% 25%, 97% 75%, 50% 100%, 3% 75%, 3% 25%)',
+          }}
+          aria-label={isOpen ? 'Close chat' : 'Open chat'}
+        >
+          {/* Hex SVG border — drawn inside so it's not clipped */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 52 52">
+            <polygon
+              points="26,1 51,14 51,38 26,51 1,38 1,14"
+              fill="none"
+              stroke={isOpen ? 'rgba(225,29,72,0.45)' : 'rgba(34,211,238,0.35)'}
+              strokeWidth="1"
+            />
+          </svg>
+
+          {/* Inner radial tint */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: isOpen
+                ? 'radial-gradient(circle at 50% 50%, rgba(225,29,72,0.08) 0%, transparent 70%)'
+                : 'radial-gradient(circle at 50% 50%, rgba(34,211,238,0.07) 0%, transparent 70%)',
+            }}
+          />
+
+          <AnimatePresence mode="wait">
+            {isOpen ? (
+              <MotionDiv
+                key="x"
+                initial={{ rotate: -60, opacity: 0, scale: 0.5 }}
+                animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                exit={{ rotate: 60, opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.2 }}
+                className="text-vision-crimson relative z-10"
+              >
+                <XIcon />
+              </MotionDiv>
+            ) : (
+              <MotionDiv
+                key="icon"
+                initial={{ rotate: 60, opacity: 0, scale: 0.5 }}
+                animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                exit={{ rotate: -60, opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.2 }}
+                className="text-vision-cyan relative z-10 drop-shadow-[0_0_6px_rgba(34,211,238,0.7)]"
+              >
+                <VoyagerIcon />
+              </MotionDiv>
+            )}
+          </AnimatePresence>
+        </motion.button>
+      </div>
     </div>
   );
 };

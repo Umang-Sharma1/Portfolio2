@@ -191,53 +191,160 @@ function getProjectImages(title: string, category: string): string[] {
 
   // Keyword-based fallbacks (for any future projects not in PROJECT_IMAGES)
   if (lowerTitle.includes('commerce') || lowerTitle.includes('shop'))
-    return ['https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=1400&q=80'];
+    return [
+      'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=1400&q=80',
+    ];
   if (lowerTitle.includes('dashboard') || lowerTitle.includes('analytics'))
-    return ['https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1460925895917-aaf4b0cdc4c0?auto=format&fit=crop&w=1400&q=80'];
+    return [
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1460925895917-aaf4b0cdc4c0?auto=format&fit=crop&w=1400&q=80',
+    ];
   if (lowerTitle.includes('task') || lowerTitle.includes('kanban'))
-    return ['https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&w=1400&q=80'];
+    return [
+      'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&w=1400&q=80',
+    ];
   if (lowerTitle.includes('weather'))
-    return ['https://images.unsplash.com/photo-1504256065176-a574d1e1c2d9?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1530908295418-a12e326966ba?auto=format&fit=crop&w=1400&q=80'];
+    return [
+      'https://images.unsplash.com/photo-1504256065176-a574d1e1c2d9?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1530908295418-a12e326966ba?auto=format&fit=crop&w=1400&q=80',
+    ];
   if (lowerTitle.includes('movie') || lowerTitle.includes('music') || lowerTitle.includes('media'))
-    return ['https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1400&q=80'];
+    return [
+      'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1400&q=80',
+    ];
   if (lowerTitle.includes('portfolio') || lowerTitle.includes('enterprise'))
-    return ['https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1400&q=80'];
-  if (lowerTitle.includes('finance') || lowerTitle.includes('expense') || lowerTitle.includes('payment'))
-    return ['https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1579532537998-f3c2fbf7141d?auto=format&fit=crop&w=1400&q=80'];
-  if (lowerTitle.includes('note') || lowerTitle.includes('timer') || lowerTitle.includes('pomodoro'))
-    return ['https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=80'];
+    return [
+      'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1400&q=80',
+    ];
+  if (
+    lowerTitle.includes('finance') ||
+    lowerTitle.includes('expense') ||
+    lowerTitle.includes('payment')
+  )
+    return [
+      'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1579532537998-f3c2fbf7141d?auto=format&fit=crop&w=1400&q=80',
+    ];
+  if (
+    lowerTitle.includes('note') ||
+    lowerTitle.includes('timer') ||
+    lowerTitle.includes('pomodoro')
+  )
+    return [
+      'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=80',
+    ];
   if (lowerTitle.includes('color') || lowerTitle.includes('design'))
-    return ['https://images.unsplash.com/photo-1522869635100-ce306e08ef5e?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1400&q=80'];
-  if (lowerTitle.includes('chat') || lowerTitle.includes('social') || lowerTitle.includes('network'))
-    return ['https://images.unsplash.com/photo-1611532736579-6b16e2b50449?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1400&q=80'];
+    return [
+      'https://images.unsplash.com/photo-1522869635100-ce306e08ef5e?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1400&q=80',
+    ];
+  if (
+    lowerTitle.includes('chat') ||
+    lowerTitle.includes('social') ||
+    lowerTitle.includes('network')
+  )
+    return [
+      'https://images.unsplash.com/photo-1611532736579-6b16e2b50449?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1400&q=80',
+    ];
   if (lowerTitle.includes('auth') || lowerTitle.includes('security'))
-    return ['https://images.unsplash.com/photo-1633356122544-f134324ef6db?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1526374965328-7f5ae4e8822d?auto=format&fit=crop&w=1400&q=80'];
+    return [
+      'https://images.unsplash.com/photo-1633356122544-f134324ef6db?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1526374965328-7f5ae4e8822d?auto=format&fit=crop&w=1400&q=80',
+    ];
   if (lowerTitle.includes('file') || lowerTitle.includes('backup') || lowerTitle.includes('cloud'))
-    return ['https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1536100503868-fc700145dc75?auto=format&fit=crop&w=1400&q=80'];
+    return [
+      'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1536100503868-fc700145dc75?auto=format&fit=crop&w=1400&q=80',
+    ];
   if (lowerTitle.includes('email') || lowerTitle.includes('notification'))
-    return ['https://images.unsplash.com/photo-1596526131083-e8c633c948d2?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1588702547923-7093a6c3ba33?auto=format&fit=crop&w=1400&q=80'];
+    return [
+      'https://images.unsplash.com/photo-1596526131083-e8c633c948d2?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1588702547923-7093a6c3ba33?auto=format&fit=crop&w=1400&q=80',
+    ];
   if (lowerTitle.includes('api') || lowerTitle.includes('gateway') || lowerTitle.includes('server'))
-    return ['https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1400&q=80'];
+    return [
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1400&q=80',
+    ];
   if (lowerTitle.includes('search'))
-    return ['https://images.unsplash.com/photo-1555421689-d68471e189f2?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1400&q=80'];
-  if (lowerTitle.includes('learning') || lowerTitle.includes('course') || lowerTitle.includes('lms'))
-    return ['https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1400&q=80'];
-  if (lowerTitle.includes('food') || lowerTitle.includes('delivery') || lowerTitle.includes('restaurant'))
-    return ['https://images.unsplash.com/photo-1526367790999-0150786686a2?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=1400&q=80'];
+    return [
+      'https://images.unsplash.com/photo-1555421689-d68471e189f2?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1400&q=80',
+    ];
+  if (
+    lowerTitle.includes('learning') ||
+    lowerTitle.includes('course') ||
+    lowerTitle.includes('lms')
+  )
+    return [
+      'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1400&q=80',
+    ];
+  if (
+    lowerTitle.includes('food') ||
+    lowerTitle.includes('delivery') ||
+    lowerTitle.includes('restaurant')
+  )
+    return [
+      'https://images.unsplash.com/photo-1526367790999-0150786686a2?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=1400&q=80',
+    ];
   if (lowerTitle.includes('job') || lowerTitle.includes('career') || lowerTitle.includes('recruit'))
-    return ['https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80'];
-  if (lowerTitle.includes('booking') || lowerTitle.includes('hotel') || lowerTitle.includes('travel'))
-    return ['https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1400&q=80'];
-  if (lowerTitle.includes('database') || lowerTitle.includes('query') || lowerTitle.includes('migration'))
-    return ['https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1400&q=80'];
+    return [
+      'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1400&q=80',
+    ];
+  if (
+    lowerTitle.includes('booking') ||
+    lowerTitle.includes('hotel') ||
+    lowerTitle.includes('travel')
+  )
+    return [
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1400&q=80',
+    ];
+  if (
+    lowerTitle.includes('database') ||
+    lowerTitle.includes('query') ||
+    lowerTitle.includes('migration')
+  )
+    return [
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1400&q=80',
+    ];
 
   // Category-level defaults
-  if (category === 'FRONTEND') return ['https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1551085254-e96b210db58a?auto=format&fit=crop&w=1400&q=80'];
-  if (category === 'BACKEND') return ['https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1400&q=80'];
-  if (category === 'FULLSTACK') return ['https://images.unsplash.com/photo-1460925895917-aaf4b0cdc4c0?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=80'];
-  if (category === 'DATABASE') return ['https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1400&q=80'];
+  if (category === 'FRONTEND')
+    return [
+      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1551085254-e96b210db58a?auto=format&fit=crop&w=1400&q=80',
+    ];
+  if (category === 'BACKEND')
+    return [
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1400&q=80',
+    ];
+  if (category === 'FULLSTACK')
+    return [
+      'https://images.unsplash.com/photo-1460925895917-aaf4b0cdc4c0?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=80',
+    ];
+  if (category === 'DATABASE')
+    return [
+      'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1400&q=80',
+    ];
 
-  return ['https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1400&q=80', 'https://images.unsplash.com/photo-1460925895917-aaf4b0cdc4c0?auto=format&fit=crop&w=1400&q=80'];
+  return [
+    'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1400&q=80',
+    'https://images.unsplash.com/photo-1460925895917-aaf4b0cdc4c0?auto=format&fit=crop&w=1400&q=80',
+  ];
 }
 
 const skills = [
@@ -648,72 +755,247 @@ function generateArchitecture(category: string, technologies: string[]) {
   const templates: Record<string, { nodes: any[]; connections: any[] }> = {
     FRONTEND: {
       nodes: [
-        { id: 'user',     label: 'User',           type: 'external',  description: 'End user interacting with the UI',               technologies: [],                position: { x: 50,  y: 200 } },
-        { id: 'ui',       label: 'UI Layer',        type: 'frontend',  description: `Component-based interface built with ${tech(0)}`, technologies: [tech(0)],          position: { x: 200, y: 200 } },
-        { id: 'state',    label: 'State Mgmt',      type: 'service',   description: `Application state via ${tech(1) || 'Context'}`,   technologies: [tech(1)],          position: { x: 370, y: 130 } },
-        { id: 'router',   label: 'Router',          type: 'service',   description: 'Client-side routing and navigation',             technologies: ['React Router'],     position: { x: 370, y: 270 } },
-        { id: 'api',      label: 'REST / GraphQL',  type: 'api',       description: 'HTTP API calls to backend services',             technologies: ['Axios', 'Fetch'],   position: { x: 530, y: 200 } },
-        { id: 'cdn',      label: 'CDN / Hosting',   type: 'external',  description: 'Static asset delivery and edge caching',         technologies: ['Vercel', 'Netlify'],position: { x: 200, y: 340 } },
+        {
+          id: 'user',
+          label: 'User',
+          type: 'external',
+          description: 'End user interacting with the UI',
+          technologies: [],
+          position: { x: 50, y: 200 },
+        },
+        {
+          id: 'ui',
+          label: 'UI Layer',
+          type: 'frontend',
+          description: `Component-based interface built with ${tech(0)}`,
+          technologies: [tech(0)],
+          position: { x: 200, y: 200 },
+        },
+        {
+          id: 'state',
+          label: 'State Mgmt',
+          type: 'service',
+          description: `Application state via ${tech(1) || 'Context'}`,
+          technologies: [tech(1)],
+          position: { x: 370, y: 130 },
+        },
+        {
+          id: 'router',
+          label: 'Router',
+          type: 'service',
+          description: 'Client-side routing and navigation',
+          technologies: ['React Router'],
+          position: { x: 370, y: 270 },
+        },
+        {
+          id: 'api',
+          label: 'REST / GraphQL',
+          type: 'api',
+          description: 'HTTP API calls to backend services',
+          technologies: ['Axios', 'Fetch'],
+          position: { x: 530, y: 200 },
+        },
+        {
+          id: 'cdn',
+          label: 'CDN / Hosting',
+          type: 'external',
+          description: 'Static asset delivery and edge caching',
+          technologies: ['Vercel', 'Netlify'],
+          position: { x: 200, y: 340 },
+        },
       ],
       connections: [
-        { from: 'user',   to: 'ui',     label: 'Interacts',  type: 'sync' },
-        { from: 'ui',     to: 'state',  label: 'Read/Write', type: 'sync' },
-        { from: 'ui',     to: 'router', label: 'Navigate',   type: 'sync' },
-        { from: 'ui',     to: 'api',    label: 'HTTP',       type: 'async', animated: true },
-        { from: 'cdn',    to: 'ui',     label: 'Assets',     type: 'sync' },
+        { from: 'user', to: 'ui', label: 'Interacts', type: 'sync' },
+        { from: 'ui', to: 'state', label: 'Read/Write', type: 'sync' },
+        { from: 'ui', to: 'router', label: 'Navigate', type: 'sync' },
+        { from: 'ui', to: 'api', label: 'HTTP', type: 'async', animated: true },
+        { from: 'cdn', to: 'ui', label: 'Assets', type: 'sync' },
       ],
     },
     BACKEND: {
       nodes: [
-        { id: 'client',   label: 'Client',          type: 'external',  description: 'Browser or mobile client sending requests',      technologies: [],                  position: { x: 50,  y: 200 } },
-        { id: 'gateway',  label: 'API Gateway',     type: 'api',       description: `REST/GraphQL endpoint built with ${tech(0)}`,     technologies: [tech(0)],           position: { x: 200, y: 200 } },
-        { id: 'auth',     label: 'Auth Service',    type: 'auth',      description: 'JWT validation and session management',          technologies: ['JWT', 'bcrypt'],    position: { x: 370, y: 100 } },
-        { id: 'service',  label: 'Business Logic',  type: 'backend',   description: `Core application services using ${tech(1)}`,     technologies: [tech(1)],           position: { x: 370, y: 200 } },
-        { id: 'db',       label: 'Database',        type: 'database',  description: 'Primary data persistence layer',                 technologies: ['MongoDB'],          position: { x: 530, y: 200 } },
-        { id: 'cache',    label: 'Cache',           type: 'cache',     description: 'Redis in-memory cache for fast reads',           technologies: ['Redis'],            position: { x: 530, y: 320 } },
+        {
+          id: 'client',
+          label: 'Client',
+          type: 'external',
+          description: 'Browser or mobile client sending requests',
+          technologies: [],
+          position: { x: 50, y: 200 },
+        },
+        {
+          id: 'gateway',
+          label: 'API Gateway',
+          type: 'api',
+          description: `REST/GraphQL endpoint built with ${tech(0)}`,
+          technologies: [tech(0)],
+          position: { x: 200, y: 200 },
+        },
+        {
+          id: 'auth',
+          label: 'Auth Service',
+          type: 'auth',
+          description: 'JWT validation and session management',
+          technologies: ['JWT', 'bcrypt'],
+          position: { x: 370, y: 100 },
+        },
+        {
+          id: 'service',
+          label: 'Business Logic',
+          type: 'backend',
+          description: `Core application services using ${tech(1)}`,
+          technologies: [tech(1)],
+          position: { x: 370, y: 200 },
+        },
+        {
+          id: 'db',
+          label: 'Database',
+          type: 'database',
+          description: 'Primary data persistence layer',
+          technologies: ['MongoDB'],
+          position: { x: 530, y: 200 },
+        },
+        {
+          id: 'cache',
+          label: 'Cache',
+          type: 'cache',
+          description: 'Redis in-memory cache for fast reads',
+          technologies: ['Redis'],
+          position: { x: 530, y: 320 },
+        },
       ],
       connections: [
-        { from: 'client',  to: 'gateway', label: 'HTTP/WS',  type: 'sync',     animated: true },
-        { from: 'gateway', to: 'auth',    label: 'Validate', type: 'sync' },
+        { from: 'client', to: 'gateway', label: 'HTTP/WS', type: 'sync', animated: true },
+        { from: 'gateway', to: 'auth', label: 'Validate', type: 'sync' },
         { from: 'gateway', to: 'service', label: 'Dispatch', type: 'sync' },
-        { from: 'service', to: 'db',      label: 'Query',    type: 'async',    animated: true },
-        { from: 'service', to: 'cache',   label: 'Cache',    type: 'cache' },
+        { from: 'service', to: 'db', label: 'Query', type: 'async', animated: true },
+        { from: 'service', to: 'cache', label: 'Cache', type: 'cache' },
       ],
     },
     FULLSTACK: {
       nodes: [
-        { id: 'browser',  label: 'Browser',         type: 'external',  description: 'User-facing web interface',                      technologies: [],                  position: { x: 50,  y: 200 } },
-        { id: 'frontend', label: 'Frontend',        type: 'frontend',  description: `SSR/SPA built with ${tech(0)}`,                  technologies: [tech(0), tech(1)],  position: { x: 190, y: 200 } },
-        { id: 'api',      label: 'API Layer',       type: 'api',       description: `GraphQL/REST API with ${tech(2) || 'Node.js'}`,  technologies: [tech(2)],           position: { x: 340, y: 200 } },
-        { id: 'auth',     label: 'Auth',            type: 'auth',      description: 'Authentication & authorization',                 technologies: ['JWT', 'OAuth'],    position: { x: 340, y: 100 } },
-        { id: 'db',       label: 'Database',        type: 'database',  description: 'Persistent data storage',                       technologies: ['MongoDB', 'Redis'], position: { x: 490, y: 150 } },
-        { id: 'storage',  label: 'Storage',         type: 'service',   description: 'File and media asset storage',                   technologies: ['S3', 'Cloudinary'], position: { x: 490, y: 280 } },
-        { id: 'deploy',   label: 'Deployment',      type: 'external',  description: 'CI/CD pipeline and cloud hosting',               technologies: ['Docker', 'Vercel'], position: { x: 190, y: 340 } },
+        {
+          id: 'browser',
+          label: 'Browser',
+          type: 'external',
+          description: 'User-facing web interface',
+          technologies: [],
+          position: { x: 50, y: 200 },
+        },
+        {
+          id: 'frontend',
+          label: 'Frontend',
+          type: 'frontend',
+          description: `SSR/SPA built with ${tech(0)}`,
+          technologies: [tech(0), tech(1)],
+          position: { x: 190, y: 200 },
+        },
+        {
+          id: 'api',
+          label: 'API Layer',
+          type: 'api',
+          description: `GraphQL/REST API with ${tech(2) || 'Node.js'}`,
+          technologies: [tech(2)],
+          position: { x: 340, y: 200 },
+        },
+        {
+          id: 'auth',
+          label: 'Auth',
+          type: 'auth',
+          description: 'Authentication & authorization',
+          technologies: ['JWT', 'OAuth'],
+          position: { x: 340, y: 100 },
+        },
+        {
+          id: 'db',
+          label: 'Database',
+          type: 'database',
+          description: 'Persistent data storage',
+          technologies: ['MongoDB', 'Redis'],
+          position: { x: 490, y: 150 },
+        },
+        {
+          id: 'storage',
+          label: 'Storage',
+          type: 'service',
+          description: 'File and media asset storage',
+          technologies: ['S3', 'Cloudinary'],
+          position: { x: 490, y: 280 },
+        },
+        {
+          id: 'deploy',
+          label: 'Deployment',
+          type: 'external',
+          description: 'CI/CD pipeline and cloud hosting',
+          technologies: ['Docker', 'Vercel'],
+          position: { x: 190, y: 340 },
+        },
       ],
       connections: [
-        { from: 'browser',  to: 'frontend', label: 'HTTPS',    type: 'sync' },
-        { from: 'frontend', to: 'api',      label: 'GraphQL',  type: 'async', animated: true },
-        { from: 'api',      to: 'auth',     label: 'Validate', type: 'sync' },
-        { from: 'api',      to: 'db',       label: 'Query',    type: 'async', animated: true },
-        { from: 'api',      to: 'storage',  label: 'Upload',   type: 'async' },
-        { from: 'deploy',   to: 'frontend', label: 'Deploy',   type: 'sync' },
+        { from: 'browser', to: 'frontend', label: 'HTTPS', type: 'sync' },
+        { from: 'frontend', to: 'api', label: 'GraphQL', type: 'async', animated: true },
+        { from: 'api', to: 'auth', label: 'Validate', type: 'sync' },
+        { from: 'api', to: 'db', label: 'Query', type: 'async', animated: true },
+        { from: 'api', to: 'storage', label: 'Upload', type: 'async' },
+        { from: 'deploy', to: 'frontend', label: 'Deploy', type: 'sync' },
       ],
     },
     DATABASE: {
       nodes: [
-        { id: 'app',      label: 'Application',     type: 'backend',   description: 'Application tier sending queries',               technologies: [],                  position: { x: 50,  y: 200 } },
-        { id: 'orm',      label: 'ORM / Driver',    type: 'service',   description: `Data access layer using ${tech(0)}`,             technologies: [tech(0)],           position: { x: 200, y: 200 } },
-        { id: 'primary',  label: 'Primary DB',      type: 'database',  description: 'Primary read/write database node',               technologies: [tech(1) || 'MongoDB'],position:{ x: 380, y: 130 } },
-        { id: 'replica',  label: 'Read Replica',    type: 'database',  description: 'Read-only replica for scaling queries',          technologies: [tech(1) || 'MongoDB'],position:{ x: 380, y: 270 } },
-        { id: 'cache',    label: 'Query Cache',     type: 'cache',     description: 'Redis cache for frequent query results',         technologies: ['Redis'],            position: { x: 540, y: 200 } },
-        { id: 'backup',   label: 'Backup Store',    type: 'external',  description: 'Scheduled snapshot backups',                     technologies: ['S3'],               position: { x: 540, y: 340 } },
+        {
+          id: 'app',
+          label: 'Application',
+          type: 'backend',
+          description: 'Application tier sending queries',
+          technologies: [],
+          position: { x: 50, y: 200 },
+        },
+        {
+          id: 'orm',
+          label: 'ORM / Driver',
+          type: 'service',
+          description: `Data access layer using ${tech(0)}`,
+          technologies: [tech(0)],
+          position: { x: 200, y: 200 },
+        },
+        {
+          id: 'primary',
+          label: 'Primary DB',
+          type: 'database',
+          description: 'Primary read/write database node',
+          technologies: [tech(1) || 'MongoDB'],
+          position: { x: 380, y: 130 },
+        },
+        {
+          id: 'replica',
+          label: 'Read Replica',
+          type: 'database',
+          description: 'Read-only replica for scaling queries',
+          technologies: [tech(1) || 'MongoDB'],
+          position: { x: 380, y: 270 },
+        },
+        {
+          id: 'cache',
+          label: 'Query Cache',
+          type: 'cache',
+          description: 'Redis cache for frequent query results',
+          technologies: ['Redis'],
+          position: { x: 540, y: 200 },
+        },
+        {
+          id: 'backup',
+          label: 'Backup Store',
+          type: 'external',
+          description: 'Scheduled snapshot backups',
+          technologies: ['S3'],
+          position: { x: 540, y: 340 },
+        },
       ],
       connections: [
-        { from: 'app',     to: 'orm',     label: 'Model',   type: 'sync' },
-        { from: 'orm',     to: 'primary', label: 'Write',   type: 'async', animated: true },
-        { from: 'orm',     to: 'replica', label: 'Read',    type: 'async', animated: true },
-        { from: 'orm',     to: 'cache',   label: 'Cache',   type: 'cache' },
-        { from: 'primary', to: 'backup',  label: 'Snapshot',type: 'async' },
+        { from: 'app', to: 'orm', label: 'Model', type: 'sync' },
+        { from: 'orm', to: 'primary', label: 'Write', type: 'async', animated: true },
+        { from: 'orm', to: 'replica', label: 'Read', type: 'async', animated: true },
+        { from: 'orm', to: 'cache', label: 'Cache', type: 'cache' },
+        { from: 'primary', to: 'backup', label: 'Snapshot', type: 'async' },
       ],
     },
   };
@@ -740,27 +1022,24 @@ interface RawProject {
 }
 
 function enrichProjectData(project: RawProject, index: number): any {
-  const {
-    title,
-    description,
-    category,
-    technologies,
-    githubUrl,
-    liveUrl,
-    features,
-    featured,
-  } = project;
+  const { title, description, category, technologies, githubUrl, liveUrl, features, featured } =
+    project;
 
   // Default metrics based on featured status
   const defaultMetrics = featured
-    ? { stars: Math.floor(Math.random() * 1800 + 800), forks: Math.floor(Math.random() * 400 + 150) }
+    ? {
+        stars: Math.floor(Math.random() * 1800 + 800),
+        forks: Math.floor(Math.random() * 400 + 150),
+      }
     : { stars: Math.floor(Math.random() * 600 + 150), forks: Math.floor(Math.random() * 200 + 50) };
 
   // Default timeline - assume 3-6 months duration
-  const startDate = new Date(2022, Math.floor(Math.random() * 9), Math.floor(Math.random() * 20 + 1));
-  const endDate = new Date(
-    startDate.getTime() + (Math.random() * 60 + 90) * 24 * 60 * 60 * 1000
+  const startDate = new Date(
+    2022,
+    Math.floor(Math.random() * 9),
+    Math.floor(Math.random() * 20 + 1)
   );
+  const endDate = new Date(startDate.getTime() + (Math.random() * 60 + 90) * 24 * 60 * 60 * 1000);
   const duration = Math.floor((endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000));
 
   return {
@@ -783,7 +1062,9 @@ function enrichProjectData(project: RawProject, index: number): any {
       stars: defaultMetrics.stars,
       forks: defaultMetrics.forks,
       downloads: Math.floor(defaultMetrics.stars * 3),
-      contributors: featured ? Math.floor(Math.random() * 5 + 4) : Math.floor(Math.random() * 3 + 1),
+      contributors: featured
+        ? Math.floor(Math.random() * 5 + 4)
+        : Math.floor(Math.random() * 3 + 1),
       commits: Math.floor(duration * 1.5 + 50),
     },
     timeline: project.timeline || {
@@ -817,8 +1098,10 @@ const projects = [
       'Wishlist functionality',
       'Customer reviews',
     ],
-    challenges: 'Managing complex state across multiple shopping flows and handling real-time inventory updates without race conditions.',
-    learnings: 'Mastered Redux for complex state management, implemented optimistic updates for better UX, and learned payment gateway integration best practices.',
+    challenges:
+      'Managing complex state across multiple shopping flows and handling real-time inventory updates without race conditions.',
+    learnings:
+      'Mastered Redux for complex state management, implemented optimistic updates for better UX, and learned payment gateway integration best practices.',
     metrics: { stars: 1250, forks: 350, downloads: 5400, contributors: 8, commits: 245 },
     timeline: { startDate: new Date('2022-03-15'), endDate: new Date('2022-09-20'), duration: 189 },
     order: 1,
@@ -832,9 +1115,19 @@ const projects = [
     category: 'FRONTEND',
     technologies: ['React', 'Chart.js', 'Tailwind CSS', 'Axios'],
     githubUrl: 'https://github.com/umangsharma/social-dashboard',
-    features: ['Real-time metrics', 'Interactive charts', 'Data filtering', 'Export to PDF', 'Multi-platform support', 'Custom dashboards', 'Trend analysis'],
-    challenges: 'Handling real-time data updates while maintaining performance with large datasets and ensuring smooth animations on interactive charts.',
-    learnings: 'Developed expertise in Chart.js customization, implemented efficient data polling mechanisms, and learned responsive design patterns.',
+    features: [
+      'Real-time metrics',
+      'Interactive charts',
+      'Data filtering',
+      'Export to PDF',
+      'Multi-platform support',
+      'Custom dashboards',
+      'Trend analysis',
+    ],
+    challenges:
+      'Handling real-time data updates while maintaining performance with large datasets and ensuring smooth animations on interactive charts.',
+    learnings:
+      'Developed expertise in Chart.js customization, implemented efficient data polling mechanisms, and learned responsive design patterns.',
     metrics: { stars: 890, forks: 210, downloads: 3200, contributors: 5, commits: 178 },
     timeline: { startDate: new Date('2022-04-10'), endDate: new Date('2022-07-15'), duration: 96 },
     order: 2,
@@ -857,8 +1150,10 @@ const projects = [
       'Team comments',
       'Activity history',
     ],
-    challenges: 'Implementing smooth drag-and-drop with React, managing collaborative state across users, and handling real-time updates efficiently.',
-    learnings: 'Mastered DnD Kit library, learned about optimistic updates, and improved understanding of real-time synchronization patterns.',
+    challenges:
+      'Implementing smooth drag-and-drop with React, managing collaborative state across users, and handling real-time updates efficiently.',
+    learnings:
+      'Mastered DnD Kit library, learned about optimistic updates, and improved understanding of real-time synchronization patterns.',
     metrics: { stars: 1050, forks: 280, downloads: 4100, contributors: 6, commits: 210 },
     timeline: { startDate: new Date('2022-05-20'), endDate: new Date('2022-10-10'), duration: 143 },
     order: 4,
@@ -886,14 +1181,25 @@ const projects = [
   {
     title: 'Portfolio Website',
     tagline: 'Beautiful portfolio showcase with blog integration and modern design',
-    description: 'Personal portfolio website with blog, project showcase, and contact form. Built with Next.js for optimal performance and SEO. Features dark mode, responsive design, and fast page loads.',
+    description:
+      'Personal portfolio website with blog, project showcase, and contact form. Built with Next.js for optimal performance and SEO. Features dark mode, responsive design, and fast page loads.',
     category: 'FRONTEND',
     technologies: ['Next.js', 'Tailwind CSS', 'MDX'],
     githubUrl: 'https://github.com/umangsharma/portfolio',
     liveUrl: 'https://umangsharma.dev',
-    features: ['Project showcase', 'Blog posts', 'Contact form', 'SEO optimized', 'Dark mode', 'Fast performance', 'Mobile responsive'],
-    challenges: 'Creating an efficient blog system with MDX, optimizing images and content for SEO, and ensuring fast page loads across all devices.',
-    learnings: 'Mastered Next.js static generation, image optimization techniques, and understanding of SEO best practices for personal brands.',
+    features: [
+      'Project showcase',
+      'Blog posts',
+      'Contact form',
+      'SEO optimized',
+      'Dark mode',
+      'Fast performance',
+      'Mobile responsive',
+    ],
+    challenges:
+      'Creating an efficient blog system with MDX, optimizing images and content for SEO, and ensuring fast page loads across all devices.',
+    learnings:
+      'Mastered Next.js static generation, image optimization techniques, and understanding of SEO best practices for personal brands.',
     metrics: { stars: 2100, forks: 480, downloads: 8900, contributors: 12, commits: 356 },
     timeline: { startDate: new Date('2021-08-01'), endDate: new Date('2022-02-28'), duration: 211 },
     order: 3,
@@ -1005,8 +1311,10 @@ const projects = [
       'Rate limiting',
       'API documentation',
     ],
-    challenges: 'Designing scalable API architecture, handling file uploads securely, and implementing efficient database queries for large datasets.',
-    learnings: 'Mastered RESTful API design principles, learned about JWT security best practices, and improved database query optimization skills.',
+    challenges:
+      'Designing scalable API architecture, handling file uploads securely, and implementing efficient database queries for large datasets.',
+    learnings:
+      'Mastered RESTful API design principles, learned about JWT security best practices, and improved database query optimization skills.',
     metrics: { stars: 1420, forks: 320, downloads: 5600, contributors: 7, commits: 268 },
     timeline: { startDate: new Date('2022-02-01'), endDate: new Date('2022-08-15'), duration: 195 },
     order: 5,
@@ -1138,8 +1446,10 @@ const projects = [
       'Advanced analytics',
       'Admin dashboard',
     ],
-    challenges: 'Architecting scalable fullstack solution, implementing efficient caching strategies, setting up automated deployment pipeline, and optimizing database queries.',
-    learnings: 'Gained expertise in GraphQL, containerization with Docker, CI/CD best practices, and building production-ready applications with performance optimization.',
+    challenges:
+      'Architecting scalable fullstack solution, implementing efficient caching strategies, setting up automated deployment pipeline, and optimizing database queries.',
+    learnings:
+      'Gained expertise in GraphQL, containerization with Docker, CI/CD best practices, and building production-ready applications with performance optimization.',
     metrics: { stars: 3200, forks: 650, downloads: 12500, contributors: 15, commits: 487 },
     timeline: { startDate: new Date('2021-06-01'), endDate: new Date('2022-12-31'), duration: 579 },
     order: 6,
@@ -1373,13 +1683,15 @@ async function seedDatabase() {
 
     // Insert projects one by one to trigger pre-save hooks for slug generation
     // Enrich project data first
-    const enrichedProjects = projects.map((project, index) => enrichProjectData(project as RawProject, index));
-    
+    const enrichedProjects = projects.map((project, index) =>
+      enrichProjectData(project as RawProject, index)
+    );
+
     const insertedProjects = [];
     for (const projectData of enrichedProjects) {
       // Get images based on project title and category
       const screenshotUrls = getProjectImages(projectData.title, projectData.category);
-      
+
       const project = await Project.create({
         ...projectData,
         status: 'COMPLETED', // Add status field

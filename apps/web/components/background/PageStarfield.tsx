@@ -213,24 +213,26 @@ const PageStarfield = memo(function PageStarfield({ density = 60, className = ''
             const sizeMap = { near: star.size * 2.0, mid: star.size * 1.4, far: star.size * 1.0 };
             const opacityMap = {
               near: isNavy ? 0.22 : 0.65,
-              mid:  isNavy ? 0.13 : 0.40,
-              far:  isNavy ? 0.07 : 0.22,
+              mid: isNavy ? 0.13 : 0.4,
+              far: isNavy ? 0.07 : 0.22,
             };
             const color = isNavy ? '15,23,42' : '190,18,60';
             const glowMap = {
-              near: `0 0 8px 1px rgba(${color},${isNavy ? 0.45 : 0.60})`,
-              mid:  `0 0 5px rgba(${color},${isNavy ? 0.30 : 0.42})`,
-              far:  `0 0 2px rgba(${color},${isNavy ? 0.18 : 0.26})`,
+              near: `0 0 8px 1px rgba(${color},${isNavy ? 0.45 : 0.6})`,
+              mid: `0 0 5px rgba(${color},${isNavy ? 0.3 : 0.42})`,
+              far: `0 0 2px rgba(${color},${isNavy ? 0.18 : 0.26})`,
             };
             return (
               <span
                 key={star.id}
-                ref={(el) => { starRefs.current[i] = el; }}
+                ref={(el) => {
+                  starRefs.current[i] = el;
+                }}
                 className="absolute rounded-full animate-twinkle"
                 style={{
                   left: `${star.x}%`,
                   top: `${star.y}%`,
-                  width:  `${sizeMap[star.layer]}px`,
+                  width: `${sizeMap[star.layer]}px`,
                   height: `${sizeMap[star.layer]}px`,
                   opacity: opacityMap[star.layer],
                   backgroundColor: `rgba(${color},1)`,

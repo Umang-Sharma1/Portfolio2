@@ -1,6 +1,14 @@
 ﻿'use client';
 
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useInView } from 'framer-motion';
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useInView,
+  useAnimation,
+} from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useRef, memo, useEffect, useCallback } from 'react';
@@ -257,7 +265,7 @@ const ScrambleText = memo(function ScrambleText({
               if (char === ' ' || char === '/' || char === '.' || char === ':') return char;
               return CHARS[Math.floor(Math.random() * CHARS.length)];
             })
-            .join(''),
+            .join('')
         );
         if (iterRef.current >= text.length) clearInterval(interval);
       }, 38);
@@ -306,7 +314,8 @@ const AnimatedStatValue = memo(function AnimatedStatValue({
 
   return (
     <span ref={ref}>
-      {count.toLocaleString()}{suffix}
+      {count.toLocaleString()}
+      {suffix}
     </span>
   );
 });
@@ -429,8 +438,7 @@ const HeroSection = memo(
             <div
               className="absolute inset-0"
               style={{
-                backgroundImage:
-                  'radial-gradient(rgba(0,180,220,0.18) 1.2px, transparent 1.2px)',
+                backgroundImage: 'radial-gradient(rgba(0,180,220,0.18) 1.2px, transparent 1.2px)',
                 backgroundSize: '26px 26px',
               }}
             />
@@ -441,12 +449,12 @@ const HeroSection = memo(
             <div className="absolute inset-0 rounded-[2rem] border border-vision-cyan/12 pointer-events-none" />
             {/* Light mode twinkle stars */}
             {[
-              { x: '7%',  y: '18%', s: 2,   d: 3.5, c: '#00C8E8' },
+              { x: '7%', y: '18%', s: 2, d: 3.5, c: '#00C8E8' },
               { x: '88%', y: '14%', s: 2.5, d: 2.8, c: '#FF6B2B' },
-              { x: '72%', y: '74%', s: 2,   d: 4.0, c: '#FF2A6D' },
+              { x: '72%', y: '74%', s: 2, d: 4.0, c: '#FF2A6D' },
               { x: '14%', y: '76%', s: 2.5, d: 3.2, c: '#00C8E8' },
-              { x: '50%', y: '9%',  s: 2,   d: 4.5, c: '#FF6B2B' },
-              { x: '33%', y: '85%', s: 2,   d: 3.0, c: '#00C8E8' },
+              { x: '50%', y: '9%', s: 2, d: 4.5, c: '#FF6B2B' },
+              { x: '33%', y: '85%', s: 2, d: 3.0, c: '#00C8E8' },
               { x: '92%', y: '55%', s: 2.5, d: 2.5, c: '#FF2A6D' },
             ].map((p, i) => (
               <span
@@ -516,10 +524,7 @@ const HeroSection = memo(
               <div className="flex-1 space-y-5">
                 {/* Title — char-stagger "PROJECT", letterSpacing-collapse "ARCHIVES" */}
                 <div className="font-display font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter uppercase italic overflow-visible pb-2">
-                  <div
-                    className="block text-text-light dark:text-text-dark"
-                    aria-label="Project"
-                  >
+                  <div className="block text-text-light dark:text-text-dark" aria-label="Project">
                     {'PROJECT'.split('').map((char, i) => (
                       <MotionSpan
                         key={i}
@@ -539,9 +544,7 @@ const HeroSection = memo(
                   <MotionSpan
                     initial={{ opacity: 0, letterSpacing: '0.5em', filter: 'blur(28px)' }}
                     animate={
-                      isInView
-                        ? { opacity: 1, letterSpacing: '-0.02em', filter: 'blur(0px)' }
-                        : {}
+                      isInView ? { opacity: 1, letterSpacing: '-0.02em', filter: 'blur(0px)' } : {}
                     }
                     transition={{ delay: 0.9, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
                     className="block text-transparent bg-clip-text bg-gradient-to-r from-vision-crimson via-vision-orange to-vision-cyan animate-gradient-x"
@@ -609,8 +612,7 @@ const HeroSection = memo(
                     ref={radarBeamRef}
                     className="absolute top-1/2 left-1/2 w-1/2 h-0.5 origin-left"
                     style={{
-                      background:
-                        'linear-gradient(90deg, rgba(var(--glow-cyan),0.5), transparent)',
+                      background: 'linear-gradient(90deg, rgba(var(--glow-cyan),0.5), transparent)',
                     }}
                   />
                   <div ref={radarConeRef} className="absolute inset-0 rounded-full" />
@@ -796,8 +798,25 @@ const CategoryFilters = memo(
 );
 
 // ============================================================================
-// PROJECT CARD — Border beam + inner glow
+// PROJECT CARD — Border beam + flip to details
 // ============================================================================
+
+// Flip icon for hint
+const FlipIcon = () => (
+  <svg
+    width="9"
+    height="9"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="rgba(0,200,232,1)"
+    strokeWidth="2.5"
+  >
+    <path d="M17 1l4 4-4 4" />
+    <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+    <path d="M7 23l-4-4 4-4" />
+    <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+  </svg>
+);
 
 const ProjectCard = memo(
   ({
@@ -810,6 +829,11 @@ const ProjectCard = memo(
     onSelect: (p: ProjectData) => void;
   }) => {
     const cardRef = useRef<HTMLDivElement>(null);
+    const isFlippingRef = useRef(false);
+    const [isFlipped, setIsFlipped] = useState(false);
+    const [displayBack, setDisplayBack] = useState(false);
+    const flipControls = useAnimation();
+
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
@@ -822,17 +846,17 @@ const ProjectCard = memo(
       stiffness: 200,
     });
 
-    const contentX = useSpring(useTransform(mouseX, [-0.5, 0.5], [15, -15]), {
+    const contentX = useSpring(useTransform(mouseX, [-0.5, 0.5], [12, -12]), {
       damping: 25,
       stiffness: 150,
     });
-    const contentY = useSpring(useTransform(mouseY, [-0.5, 0.5], [15, -15]), {
+    const contentY = useSpring(useTransform(mouseY, [-0.5, 0.5], [12, -12]), {
       damping: 25,
       stiffness: 150,
     });
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!cardRef.current) return;
+      if (!cardRef.current || isFlipped) return;
       const rect = cardRef.current.getBoundingClientRect();
       mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
       mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
@@ -841,6 +865,25 @@ const ProjectCard = memo(
     const handleMouseLeave = () => {
       mouseX.set(0);
       mouseY.set(0);
+    };
+
+    const handleFlip = async () => {
+      if (isFlippingRef.current) return;
+      isFlippingRef.current = true;
+      mouseX.set(0);
+      mouseY.set(0);
+      const toBack = !isFlipped;
+      await flipControls.start({
+        rotateY: toBack ? -90 : 90,
+        transition: { duration: 0.22, ease: 'easeIn' as const },
+      });
+      setDisplayBack(toBack);
+      setIsFlipped(toBack);
+      await flipControls.start({
+        rotateY: 0,
+        transition: { duration: 0.22, ease: 'easeOut' as const },
+      });
+      isFlippingRef.current = false;
     };
 
     const statusColor =
@@ -859,183 +902,339 @@ const ProjectCard = memo(
         className="group/card relative"
         style={{ perspective: '2000px' }}
       >
-        {/* Outer beam wrapper */}
-        <MotionDiv
-          ref={cardRef}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          style={{ rotateX, rotateY }}
-          className="relative rounded-[2.5rem] transition-shadow duration-700 hover:shadow-[0_0_60px_rgba(var(--glow-cyan),0.2),_0_0_120px_rgba(var(--glow-cyan),0.08)]"
-        >
-          {/* Spinning conic-gradient border */}
-          <div className="absolute -inset-[1px] rounded-[2.5rem] overflow-hidden opacity-0 group-hover/card:opacity-100 transition-opacity duration-500">
-            <div
-              className="absolute inset-0 animate-spin-slow"
-              style={{
-                background:
-                  'conic-gradient(from 0deg, transparent 0%, rgba(var(--glow-cyan),1) 10%, transparent 20%, transparent 40%, rgba(var(--glow-crimson),1) 50%, transparent 60%, transparent 80%, rgba(var(--glow-orange),1) 90%, transparent 100%)',
-              }}
-            />
-            <div className="absolute inset-[1.5px] rounded-[calc(1.25rem-1.5px)] bg-white dark:bg-space-black" />
-          </div>
-
-          {/* Traveling beam dots */}
-          <div className="absolute inset-0 rounded-[2.5rem] overflow-hidden opacity-0 group-hover/card:opacity-100 transition-opacity duration-700 pointer-events-none">
-            <div
-              className="absolute h-[10px] w-[100px] animate-border-beam"
-              style={{
-                background:
-                  'linear-gradient(90deg, transparent, rgba(var(--glow-cyan),1), transparent)',
-                offsetPath: 'rect(0 100% 100% 0 round 20px)',
-                boxShadow:
-                  '0 0 40px 10px rgba(var(--glow-cyan),0.9), 0 0 80px 20px rgba(var(--glow-cyan),0.4)',
-                filter: 'blur(0.3px)',
-              }}
-            />
-            <div
-              className="absolute h-[10px] w-[60px] animate-border-beam"
-              style={{
-                background:
-                  'linear-gradient(90deg, transparent, rgba(var(--glow-crimson),1), transparent)',
-                offsetPath: 'rect(0 100% 100% 0 round 20px)',
-                animationDelay: '-1.5s',
-                animationDuration: '4s',
-                boxShadow:
-                  '0 0 35px 8px rgba(var(--glow-crimson),0.8), 0 0 70px 16px rgba(var(--glow-crimson),0.35)',
-                filter: 'blur(0.3px)',
-              }}
-            />
-          </div>
-
-          {/* Card body */}
-          <div className="relative rounded-[2.5rem] flex flex-col overflow-hidden border-[1px] backdrop-blur-[40px] bg-white/95 dark:bg-space-black/90 border-slate-300/50 dark:border-white/10 transition-all duration-700 group-hover/card:border-transparent">
-            {/* Lighting Edge Effect */}
-            <div className="absolute inset-0 pointer-events-none z-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-700">
-              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-vision-crimson/50 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-vision-cyan/50 to-transparent" />
+        {/* Flip controller */}
+        <MotionDiv animate={flipControls}>
+          {/* Tilt wrapper */}
+          <MotionDiv
+            ref={cardRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            onClick={handleFlip}
+            style={{ rotateX: isFlipped ? 0 : rotateX, rotateY: isFlipped ? 0 : rotateY }}
+            className="relative rounded-[2.5rem] cursor-pointer transition-shadow duration-700 hover:shadow-[0_0_60px_rgba(var(--glow-cyan),0.2),_0_0_120px_rgba(var(--glow-cyan),0.08)]"
+          >
+            {/* Spinning conic-gradient border */}
+            <div className="absolute -inset-[1px] rounded-[2.5rem] overflow-hidden opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none">
+              <div
+                className="absolute inset-0 animate-spin-slow"
+                style={{
+                  background:
+                    'conic-gradient(from 0deg, transparent 0%, rgba(var(--glow-cyan),1) 10%, transparent 20%, transparent 40%, rgba(var(--glow-crimson),1) 50%, transparent 60%, transparent 80%, rgba(var(--glow-orange),1) 90%, transparent 100%)',
+                }}
+              />
+              <div className="absolute inset-[1.5px] rounded-[2.4rem] bg-white dark:bg-space-black" />
             </div>
 
-            {/* Dotted Background Effect */}
-            <div
-              className="absolute inset-0 pointer-events-none opacity-[0.05] dark:opacity-[0.1]"
-              style={{
-                backgroundImage: 'radial-gradient(currentColor 1px, transparent 1px)',
-                backgroundSize: '24px 24px',
-              }}
-            />
-
-            {/* Ambient HUD Glow Blurs */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover/card:opacity-100 transition-opacity duration-1000">
-              <div className="absolute top-0 right-0 w-80 h-80 bg-vision-crimson/10 blur-[120px] translate-x-1/2 -translate-y-1/2" />
-              <div className="absolute bottom-0 left-0 w-80 h-80 bg-vision-cyan/10 blur-[120px] -translate-x-1/2 translate-y-1/2" />
+            {/* Traveling beam dots */}
+            <div className="absolute inset-0 rounded-[2.5rem] overflow-hidden opacity-0 group-hover/card:opacity-100 transition-opacity duration-700 pointer-events-none">
+              <div
+                className="absolute h-[10px] w-[100px] animate-border-beam"
+                style={{
+                  background:
+                    'linear-gradient(90deg, transparent, rgba(var(--glow-cyan),1), transparent)',
+                  offsetPath: 'rect(0 100% 100% 0 round 20px)',
+                  boxShadow:
+                    '0 0 40px 10px rgba(var(--glow-cyan),0.9), 0 0 80px 20px rgba(var(--glow-cyan),0.4)',
+                  filter: 'blur(0.3px)',
+                }}
+              />
+              <div
+                className="absolute h-[10px] w-[60px] animate-border-beam"
+                style={{
+                  background:
+                    'linear-gradient(90deg, transparent, rgba(var(--glow-crimson),1), transparent)',
+                  offsetPath: 'rect(0 100% 100% 0 round 20px)',
+                  animationDelay: '-1.5s',
+                  animationDuration: '4s',
+                  boxShadow:
+                    '0 0 35px 8px rgba(var(--glow-crimson),0.8), 0 0 70px 16px rgba(var(--glow-crimson),0.35)',
+                  filter: 'blur(0.3px)',
+                }}
+              />
             </div>
 
-            {/* ── Image panel ── */}
-            <div className="relative h-36 overflow-hidden border-b border-slate-200/60 dark:border-white/[0.05] shrink-0">
-              {project.images?.thumbnail ? (
-                <Image
-                  src={project.images.thumbnail}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition-all duration-700 group-hover/card:scale-[1.04] group-hover/card:brightness-90"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-900 dark:to-space-black">
-                  <div className="text-center space-y-1.5">
-                    <div className="text-4xl font-mono font-black opacity-10 dark:opacity-[0.06] text-slate-900 dark:text-white">
-                      ⬡
-                    </div>
-                    <div className="text-[9px] font-mono font-black text-slate-400 dark:text-white/20 uppercase tracking-[0.5em]">
-                      {project.category}
-                    </div>
-                  </div>
-                </div>
-              )}
-              {/* Scanline overlay */}
-              <div className="absolute inset-0 bg-[linear-gradient(transparent_49%,rgba(0,0,0,0.04)_50%,transparent_51%)] bg-[size:100%_4px] pointer-events-none opacity-40 dark:opacity-70" />
-              {/* Fade to card at bottom */}
-              <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white dark:from-space-black to-transparent" />
-              {/* Featured badge */}
-              {project.featured && (
-                <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-sm border border-yellow-400/40 text-yellow-400 text-[8px] font-mono font-black uppercase tracking-widest">
-                  ★ FEATURED
-                </div>
-              )}
-            </div>
-
-            {/* Parallax Content — all card content unified here */}
-            <MotionDiv
-              style={{ x: contentX, y: contentY }}
-              className="relative z-10 flex flex-col p-6"
-            >
-              {/* Header: ID + category + hex icon */}
-              <div className="flex justify-between items-start mb-4">
-                <div className="space-y-1">
-                  <div className="inline-flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-vision-crimson shadow-[0_0_10px_rgba(var(--glow-crimson),0.7)] animate-pulse" />
-                    <span className="text-[10px] font-mono font-black text-vision-crimson uppercase tracking-[0.6em] drop-shadow-[0_0_8px_rgba(var(--glow-crimson),0.5)]">
-                      #{String(idx + 1).padStart(2, '0')}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-[9px] font-mono font-bold text-slate-400 dark:text-text-dark/30 uppercase tracking-[0.4em] italic">
-                    {categoryIcons[project.category] && (
-                      <span className="opacity-60 group-hover/card:opacity-100 group-hover/card:text-vision-cyan transition-all">
-                        {categoryIcons[project.category]}
-                      </span>
-                    )}
-                    {project.category}
-                  </div>
-                </div>
-                <div className="h-9 w-9 rounded-xl flex items-center justify-center text-slate-300 dark:text-text-dark/20 group-hover/card:text-vision-cyan border border-slate-200 dark:border-white/5 group-hover/card:border-vision-cyan/40 transition-all bg-white/20 dark:bg-black/40 backdrop-blur-sm">
-                  <Icons.Hex />
-                </div>
+            {/* Card body */}
+            <div className="relative rounded-[2.5rem] flex flex-col overflow-hidden border-[1px] backdrop-blur-[40px] bg-white/95 dark:bg-space-black/90 border-slate-300/50 dark:border-white/10 transition-all duration-700 group-hover/card:border-transparent">
+              {/* Lighting Edge Effect */}
+              <div className="absolute inset-0 pointer-events-none z-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-700">
+                <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-vision-crimson/50 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-vision-cyan/50 to-transparent" />
               </div>
 
-              {/* Title + description */}
-              <div className="space-y-2 mb-4">
-                <h3 className="text-xl font-display font-black text-slate-900 dark:text-text-dark tracking-tighter uppercase italic group-hover/card:text-vision-cyan transition-colors duration-500 leading-tight">
-                  {project.title}
-                </h3>
-                <p className="text-[12px] font-medium leading-relaxed text-slate-600 dark:text-text-dark/50 line-clamp-2">
-                  {project.description}
-                </p>
+              {/* Dotted Background Effect */}
+              <div
+                className="absolute inset-0 pointer-events-none opacity-[0.04] dark:opacity-[0.08]"
+                style={{
+                  backgroundImage: 'radial-gradient(currentColor 1px, transparent 1px)',
+                  backgroundSize: '24px 24px',
+                }}
+              />
+
+              {/* Ambient HUD Glow Blurs */}
+              <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover/card:opacity-100 transition-opacity duration-1000">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-vision-crimson/10 blur-[120px] translate-x-1/2 -translate-y-1/2" />
+                <div className="absolute bottom-0 left-0 w-80 h-80 bg-vision-cyan/10 blur-[120px] -translate-x-1/2 translate-y-1/2" />
               </div>
 
-              {/* Tech tags */}
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {project.technologies.slice(0, 4).map((t) => (
-                  <span
-                    key={t}
-                    className="px-2.5 py-1 bg-slate-100 dark:bg-white/5 rounded-lg text-[8px] font-mono font-black text-slate-600 dark:text-text-dark/40 border border-slate-200 dark:border-white/5 group-hover/card:border-vision-cyan/30 transition-all uppercase tracking-tight"
+              {/* ── FRONT / BACK ── */}
+              <AnimatePresence mode="wait" initial={false}>
+                {!displayBack ? (
+                  /* ── FRONT ── */
+                  <MotionDiv
+                    key="front"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex flex-col"
                   >
-                    {t}
-                  </span>
-                ))}
-              </div>
+                    {/* Image panel */}
+                    <div className="relative h-36 overflow-hidden border-b border-slate-200/60 dark:border-white/[0.05] shrink-0 rounded-t-[2.5rem]">
+                      {project.images?.thumbnail ? (
+                        <Image
+                          src={project.images.thumbnail}
+                          alt={project.title}
+                          fill
+                          className="object-cover transition-all duration-700 group-hover/card:scale-[1.04] group-hover/card:brightness-90"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-900 dark:to-space-black">
+                          <div className="text-center space-y-1.5">
+                            <div className="text-4xl font-mono font-black opacity-10 dark:opacity-[0.06] text-slate-900 dark:text-white">
+                              ⬡
+                            </div>
+                            <div className="text-[9px] font-mono font-black text-slate-400 dark:text-white/20 uppercase tracking-[0.5em]">
+                              {project.category}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {/* Scanline overlay */}
+                      <div className="absolute inset-0 bg-[linear-gradient(transparent_49%,rgba(0,0,0,0.04)_50%,transparent_51%)] bg-[size:100%_4px] pointer-events-none opacity-40 dark:opacity-70" />
+                      {/* Fade to card at bottom */}
+                      <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white dark:from-space-black to-transparent" />
+                      {/* Featured badge */}
+                      {project.featured && (
+                        <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-sm border border-yellow-400/40 text-yellow-400 text-[8px] font-mono font-black uppercase tracking-widest">
+                          ★ FEATURED
+                        </div>
+                      )}
+                      {/* Flip hint */}
+                      <div className="absolute bottom-3 right-3 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500">
+                        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-sm border border-white/20">
+                          <FlipIcon />
+                          <span className="text-[8px] font-mono font-black text-vision-cyan uppercase tracking-[0.3em]">
+                            Details
+                          </span>
+                        </div>
+                      </div>
+                    </div>
 
-              {/* Footer: status + action */}
-              <div className="flex items-center justify-between pt-4 border-t border-slate-200/60 dark:border-white/10">
-                <div className="flex items-center gap-2">
-                  <div
-                    className={`h-1.5 w-1.5 rounded-full ${statusColor} shadow-[0_0_10px_currentColor] animate-pulse`}
-                  />
-                  <span className="text-[10px] font-mono font-black tracking-[0.2em] text-slate-900 dark:text-text-dark uppercase">
-                    {project.status}
-                  </span>
-                </div>
-                <button
-                  onClick={() => onSelect(project)}
-                  className="h-9 w-9 rounded-xl flex items-center justify-center text-slate-400 dark:text-text-dark/40 hover:text-white dark:hover:text-space-black hover:bg-vision-crimson dark:hover:bg-vision-cyan hover:scale-110 transition-all border border-slate-200 dark:border-white/5 bg-white/20 dark:bg-black/40 backdrop-blur-sm"
-                >
-                  <Icons.External />
-                </button>
-              </div>
-            </MotionDiv>
+                    {/* Parallax content */}
+                    <MotionDiv
+                      style={{ x: contentX, y: contentY }}
+                      className="relative z-10 flex flex-col p-6"
+                    >
+                      {/* Header: ID + category + hex icon */}
+                      <div className="flex justify-between items-start mb-4">
+                        <div className="space-y-1">
+                          <div className="inline-flex items-center gap-2">
+                            <div className="h-1.5 w-1.5 rounded-full bg-vision-crimson shadow-[0_0_10px_rgba(var(--glow-crimson),0.7)] animate-pulse" />
+                            <span className="text-[10px] font-mono font-black text-vision-crimson uppercase tracking-[0.6em] drop-shadow-[0_0_8px_rgba(var(--glow-crimson),0.5)]">
+                              #{String(idx + 1).padStart(2, '0')}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1.5 text-[9px] font-mono font-bold text-slate-400 dark:text-text-dark/30 uppercase tracking-[0.4em] italic">
+                            {categoryIcons[project.category] && (
+                              <span className="opacity-60 group-hover/card:opacity-100 group-hover/card:text-vision-cyan transition-all">
+                                {categoryIcons[project.category]}
+                              </span>
+                            )}
+                            {project.category}
+                          </div>
+                        </div>
+                        <div className="h-9 w-9 rounded-xl flex items-center justify-center text-slate-300 dark:text-text-dark/20 group-hover/card:text-vision-cyan border border-slate-200 dark:border-white/5 group-hover/card:border-vision-cyan/40 transition-all bg-white/20 dark:bg-black/40 backdrop-blur-sm">
+                          <Icons.Hex />
+                        </div>
+                      </div>
 
-            {/* Inner border accent */}
-            <div className="absolute inset-[5px] rounded-[2.2rem] border border-vision-cyan/0 group-hover/card:border-vision-cyan/20 transition-all duration-700 pointer-events-none" />
-          </div>
+                      {/* Title + description */}
+                      <div className="space-y-2 mb-4">
+                        <h3 className="text-xl font-display font-black text-slate-900 dark:text-text-dark tracking-tighter uppercase italic group-hover/card:text-vision-cyan transition-colors duration-500 leading-tight">
+                          {project.title}
+                        </h3>
+                        <p className="text-[12px] font-medium leading-relaxed text-slate-600 dark:text-text-dark/50 line-clamp-2">
+                          {project.description}
+                        </p>
+                      </div>
+
+                      {/* Tech tags */}
+                      <div className="flex flex-wrap gap-1.5 mb-4">
+                        {project.technologies.slice(0, 4).map((t) => (
+                          <span
+                            key={t}
+                            className="px-2.5 py-1 bg-slate-100 dark:bg-white/5 rounded-lg text-[8px] font-mono font-black text-slate-600 dark:text-text-dark/40 border border-slate-200 dark:border-white/5 group-hover/card:border-vision-cyan/30 transition-all uppercase tracking-tight"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Footer: status + open modal (stop propagation so it doesn't flip) */}
+                      <div className="flex items-center justify-between pt-4 border-t border-slate-200/60 dark:border-white/10">
+                        <div className="flex items-center gap-2">
+                          <div
+                            className={`h-1.5 w-1.5 rounded-full ${statusColor} shadow-[0_0_10px_currentColor] animate-pulse`}
+                          />
+                          <span className="text-[10px] font-mono font-black tracking-[0.2em] text-slate-900 dark:text-text-dark uppercase">
+                            {project.status}
+                          </span>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelect(project);
+                          }}
+                          className="h-9 w-9 rounded-xl flex items-center justify-center text-slate-400 dark:text-text-dark/40 hover:text-white dark:hover:text-space-black hover:bg-vision-crimson dark:hover:bg-vision-cyan hover:scale-110 transition-all border border-slate-200 dark:border-white/5 bg-white/20 dark:bg-black/40 backdrop-blur-sm"
+                          title="Open full details"
+                        >
+                          <Icons.External />
+                        </button>
+                      </div>
+                    </MotionDiv>
+                  </MotionDiv>
+                ) : (
+                  /* ── BACK ── */
+                  <MotionDiv
+                    key="back"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex flex-col p-6 relative z-10"
+                  >
+                    {/* Back header */}
+                    <div className="flex items-start justify-between mb-5">
+                      <div>
+                        <div className="text-[9px] font-mono font-black text-vision-cyan uppercase tracking-[0.5em] mb-1">
+                          #{String(idx + 1).padStart(2, '0')} // DETAILS
+                        </div>
+                        <h3 className="text-xl font-display font-black text-slate-900 dark:text-text-dark tracking-tighter uppercase italic leading-tight">
+                          {project.title}
+                        </h3>
+                      </div>
+                      {/* Close / flip back */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleFlip();
+                        }}
+                        className="h-9 w-9 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-400 hover:text-vision-crimson transition-colors shrink-0 ml-3"
+                      >
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="3"
+                        >
+                          <path d="M18 6 6 18M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    {/* Features */}
+                    {project.features && project.features.length > 0 && (
+                      <div className="mb-4">
+                        <div className="text-[8px] font-mono font-black text-vision-cyan/70 uppercase tracking-[0.5em] mb-2.5 flex items-center gap-2">
+                          <div className="h-px w-4 bg-vision-cyan/40" /> Key Features
+                        </div>
+                        <ul className="space-y-2">
+                          {project.features.slice(0, 4).map((f: string, i: number) => (
+                            <li
+                              key={i}
+                              className="flex items-start gap-2.5 text-[11px] text-slate-600 dark:text-text-dark/60 font-mono"
+                            >
+                              <div className="h-4 w-4 rounded-md bg-vision-cyan/10 border border-vision-cyan/30 flex items-center justify-center shrink-0 mt-0.5">
+                                <svg
+                                  width="8"
+                                  height="8"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  className="text-vision-cyan"
+                                  strokeWidth="3.5"
+                                >
+                                  <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                              </div>
+                              <span className="leading-snug">{f}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Challenges */}
+                    {project.challenges && (
+                      <div className="mb-4">
+                        <div className="text-[8px] font-mono font-black text-vision-crimson/70 uppercase tracking-[0.5em] mb-2 flex items-center gap-2">
+                          <div className="h-px w-4 bg-vision-crimson/40" /> Challenge
+                        </div>
+                        <p className="text-[11px] font-mono text-slate-500 dark:text-text-dark/40 leading-relaxed line-clamp-3 italic">
+                          {project.challenges}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Action buttons */}
+                    <div className="mt-auto space-y-2 pt-2">
+                      {project.links?.github && (
+                        <a
+                          href={project.links.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex items-center justify-center gap-2.5 w-full py-2.5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-vision-cyan/40 hover:text-vision-cyan transition-all text-[10px] font-mono font-black text-slate-600 dark:text-text-dark/50 uppercase tracking-[0.3em]"
+                        >
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                          </svg>
+                          GitHub
+                        </a>
+                      )}
+                      {project.links?.live && (
+                        <a
+                          href={project.links.live}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex items-center justify-center gap-2.5 w-full py-2.5 rounded-2xl bg-vision-cyan/10 border border-vision-cyan/30 hover:bg-vision-cyan/20 hover:border-vision-cyan/60 transition-all text-[10px] font-mono font-black text-vision-cyan uppercase tracking-[0.3em]"
+                        >
+                          <Icons.External />
+                          Live Demo
+                        </a>
+                      )}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelect(project);
+                        }}
+                        className="flex items-center justify-center gap-2.5 w-full py-2.5 rounded-2xl bg-vision-crimson/10 border border-vision-crimson/30 hover:bg-vision-crimson/20 hover:border-vision-crimson/50 transition-all text-[10px] font-mono font-black text-vision-crimson uppercase tracking-[0.3em]"
+                      >
+                        Full Details
+                      </button>
+                    </div>
+                  </MotionDiv>
+                )}
+              </AnimatePresence>
+
+              {/* Inner border accent */}
+              <div className="absolute inset-[5px] rounded-[2.2rem] border border-vision-cyan/0 group-hover/card:border-vision-cyan/20 transition-all duration-700 pointer-events-none" />
+            </div>
+          </MotionDiv>
         </MotionDiv>
       </MotionDiv>
     );
@@ -1088,111 +1287,191 @@ const SkeletonCard = ({ i }: { i: number }) => (
 // PAGINATION
 // ============================================================================
 
+// Pagination chevron icons
+const ChevronLeft = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="m15 18-6-6 6-6" />
+  </svg>
+);
+const ChevronRight2 = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+);
+
 const Pagination = memo(
   ({
     pageInfo,
     page,
     onPrev,
     onNext,
+    onGoTo,
   }: {
     pageInfo: any;
     page: number;
     onPrev: () => void;
     onNext: () => void;
+    onGoTo: (p: number) => void;
   }) => {
     const current = pageInfo?.currentPage ?? page;
     const total = pageInfo?.totalPages ?? 1;
+    const hasPrev = !!pageInfo?.hasPreviousPage;
+    const hasNext = !!pageInfo?.hasNextPage;
     const progress = total > 1 ? ((current - 1) / (total - 1)) * 100 : 100;
 
+    // Build page dots (max 7 visible)
+    const pageDots: (number | '…')[] = [];
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) pageDots.push(i);
+    } else {
+      pageDots.push(1);
+      if (current > 3) pageDots.push('…');
+      for (let i = Math.max(2, current - 1); i <= Math.min(total - 1, current + 1); i++)
+        pageDots.push(i);
+      if (current < total - 2) pageDots.push('…');
+      pageDots.push(total);
+    }
+
     return (
-      <div className="flex flex-col items-center gap-5 mt-12">
-        {/* Progress bar */}
-        <div className="w-full max-w-xs h-0.5 rounded-full bg-stone-200/60 dark:bg-white/[0.06] overflow-hidden">
-          <MotionDiv
-            className="h-full rounded-full bg-gradient-to-r from-vision-crimson via-vision-orange to-vision-cyan"
-            initial={{ width: '0%' }}
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            style={{ boxShadow: '0 0 12px rgba(var(--glow-cyan),0.4)' }}
-          />
-        </div>
-
-        <div className="flex items-center gap-4">
-          {/* Prev button */}
-          <MotionButton
-            onClick={onPrev}
-            disabled={!pageInfo?.hasPreviousPage}
-            className="group relative px-6 py-3 rounded-xl border border-stone-200/60 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-[10px] font-mono tracking-[0.3em] uppercase text-text-light/50 dark:text-text-dark/35 overflow-hidden disabled:opacity-20 disabled:cursor-not-allowed backdrop-blur-sm"
-            whileHover={
-              !pageInfo?.hasPreviousPage
-                ? {}
-                : { scale: 1.05, borderColor: 'rgba(var(--glow-cyan),0.4)' }
-            }
-            whileTap={!pageInfo?.hasPreviousPage ? {} : { scale: 0.97 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-          >
-            <span className="relative z-10 flex items-center gap-2 group-hover:text-vision-cyan transition-colors">
-              <MotionDiv
-                className="inline-block"
-                animate={!pageInfo?.hasPreviousPage ? {} : { x: [0, -3, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                ←
-              </MotionDiv>
-              PREV
+      <div className="flex flex-col items-center gap-6 mt-14">
+        {/* Progress track */}
+        <div className="relative w-full max-w-sm">
+          <div className="h-[2px] w-full rounded-full bg-slate-200/60 dark:bg-white/[0.05] overflow-hidden">
+            <MotionDiv
+              className="h-full rounded-full"
+              initial={{ width: '0%' }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                background:
+                  'linear-gradient(90deg, rgba(var(--glow-crimson),1), rgba(var(--glow-orange),1), rgba(var(--glow-cyan),1))',
+                boxShadow: '0 0 14px rgba(var(--glow-cyan),0.5)',
+              }}
+            />
+          </div>
+          {/* Track label */}
+          <div className="flex justify-between mt-1.5">
+            <span className="text-[8px] font-mono text-slate-300 dark:text-white/15 uppercase tracking-[0.3em]">
+              01
             </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-vision-cyan/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-          </MotionButton>
-
-          {/* Page counter */}
-          <MotionDiv
-            className="relative flex items-center gap-2 px-5 py-2.5 rounded-xl border border-stone-200/60 dark:border-white/[0.08] bg-stone-50 dark:bg-white/[0.04] backdrop-blur-sm overflow-hidden"
-            key={current}
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-          >
-            <span className="text-[10px] font-mono tracking-[0.3em] text-text-light/40 dark:text-text-dark/25 uppercase">
-              PAGE
-            </span>
-            <span className="text-base font-mono font-black text-vision-cyan drop-shadow-[0_0_8px_rgba(var(--glow-cyan),0.4)]">
-              {String(current).padStart(2, '0')}
-            </span>
-            <span className="text-[10px] font-mono text-text-light/30 dark:text-text-dark/20">
-              /
-            </span>
-            <span className="text-base font-mono font-black text-text-light/50 dark:text-text-dark/30">
+            <span className="text-[8px] font-mono text-slate-300 dark:text-white/15 uppercase tracking-[0.3em]">
               {String(total).padStart(2, '0')}
             </span>
-            {/* Scanline effect */}
-            <div className="absolute inset-0 bg-[linear-gradient(transparent_49%,rgba(var(--glow-cyan),0.03)_50%,transparent_51%)] bg-[size:100%_4px] pointer-events-none" />
-          </MotionDiv>
+          </div>
+        </div>
 
-          {/* Next button */}
+        {/* Controls row */}
+        <div className="flex items-center gap-3">
+          {/* Prev */}
+          <MotionButton
+            onClick={onPrev}
+            disabled={!hasPrev}
+            whileHover={hasPrev ? { scale: 1.06 } : {}}
+            whileTap={hasPrev ? { scale: 0.94 } : {}}
+            transition={{ type: 'spring', stiffness: 400, damping: 18 }}
+            className={cn(
+              'group relative h-11 w-11 rounded-2xl flex items-center justify-center overflow-hidden',
+              'border font-mono text-[10px] font-black uppercase tracking-widest',
+              'backdrop-blur-sm transition-all duration-300',
+              hasPrev
+                ? 'border-slate-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-slate-500 dark:text-white/35 hover:border-vision-cyan/60 hover:text-vision-cyan hover:shadow-[0_0_20px_rgba(var(--glow-cyan),0.15)]'
+                : 'border-slate-100 dark:border-white/[0.04] bg-slate-50 dark:bg-white/[0.01] text-slate-300 dark:text-white/15 cursor-not-allowed'
+            )}
+          >
+            {hasPrev && (
+              <span className="absolute inset-0 bg-gradient-to-r from-vision-cyan/0 via-vision-cyan/[0.07] to-vision-cyan/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+            )}
+            <ChevronLeft />
+          </MotionButton>
+
+          {/* Page dots */}
+          <div className="flex items-center gap-1.5">
+            {pageDots.map((dot, i) =>
+              dot === '…' ? (
+                <span
+                  key={`ellipsis-${i}`}
+                  className="w-6 text-center text-[10px] font-mono text-slate-300 dark:text-white/20 select-none"
+                >
+                  ···
+                </span>
+              ) : (
+                <MotionDiv
+                  key={dot}
+                  layout
+                  onClick={() => onGoTo(dot as number)}
+                  animate={dot === current ? { scale: 1, opacity: 1 } : { scale: 0.92, opacity: 1 }}
+                  transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                  className={cn(
+                    'relative h-9 min-w-[2.25rem] px-2.5 rounded-xl flex items-center justify-center',
+                    'font-mono text-[11px] font-black cursor-pointer select-none',
+                    'border transition-all duration-300',
+                    dot === current
+                      ? 'border-vision-cyan/60 bg-vision-cyan/10 text-vision-cyan shadow-[0_0_16px_rgba(var(--glow-cyan),0.2),inset_0_1px_0_rgba(var(--glow-cyan),0.15)]'
+                      : 'border-slate-200/70 dark:border-white/[0.07] bg-white dark:bg-white/[0.02] text-slate-400 dark:text-white/25 hover:border-slate-300 dark:hover:border-white/15 hover:text-slate-600 dark:hover:text-white/40'
+                  )}
+                >
+                  {dot === current && (
+                    <MotionDiv
+                      layoutId="page-active-bg"
+                      className="absolute inset-0 rounded-xl bg-vision-cyan/10"
+                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative z-10">{String(dot as number).padStart(2, '0')}</span>
+                  {/* Scanline on active */}
+                  {dot === current && (
+                    <div className="absolute inset-0 bg-[linear-gradient(transparent_49%,rgba(var(--glow-cyan),0.04)_50%,transparent_51%)] bg-[size:100%_4px] pointer-events-none rounded-xl" />
+                  )}
+                </MotionDiv>
+              )
+            )}
+          </div>
+
+          {/* Next */}
           <MotionButton
             onClick={onNext}
-            disabled={!pageInfo?.hasNextPage}
-            className="group relative px-6 py-3 rounded-xl border border-stone-200/60 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-[10px] font-mono tracking-[0.3em] uppercase text-text-light/50 dark:text-text-dark/35 overflow-hidden disabled:opacity-20 disabled:cursor-not-allowed backdrop-blur-sm"
-            whileHover={
-              !pageInfo?.hasNextPage
-                ? {}
-                : { scale: 1.05, borderColor: 'rgba(var(--glow-cyan),0.4)' }
-            }
-            whileTap={!pageInfo?.hasNextPage ? {} : { scale: 0.97 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+            disabled={!hasNext}
+            whileHover={hasNext ? { scale: 1.06 } : {}}
+            whileTap={hasNext ? { scale: 0.94 } : {}}
+            transition={{ type: 'spring', stiffness: 400, damping: 18 }}
+            className={cn(
+              'group relative h-11 w-11 rounded-2xl flex items-center justify-center overflow-hidden',
+              'border font-mono text-[10px] font-black uppercase tracking-widest',
+              'backdrop-blur-sm transition-all duration-300',
+              hasNext
+                ? 'border-slate-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.03] text-slate-500 dark:text-white/35 hover:border-vision-cyan/60 hover:text-vision-cyan hover:shadow-[0_0_20px_rgba(var(--glow-cyan),0.15)]'
+                : 'border-slate-100 dark:border-white/[0.04] bg-slate-50 dark:bg-white/[0.01] text-slate-300 dark:text-white/15 cursor-not-allowed'
+            )}
           >
-            <span className="relative z-10 flex items-center gap-2 group-hover:text-vision-cyan transition-colors">
-              NEXT
-              <MotionDiv
-                className="inline-block"
-                animate={!pageInfo?.hasNextPage ? {} : { x: [0, 3, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                →
-              </MotionDiv>
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-l from-vision-cyan/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+            {hasNext && (
+              <span className="absolute inset-0 bg-gradient-to-l from-vision-cyan/0 via-vision-cyan/[0.07] to-vision-cyan/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+            )}
+            <ChevronRight2 />
           </MotionButton>
+        </div>
+
+        {/* Page label */}
+        <div className="flex items-center gap-2 text-[9px] font-mono text-slate-300 dark:text-white/15 uppercase tracking-[0.35em]">
+          <div className="h-1.5 w-1.5 rounded-full bg-vision-cyan/60 animate-pulse" />
+          Page {String(current).padStart(2, '0')} of {String(total).padStart(2, '0')}
         </div>
       </div>
     );
@@ -1224,9 +1503,7 @@ export default function ProjectsPage() {
     data?.projects?.edges?.map((edge: any) => mapProjectToProjectData(edge.node)) || [];
   const filteredProjects = skillFilter
     ? projects.filter((p: ProjectData) =>
-        p.technologies?.some(
-          (t: string) => t.toLowerCase() === skillFilter.toLowerCase()
-        )
+        p.technologies?.some((t: string) => t.toLowerCase() === skillFilter.toLowerCase())
       )
     : projects;
   const pageInfo = data?.projects?.pageInfo;
@@ -1235,6 +1512,11 @@ export default function ProjectsPage() {
   useEffect(() => {
     setPage(1);
   }, [selectedCategory, skillFilter]);
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <main className="relative min-h-screen bg-stone-50 dark:bg-space-black text-text-light dark:text-text-dark overflow-hidden transition-colors duration-1000">
@@ -1258,7 +1540,10 @@ export default function ProjectsPage() {
         <CategoryFilters
           categories={categories}
           selected={selectedCategory}
-          onSelect={(cat) => { setSelectedCategory(cat); setSkillFilter(''); }}
+          onSelect={(cat) => {
+            setSelectedCategory(cat);
+            setSkillFilter('');
+          }}
         />
 
         {/* Active skill filter badge */}
@@ -1336,27 +1621,13 @@ export default function ProjectsPage() {
           </motion.div>
         )}
 
-        {/* Status Bar */}
-        <MotionDiv
-          className="flex items-center justify-between py-4 px-5 rounded-xl border border-stone-200/60 dark:border-white/[0.06] bg-white dark:bg-white/[0.02] font-mono text-[9px] tracking-[0.2em] text-text-light/40 dark:text-text-dark/25 uppercase"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-        >
-          <span className="flex items-center gap-1.5">
-            <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            ARCHIVE_SYNC: 100%
-          </span>
-          <span>TOTAL_NODES: {totalCount}</span>
-          <span className="text-vision-cyan font-bold">SIGNAL: STABLE_SECURE</span>
-        </MotionDiv>
-
         {/* Pagination */}
         <Pagination
           pageInfo={pageInfo}
           page={page}
-          onPrev={() => setPage((p) => Math.max(1, p - 1))}
-          onNext={() => setPage((p) => p + 1)}
+          onPrev={() => handlePageChange(Math.max(1, page - 1))}
+          onNext={() => handlePageChange(page + 1)}
+          onGoTo={(p) => handlePageChange(p)}
         />
 
         {/* ── Footer Stats Panel ── */}
@@ -1373,21 +1644,23 @@ export default function ProjectsPage() {
             <div className="absolute -bottom-16 right-[20%] w-64 h-64 rounded-full bg-vision-crimson/[0.08] dark:bg-vision-crimson/[0.04] blur-[90px]" />
             <div className="absolute top-1/3 right-[5%] w-48 h-48 rounded-full bg-vision-orange/[0.07] dark:bg-vision-orange/[0.03] blur-[80px]" />
             {[
-              { x: '2%',  y: '8%',  s: 2.5, d: 3.2, c: '#00C8E8' },
-              { x: '8%',  y: '85%', s: 2,   d: 4.1, c: '#FF2A6D' },
-              { x: '95%', y: '12%', s: 3,   d: 2.8, c: '#FF6B2B' },
-              { x: '92%', y: '88%', s: 2,   d: 3.6, c: '#00C8E8' },
-              { x: '50%', y: '2%',  s: 2.5, d: 4.5, c: '#FF2A6D' },
-              { x: '50%', y: '96%', s: 2,   d: 3.0, c: '#FF6B2B' },
-              { x: '18%', y: '95%', s: 3,   d: 2.4, c: '#00C8E8' },
-              { x: '80%', y: '5%',  s: 2,   d: 3.9, c: '#FF2A6D' },
+              { x: '2%', y: '8%', s: 2.5, d: 3.2, c: '#00C8E8' },
+              { x: '8%', y: '85%', s: 2, d: 4.1, c: '#FF2A6D' },
+              { x: '95%', y: '12%', s: 3, d: 2.8, c: '#FF6B2B' },
+              { x: '92%', y: '88%', s: 2, d: 3.6, c: '#00C8E8' },
+              { x: '50%', y: '2%', s: 2.5, d: 4.5, c: '#FF2A6D' },
+              { x: '50%', y: '96%', s: 2, d: 3.0, c: '#FF6B2B' },
+              { x: '18%', y: '95%', s: 3, d: 2.4, c: '#00C8E8' },
+              { x: '80%', y: '5%', s: 2, d: 3.9, c: '#FF2A6D' },
             ].map((p, i) => (
               <span
                 key={i}
                 className="absolute rounded-full animate-twinkle"
                 style={{
-                  left: p.x, top: p.y,
-                  width: `${p.s}px`, height: `${p.s}px`,
+                  left: p.x,
+                  top: p.y,
+                  width: `${p.s}px`,
+                  height: `${p.s}px`,
                   background: p.c,
                   animationDuration: `${p.d}s`,
                   animationDelay: `${i * 0.35}s`,
@@ -1428,25 +1701,27 @@ export default function ProjectsPage() {
             {/* Starry particles */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1]">
               {[
-                { x: '6%',  y: '15%', s: 3,   d: 2.5, c: '#00C8E8' },
+                { x: '6%', y: '15%', s: 3, d: 2.5, c: '#00C8E8' },
                 { x: '15%', y: '55%', s: 2.5, d: 3.8, c: '#FF6B2B' },
-                { x: '22%', y: '80%', s: 2,   d: 2.8, c: '#FF2A6D' },
+                { x: '22%', y: '80%', s: 2, d: 2.8, c: '#FF2A6D' },
                 { x: '30%', y: '28%', s: 3.5, d: 4.0, c: '#00C8E8' },
-                { x: '38%', y: '68%', s: 2,   d: 3.2, c: '#FF6B2B' },
-                { x: '45%', y: '12%', s: 3,   d: 2.2, c: '#FF2A6D' },
+                { x: '38%', y: '68%', s: 2, d: 3.2, c: '#FF6B2B' },
+                { x: '45%', y: '12%', s: 3, d: 2.2, c: '#FF2A6D' },
                 { x: '52%', y: '85%', s: 2.5, d: 4.5, c: '#00C8E8' },
-                { x: '60%', y: '35%', s: 3,   d: 3.0, c: '#FF6B2B' },
-                { x: '68%', y: '72%', s: 2,   d: 3.5, c: '#00C8E8' },
+                { x: '60%', y: '35%', s: 3, d: 3.0, c: '#FF6B2B' },
+                { x: '68%', y: '72%', s: 2, d: 3.5, c: '#00C8E8' },
                 { x: '75%', y: '20%', s: 3.5, d: 2.6, c: '#FF2A6D' },
                 { x: '82%', y: '58%', s: 2.5, d: 4.2, c: '#FF6B2B' },
-                { x: '90%', y: '40%', s: 3,   d: 3.0, c: '#00C8E8' },
+                { x: '90%', y: '40%', s: 3, d: 3.0, c: '#00C8E8' },
               ].map((p, i) => (
                 <span
                   key={i}
                   className="absolute rounded-full animate-twinkle"
                   style={{
-                    left: p.x, top: p.y,
-                    width: `${p.s}px`, height: `${p.s}px`,
+                    left: p.x,
+                    top: p.y,
+                    width: `${p.s}px`,
+                    height: `${p.s}px`,
                     background: p.c,
                     animationDuration: `${p.d}s`,
                     animationDelay: `${i * 0.22}s`,
@@ -1469,7 +1744,11 @@ export default function ProjectsPage() {
                 <span className="text-[8px] font-mono text-slate-300 dark:text-white/15 uppercase tracking-[0.3em]">
                   last_sync:{' '}
                   {new Date()
-                    .toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                    .toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })
                     .toUpperCase()}
                 </span>
               </div>
@@ -1609,8 +1888,6 @@ export default function ProjectsPage() {
             </div>
           </div>
         </motion.div>
-
-
       </div>
 
       <ProjectModal

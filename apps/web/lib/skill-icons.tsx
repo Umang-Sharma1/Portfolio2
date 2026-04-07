@@ -6,7 +6,15 @@ import React, { memo } from 'react';
 // SVG BASE WRAPPER — clean, no background noise
 // ============================================================================
 
-const Svg = ({ children, className, color }: { children: React.ReactNode; className?: string; color?: string }) => (
+const Svg = ({
+  children,
+  className,
+  color,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  color?: string;
+}) => (
   <svg
     className={className}
     viewBox="0 0 24 24"
@@ -50,12 +58,51 @@ const C: Record<string, IconFC> = {
         </radialGradient>
       </defs>
       {/* Rounded rect container background */}
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#reactBg)" stroke="#0891B2" strokeWidth="0.6" strokeOpacity="0.4" />
-      
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#reactBg)"
+        stroke="#0891B2"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+
       {/* Orbital rings */}
-      <ellipse cx="12" cy="12" rx="7" ry="2.4" fill="none" stroke="#61DAFB" strokeWidth="1.2" strokeOpacity="0.75" />
-      <ellipse cx="12" cy="12" rx="7" ry="2.4" fill="none" stroke="#61DAFB" strokeWidth="1.2" strokeOpacity="0.55" transform="rotate(60 12 12)" />
-      <ellipse cx="12" cy="12" rx="7" ry="2.4" fill="none" stroke="#61DAFB" strokeWidth="1.2" strokeOpacity="0.4" transform="rotate(-60 12 12)" />
+      <ellipse
+        cx="12"
+        cy="12"
+        rx="7"
+        ry="2.4"
+        fill="none"
+        stroke="#61DAFB"
+        strokeWidth="1.2"
+        strokeOpacity="0.75"
+      />
+      <ellipse
+        cx="12"
+        cy="12"
+        rx="7"
+        ry="2.4"
+        fill="none"
+        stroke="#61DAFB"
+        strokeWidth="1.2"
+        strokeOpacity="0.55"
+        transform="rotate(60 12 12)"
+      />
+      <ellipse
+        cx="12"
+        cy="12"
+        rx="7"
+        ry="2.4"
+        fill="none"
+        stroke="#61DAFB"
+        strokeWidth="1.2"
+        strokeOpacity="0.4"
+        transform="rotate(-60 12 12)"
+      />
       {/* Glowing nucleus */}
       <circle cx="12" cy="12" r="2.2" fill="url(#reactCore)" stroke="none" />
       <circle cx="11.2" cy="11.2" r="0.7" fill="white" fillOpacity="0.45" stroke="none" />
@@ -76,14 +123,31 @@ const C: Record<string, IconFC> = {
         </radialGradient>
       </defs>
       {/* Rounded rect container background */}
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#nextBg)" stroke="#111" strokeWidth="0.5" strokeOpacity="0.3" />
-      
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#nextBg)"
+        stroke="#111"
+        strokeWidth="0.5"
+        strokeOpacity="0.3"
+      />
+
       {/* Filled disc */}
       <circle cx="12" cy="12" r="8" fill="url(#nextDisc)" stroke="none" />
       {/* Specular highlight */}
       <ellipse cx="9" cy="8.5" rx="2.8" ry="1.6" fill="white" fillOpacity="0.08" stroke="none" />
       {/* Bold N letterform */}
-      <path d="M8 15L10 9l4 6V9" fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M8 15L10 9l4 6V9"
+        fill="none"
+        stroke="white"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </Svg>
   ),
 
@@ -97,11 +161,32 @@ const C: Record<string, IconFC> = {
         </linearGradient>
       </defs>
       <rect x="2.5" y="2.5" width="19" height="19" rx="2.5" fill="url(#jsGrad)" stroke="none" />
-      <rect x="2.5" y="2.5" width="19" height="19" rx="2.5" fill="none" stroke="#D4BB00" strokeWidth="0.6" />
+      <rect
+        x="2.5"
+        y="2.5"
+        width="19"
+        height="19"
+        rx="2.5"
+        fill="none"
+        stroke="#D4BB00"
+        strokeWidth="0.6"
+      />
       {/* J */}
-      <path d="M8.2 8.5v7.3c0 1.4-1 2.2-2.2 2.2" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" />
+      <path
+        d="M8.2 8.5v7.3c0 1.4-1 2.2-2.2 2.2"
+        fill="none"
+        stroke="#222"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
       {/* S */}
-      <path d="M12.5 15.8c.4 1.5 3.5 1.5 3.5-.3 0-2-3.5-1.6-3.5-3.5 0-1.6 2.8-2 3.5-.4" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" />
+      <path
+        d="M12.5 15.8c.4 1.5 3.5 1.5 3.5-.3 0-2-3.5-1.6-3.5-3.5 0-1.6 2.8-2 3.5-.4"
+        fill="none"
+        stroke="#222"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
     </Svg>
   ),
 
@@ -115,12 +200,27 @@ const C: Record<string, IconFC> = {
         </linearGradient>
       </defs>
       <rect x="2.5" y="2.5" width="19" height="19" rx="2.5" fill="url(#tsGrad)" stroke="none" />
-      <rect x="2.5" y="2.5" width="19" height="19" rx="2.5" fill="none" stroke="#1C5A94" strokeWidth="0.6" />
+      <rect
+        x="2.5"
+        y="2.5"
+        width="19"
+        height="19"
+        rx="2.5"
+        fill="none"
+        stroke="#1C5A94"
+        strokeWidth="0.6"
+      />
       {/* T */}
       <path d="M5 9.5h6.5" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" />
       <path d="M8.2 9.5V17" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" />
       {/* S */}
-      <path d="M13 15.8c.4 1.4 3.5 1.4 3.5-.3 0-2-3.5-1.6-3.5-3.5 0-1.7 2.8-2 3.5-.4" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      <path
+        d="M13 15.8c.4 1.4 3.5 1.4 3.5-.3 0-2-3.5-1.6-3.5-3.5 0-1.7 2.8-2 3.5-.4"
+        fill="none"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
     </Svg>
   ),
 
@@ -137,14 +237,26 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#06B6D4" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#twBg)" stroke="#06B6D4" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#twBg)"
+        stroke="#06B6D4"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       <path
         d="M7 10.5C8 8.5 9.8 7.8 11.7 8.6c1.3.5 2.1 1.7 3.2 2.2 1.6.9 3.3.3 5.1-1.8C18.8 11 17.1 11.8 15 11c-1.3-.5-2.1-1.7-3.2-2.2C9.9 7.9 8.3 8.3 7 10.5z"
-        fill="url(#twGrad)" stroke="none"
+        fill="url(#twGrad)"
+        stroke="none"
       />
       <path
         d="M7 15.3C8 13.3 9.8 12.6 11.7 13.4c1.3.5 2.1 1.7 3.2 2.2 1.6.9 3.3.3 5.1-1.8C18.8 15.8 17.1 16.6 15 15.8c-1.3-.5-2.1-1.7-3.2-2.2C9.9 12.7 8.3 13.1 7 15.3z"
-        fill="url(#twGrad)" stroke="none"
+        fill="url(#twGrad)"
+        stroke="none"
       />
     </Svg>
   ),
@@ -162,22 +274,50 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#2496ED" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#dockerBg)" stroke="#2496ED" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#dockerBg)"
+        stroke="#2496ED"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       {/* Container blocks */}
       <rect x="4" y="9" width="2.5" height="2" rx="0.4" fill="url(#dockerBlue)" stroke="none" />
       <rect x="7.2" y="9" width="2.5" height="2" rx="0.4" fill="url(#dockerBlue)" stroke="none" />
       <rect x="10.4" y="9" width="2.5" height="2" rx="0.4" fill="url(#dockerBlue)" stroke="none" />
       <rect x="13.6" y="9" width="2.5" height="2" rx="0.4" fill="url(#dockerBlue)" stroke="none" />
       <rect x="7.2" y="6.5" width="2.5" height="2" rx="0.4" fill="url(#dockerBlue)" stroke="none" />
-      <rect x="10.4" y="6.5" width="2.5" height="2" rx="0.4" fill="url(#dockerBlue)" stroke="none" />
+      <rect
+        x="10.4"
+        y="6.5"
+        width="2.5"
+        height="2"
+        rx="0.4"
+        fill="url(#dockerBlue)"
+        stroke="none"
+      />
       {/* Whale belly */}
       <path
         d="M3 12.5c.4 0 .8-.1 1.2-.2.9 2 3 3.5 5.8 3.5h3.2c3 0 5.2-1.8 5.5-4.6H3"
-        fill="#2496ED" fillOpacity="0.22" stroke="#2496ED" strokeWidth="0.9" strokeLinecap="round"
+        fill="#2496ED"
+        fillOpacity="0.22"
+        stroke="#2496ED"
+        strokeWidth="0.9"
+        strokeLinecap="round"
       />
       {/* Spray puff */}
       <circle cx="19" cy="8.5" r="0.7" fill="#2496ED" fillOpacity="0.6" stroke="none" />
-      <path d="M18 7.8c.5-.7 1.5-.6 1.7.2" fill="none" stroke="#2496ED" strokeWidth="0.8" strokeOpacity="0.7" />
+      <path
+        d="M18 7.8c.5-.7 1.5-.6 1.7.2"
+        fill="none"
+        stroke="#2496ED"
+        strokeWidth="0.8"
+        strokeOpacity="0.7"
+      />
     </Svg>
   ),
 
@@ -194,9 +334,25 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#339933" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#nodeBg)" stroke="#339933" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#nodeBg)"
+        stroke="#339933"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       {/* Hex shape scaled to fit inside rect */}
-      <path d="M12 5l6 3.5v7L12 19l-6-3.5v-7L12 5z" fill="url(#nodeGrad)" fillOpacity="0.25" stroke="#339933" strokeWidth="1" />
+      <path
+        d="M12 5l6 3.5v7L12 19l-6-3.5v-7L12 5z"
+        fill="url(#nodeGrad)"
+        fillOpacity="0.25"
+        stroke="#339933"
+        strokeWidth="1"
+      />
       <path d="M12 8l3.5 2v4L12 16l-3.5-2v-4L12 8z" fill="url(#nodeGrad)" stroke="none" />
       <circle cx="12" cy="12" r="1.4" fill="white" fillOpacity="0.25" stroke="none" />
     </Svg>
@@ -215,15 +371,48 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#DC382D" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#redisBg)" stroke="#DC382D" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#redisBg)"
+        stroke="#DC382D"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       {/* Bottom disc */}
-      <ellipse cx="12" cy="16" rx="6.5" ry="2" fill="url(#redisGrad)" fillOpacity="0.25" stroke="#DC382D" strokeWidth="0.9" />
+      <ellipse
+        cx="12"
+        cy="16"
+        rx="6.5"
+        ry="2"
+        fill="url(#redisGrad)"
+        fillOpacity="0.25"
+        stroke="#DC382D"
+        strokeWidth="0.9"
+      />
       {/* Middle disc */}
-      <ellipse cx="12" cy="12" rx="6.5" ry="2" fill="url(#redisGrad)" fillOpacity="0.45" stroke="#DC382D" strokeWidth="0.9" />
+      <ellipse
+        cx="12"
+        cy="12"
+        rx="6.5"
+        ry="2"
+        fill="url(#redisGrad)"
+        fillOpacity="0.45"
+        stroke="#DC382D"
+        strokeWidth="0.9"
+      />
       {/* Top disc / lid */}
       <ellipse cx="12" cy="8" rx="6.5" ry="2" fill="url(#redisGrad)" stroke="none" />
       {/* Star accent on top */}
-      <path d="M12 6.5l.6 1.3 1.4.1-1 .9.3 1.3L12 9.4l-1.3.7.3-1.3-1-.9 1.4-.1z" fill="white" fillOpacity="0.85" stroke="none" />
+      <path
+        d="M12 6.5l.6 1.3 1.4.1-1 .9.3 1.3L12 9.4l-1.3.7.3-1.3-1-.9 1.4-.1z"
+        fill="white"
+        fillOpacity="0.85"
+        stroke="none"
+      />
     </Svg>
   ),
 
@@ -240,11 +429,22 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#47A248" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#mongoBg)" stroke="#47A248" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#mongoBg)"
+        stroke="#47A248"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       {/* Leaf body scaled to fit */}
       <path
         d="M12 5c1.2 1.8 2.8 4.2 2.8 6.8 0 2.4-1.2 4.6-2.8 6.4 0 0 0 .4 0 2-1.6-1.8-2.8-4-2.8-6.8 0-2.6 1.6-5 2.8-6.8z"
-        fill="url(#mongoGrad)" stroke="none"
+        fill="url(#mongoGrad)"
+        stroke="none"
       />
       {/* Leaf vein */}
       <path d="M12 6v13" fill="none" stroke="white" strokeWidth="0.8" strokeOpacity="0.5" />
@@ -266,11 +466,42 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#E34C26" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#htmlBg)" stroke="#E34C26" strokeWidth="0.6" strokeOpacity="0.4" />
-      <path d="M5.5 4.5l1.3 12.3L12 19.5l5.2-2.7L18.5 4.5H5.5z" fill="url(#htmlGrad)" stroke="none" />
-      <path d="M5.5 4.5l1.3 12.3L12 19.5l5.2-2.7L18.5 4.5H5.5z" fill="none" stroke="#C73E10" strokeWidth="0.4" />
-      <path d="M9.5 8l-1.2 3.5 1.2 3" fill="none" stroke="white" strokeWidth="1.3" strokeOpacity="0.9" />
-      <path d="M14.5 8l1.2 3.5-1.2 3" fill="none" stroke="white" strokeWidth="1.3" strokeOpacity="0.9" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#htmlBg)"
+        stroke="#E34C26"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <path
+        d="M5.5 4.5l1.3 12.3L12 19.5l5.2-2.7L18.5 4.5H5.5z"
+        fill="url(#htmlGrad)"
+        stroke="none"
+      />
+      <path
+        d="M5.5 4.5l1.3 12.3L12 19.5l5.2-2.7L18.5 4.5H5.5z"
+        fill="none"
+        stroke="#C73E10"
+        strokeWidth="0.4"
+      />
+      <path
+        d="M9.5 8l-1.2 3.5 1.2 3"
+        fill="none"
+        stroke="white"
+        strokeWidth="1.3"
+        strokeOpacity="0.9"
+      />
+      <path
+        d="M14.5 8l1.2 3.5-1.2 3"
+        fill="none"
+        stroke="white"
+        strokeWidth="1.3"
+        strokeOpacity="0.9"
+      />
     </Svg>
   ),
 
@@ -287,11 +518,42 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#1572B6" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#cssBg)" stroke="#1572B6" strokeWidth="0.6" strokeOpacity="0.4" />
-      <path d="M5.5 4.5l1.3 12.3L12 19.5l5.2-2.7L18.5 4.5H5.5z" fill="url(#cssGrad)" stroke="none" />
-      <path d="M5.5 4.5l1.3 12.3L12 19.5l5.2-2.7L18.5 4.5H5.5z" fill="none" stroke="#0E5A96" strokeWidth="0.4" />
-      <path d="M9.5 7.5c-1.4 0-2 .9-2 1.9s1.3 1.4 1.8 1.6-.7 1.7-1.8 1.7" fill="none" stroke="white" strokeWidth="1.3" strokeOpacity="0.9" />
-      <path d="M14.5 7.5c1.4 0 2 .9 2 1.9s-1.3 1.4-1.8 1.6.7 1.7 1.8 1.7" fill="none" stroke="white" strokeWidth="1.3" strokeOpacity="0.9" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#cssBg)"
+        stroke="#1572B6"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <path
+        d="M5.5 4.5l1.3 12.3L12 19.5l5.2-2.7L18.5 4.5H5.5z"
+        fill="url(#cssGrad)"
+        stroke="none"
+      />
+      <path
+        d="M5.5 4.5l1.3 12.3L12 19.5l5.2-2.7L18.5 4.5H5.5z"
+        fill="none"
+        stroke="#0E5A96"
+        strokeWidth="0.4"
+      />
+      <path
+        d="M9.5 7.5c-1.4 0-2 .9-2 1.9s1.3 1.4 1.8 1.6-.7 1.7-1.8 1.7"
+        fill="none"
+        stroke="white"
+        strokeWidth="1.3"
+        strokeOpacity="0.9"
+      />
+      <path
+        d="M14.5 7.5c1.4 0 2 .9 2 1.9s-1.3 1.4-1.8 1.6.7 1.7 1.8 1.7"
+        fill="none"
+        stroke="white"
+        strokeWidth="1.3"
+        strokeOpacity="0.9"
+      />
     </Svg>
   ),
 
@@ -305,8 +567,18 @@ const C: Record<string, IconFC> = {
         </linearGradient>
       </defs>
       {/* Rounded rect container background */}
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#vueBg)" stroke="#35495E" strokeWidth="0.5" strokeOpacity="0.3" />
-      
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#vueBg)"
+        stroke="#35495E"
+        strokeWidth="0.5"
+        strokeOpacity="0.3"
+      />
+
       {/* Outer V — dark teal */}
       <path d="M3 4h3l6 9.6 6-9.6h3l-9 15L3 4z" fill="#35495E" stroke="none" />
       {/* Inner V — green */}
@@ -327,7 +599,17 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#764ABC" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#reduxBg)" stroke="#764ABC" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#reduxBg)"
+        stroke="#764ABC"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       <circle cx="12" cy="12" r="2.5" fill="url(#reduxGrad)" stroke="none" />
       <path d="M17.2 4.3l2.8 3-2.8 2.5" fill="none" stroke="#764ABC" strokeWidth="1.8" />
       <path d="M20 7.3H10a5 5 0 100 9.5" fill="none" stroke="#764ABC" strokeWidth="1.8" />
@@ -349,10 +631,49 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#FF4154" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#rqBg)" stroke="#FF4154" strokeWidth="0.6" strokeOpacity="0.4" />
-      <ellipse cx="12" cy="12" rx="8" ry="3" fill="none" stroke="#FF4154" strokeWidth="1.3" strokeOpacity="0.8" />
-      <ellipse cx="12" cy="12" rx="8" ry="3" fill="none" stroke="#FF4154" strokeWidth="1.3" strokeOpacity="0.6" transform="rotate(60 12 12)" />
-      <ellipse cx="12" cy="12" rx="8" ry="3" fill="none" stroke="#FF4154" strokeWidth="1.3" strokeOpacity="0.6" transform="rotate(-60 12 12)" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#rqBg)"
+        stroke="#FF4154"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <ellipse
+        cx="12"
+        cy="12"
+        rx="8"
+        ry="3"
+        fill="none"
+        stroke="#FF4154"
+        strokeWidth="1.3"
+        strokeOpacity="0.8"
+      />
+      <ellipse
+        cx="12"
+        cy="12"
+        rx="8"
+        ry="3"
+        fill="none"
+        stroke="#FF4154"
+        strokeWidth="1.3"
+        strokeOpacity="0.6"
+        transform="rotate(60 12 12)"
+      />
+      <ellipse
+        cx="12"
+        cy="12"
+        rx="8"
+        ry="3"
+        fill="none"
+        stroke="#FF4154"
+        strokeWidth="1.3"
+        strokeOpacity="0.6"
+        transform="rotate(-60 12 12)"
+      />
       <polygon points="12 9 10.2 13 13.2 13 12 16" fill="url(#rqGrad)" stroke="none" />
     </Svg>
   ),
@@ -370,9 +691,32 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#CC6699" />
         </radialGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#sassBg)" stroke="#CC6699" strokeWidth="0.6" strokeOpacity="0.4" />
-      <circle cx="12" cy="12" r="7.5" fill="url(#sassGrad)" fillOpacity="0.18" stroke="#CC6699" strokeWidth="1" />
-      <path d="M7.5 9c1.8-2.5 8.5-2 7.5 1.5-.9 3.2-7.5 2.5-8 6 -.4 2.6 3.5 3.6 6.5 2" fill="none" stroke="#CC6699" strokeWidth="1.8" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#sassBg)"
+        stroke="#CC6699"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <circle
+        cx="12"
+        cy="12"
+        r="7.5"
+        fill="url(#sassGrad)"
+        fillOpacity="0.18"
+        stroke="#CC6699"
+        strokeWidth="1"
+      />
+      <path
+        d="M7.5 9c1.8-2.5 8.5-2 7.5 1.5-.9 3.2-7.5 2.5-8 6 -.4 2.6 3.5 3.6 6.5 2"
+        fill="none"
+        stroke="#CC6699"
+        strokeWidth="1.8"
+      />
     </Svg>
   ),
 
@@ -389,12 +733,39 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#8DD6F9" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#wpBg)" stroke="#8DD6F9" strokeWidth="0.6" strokeOpacity="0.4" />
-      <polygon points="12 4 19.5 8.5 19.5 17.5 12 22 4.5 17.5 4.5 8.5" fill="url(#wpGrad)" fillOpacity="0.22" stroke="#8DD6F9" strokeWidth="1" />
-      <path d="M12 9l4.5 2.6v4L12 18.2l-4.5-2.6v-4L12 9z" fill="url(#wpGrad)" fillOpacity="0.55" stroke="none" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#wpBg)"
+        stroke="#8DD6F9"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <polygon
+        points="12 4 19.5 8.5 19.5 17.5 12 22 4.5 17.5 4.5 8.5"
+        fill="url(#wpGrad)"
+        fillOpacity="0.22"
+        stroke="#8DD6F9"
+        strokeWidth="1"
+      />
+      <path
+        d="M12 9l4.5 2.6v4L12 18.2l-4.5-2.6v-4L12 9z"
+        fill="url(#wpGrad)"
+        fillOpacity="0.55"
+        stroke="none"
+      />
       <path d="M12 9v9.2" fill="none" stroke="#8DD6F9" strokeWidth="1.1" />
       <path d="M12 11.6L7.5 9" fill="none" stroke="#8DD6F9" strokeWidth="0.9" strokeOpacity="0.7" />
-      <path d="M12 11.6L16.5 9" fill="none" stroke="#8DD6F9" strokeWidth="0.9" strokeOpacity="0.7" />
+      <path
+        d="M12 11.6L16.5 9"
+        fill="none"
+        stroke="#8DD6F9"
+        strokeWidth="0.9"
+        strokeOpacity="0.7"
+      />
     </Svg>
   ),
 
@@ -411,9 +782,29 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#646CFF" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#boltBg)" stroke="#646CFF" strokeWidth="0.6" strokeOpacity="0.4" />
-      <polygon points="13 4 4.5 13.5 11.5 13.5 10 20 19.5 10.5 12.5 10.5" fill="url(#boltGrad)" stroke="none" />
-      <path d="M13 4L6 13.5h5.5" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.35" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#boltBg)"
+        stroke="#646CFF"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <polygon
+        points="13 4 4.5 13.5 11.5 13.5 10 20 19.5 10.5 12.5 10.5"
+        fill="url(#boltGrad)"
+        stroke="none"
+      />
+      <path
+        d="M13 4L6 13.5h5.5"
+        fill="none"
+        stroke="white"
+        strokeWidth="0.5"
+        strokeOpacity="0.35"
+      />
     </Svg>
   ),
 
@@ -430,10 +821,34 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#007FFF" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#muiBg)" stroke="#007FFF" strokeWidth="0.6" strokeOpacity="0.4" />
-      <circle cx="12" cy="12" r="7.5" fill="url(#muiGrad)" fillOpacity="0.18" stroke="#007FFF" strokeWidth="1" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#muiBg)"
+        stroke="#007FFF"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <circle
+        cx="12"
+        cy="12"
+        r="7.5"
+        fill="url(#muiGrad)"
+        fillOpacity="0.18"
+        stroke="#007FFF"
+        strokeWidth="1"
+      />
       {/* M chevrons */}
-      <path d="M5.5 16.5V7.5L9 12l3-4 3 4 3.5-4.5v9" fill="none" stroke="#007FFF" strokeWidth="2" strokeLinejoin="round" />
+      <path
+        d="M5.5 16.5V7.5L9 12l3-4 3 4 3.5-4.5v9"
+        fill="none"
+        stroke="#007FFF"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
     </Svg>
   ),
 
@@ -448,7 +863,17 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#90C53F" />
         </linearGradient>
       </defs>
-      <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" fill="#90C53F" fillOpacity="0.14" stroke="#90C53F" strokeWidth="1.2" />
+      <rect
+        x="2.5"
+        y="4.5"
+        width="19"
+        height="15"
+        rx="2.5"
+        fill="#90C53F"
+        fillOpacity="0.14"
+        stroke="#90C53F"
+        strokeWidth="1.2"
+      />
       {/* > prompt */}
       <path d="M6.5 9l2.5 3-2.5 3" fill="none" stroke="#90C53F" strokeWidth="1.8" />
       {/* text lines */}
@@ -467,10 +892,44 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.06" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#restBg)" stroke="#3B82F6" strokeWidth="0.6" strokeOpacity="0.3" />
-      <circle cx="5.5" cy="12" r="2.5" fill="#22C55E" fillOpacity="0.25" stroke="#22C55E" strokeWidth="1" />
-      <circle cx="18.5" cy="6.5" r="2.5" fill="#3B82F6" fillOpacity="0.25" stroke="#3B82F6" strokeWidth="1" />
-      <circle cx="18.5" cy="17.5" r="2.5" fill="#F59E0B" fillOpacity="0.25" stroke="#F59E0B" strokeWidth="1" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#restBg)"
+        stroke="#3B82F6"
+        strokeWidth="0.6"
+        strokeOpacity="0.3"
+      />
+      <circle
+        cx="5.5"
+        cy="12"
+        r="2.5"
+        fill="#22C55E"
+        fillOpacity="0.25"
+        stroke="#22C55E"
+        strokeWidth="1"
+      />
+      <circle
+        cx="18.5"
+        cy="6.5"
+        r="2.5"
+        fill="#3B82F6"
+        fillOpacity="0.25"
+        stroke="#3B82F6"
+        strokeWidth="1"
+      />
+      <circle
+        cx="18.5"
+        cy="17.5"
+        r="2.5"
+        fill="#F59E0B"
+        fillOpacity="0.25"
+        stroke="#F59E0B"
+        strokeWidth="1"
+      />
       <path d="M8 11L16 8" fill="none" stroke="#6B7280" strokeWidth="1.2" />
       <path d="M8 13L16 16" fill="none" stroke="#6B7280" strokeWidth="1.2" />
       {/* Arrowheads */}
@@ -492,11 +951,28 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#311C87" />
         </radialGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#apolloBg)" stroke="#5B3FA6" strokeWidth="0.6" strokeOpacity="0.5" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#apolloBg)"
+        stroke="#5B3FA6"
+        strokeWidth="0.6"
+        strokeOpacity="0.5"
+      />
       <circle cx="12" cy="12" r="7.5" fill="url(#apolloGrad)" stroke="none" />
       <ellipse cx="9.5" cy="9.5" rx="3" ry="2" fill="white" fillOpacity="0.08" stroke="none" />
       {/* A letterform */}
-      <path d="M8.5 17.5L12 7l3.5 10.5" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M8.5 17.5L12 7l3.5 10.5"
+        fill="none"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
       <path d="M9.8 13.8h4.4" fill="none" stroke="white" strokeWidth="1.8" />
     </Svg>
   ),
@@ -510,12 +986,35 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#512BD4" />
         </linearGradient>
       </defs>
-      <rect x="2.5" y="2.5" width="19" height="19" rx="3" fill="url(#netGrad)" fillOpacity="0.20" stroke="#512BD4" strokeWidth="1.2" />
+      <rect
+        x="2.5"
+        y="2.5"
+        width="19"
+        height="19"
+        rx="3"
+        fill="url(#netGrad)"
+        fillOpacity="0.20"
+        stroke="#512BD4"
+        strokeWidth="1.2"
+      />
       {/* Dot */}
       <circle cx="4.8" cy="12" r="1.6" fill="#512BD4" stroke="none" />
       {/* NET letterform */}
-      <path d="M7.5 15V9l3.5 6V9" fill="none" stroke="#512BD4" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M12.5 9h3.5v3h-3.5v3h3.5" fill="none" stroke="#512BD4" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M7.5 15V9l3.5 6V9"
+        fill="none"
+        stroke="#512BD4"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <path
+        d="M12.5 9h3.5v3h-3.5v3h3.5"
+        fill="none"
+        stroke="#512BD4"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </Svg>
   ),
 
@@ -532,8 +1031,26 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#7E22CE" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#csharpBg)" stroke="#9333EA" strokeWidth="0.6" strokeOpacity="0.4" />
-      <circle cx="12" cy="12" r="7.5" fill="url(#csharpGrad)" fillOpacity="0.18" stroke="#9333EA" strokeWidth="1" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#csharpBg)"
+        stroke="#9333EA"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <circle
+        cx="12"
+        cy="12"
+        r="7.5"
+        fill="url(#csharpGrad)"
+        fillOpacity="0.18"
+        stroke="#9333EA"
+        strokeWidth="1"
+      />
       {/* C arc */}
       <path d="M14.5 7.5A6 6 0 107.5 15.5" fill="none" stroke="#9333EA" strokeWidth="2" />
       {/* Hash # */}
@@ -557,11 +1074,33 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#E0234E" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#nestBg)" stroke="#E0234E" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#nestBg)"
+        stroke="#E0234E"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       {/* Left wing */}
-      <path d="M4.5 18C4.5 11 9 6.5 12 5.5c0 0-4.5 3.5-4.5 8" fill="url(#nestGrad)" fillOpacity="0.30" stroke="#E0234E" strokeWidth="1.2" />
+      <path
+        d="M4.5 18C4.5 11 9 6.5 12 5.5c0 0-4.5 3.5-4.5 8"
+        fill="url(#nestGrad)"
+        fillOpacity="0.30"
+        stroke="#E0234E"
+        strokeWidth="1.2"
+      />
       {/* Right wing */}
-      <path d="M19.5 18C19.5 11 15 6.5 12 5.5c0 0 4.5 3.5 4.5 8" fill="url(#nestGrad)" fillOpacity="0.50" stroke="#E0234E" strokeWidth="1.2" />
+      <path
+        d="M19.5 18C19.5 11 15 6.5 12 5.5c0 0 4.5 3.5 4.5 8"
+        fill="url(#nestGrad)"
+        fillOpacity="0.50"
+        stroke="#E0234E"
+        strokeWidth="1.2"
+      />
       {/* Body */}
       <path d="M9 13.5c0 3.5 1.5 5.5 3 6.5 1.5-1 3-3 3-6.5" fill="url(#nestGrad)" stroke="none" />
       {/* Specular */}
@@ -578,16 +1117,82 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#7C3AED" stopOpacity="0.08" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#meshBg)" stroke="#A855F7" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#meshBg)"
+        stroke="#A855F7"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       <circle cx="12" cy="12" r="2.5" fill="#A855F7" stroke="none" />
-      <circle cx="6" cy="7" r="1.8" fill="#A855F7" fillOpacity="0.55" stroke="#A855F7" strokeWidth="0.9" />
-      <circle cx="18" cy="7" r="1.8" fill="#A855F7" fillOpacity="0.55" stroke="#A855F7" strokeWidth="0.9" />
-      <circle cx="6" cy="17" r="1.8" fill="#A855F7" fillOpacity="0.55" stroke="#A855F7" strokeWidth="0.9" />
-      <circle cx="18" cy="17" r="1.8" fill="#A855F7" fillOpacity="0.55" stroke="#A855F7" strokeWidth="0.9" />
-      <path d="M7.8 8.5L10.2 10.5" fill="none" stroke="#A855F7" strokeWidth="1" strokeOpacity="0.7" />
-      <path d="M16.2 8.5L13.8 10.5" fill="none" stroke="#A855F7" strokeWidth="1" strokeOpacity="0.7" />
-      <path d="M7.8 15.5L10.2 13.5" fill="none" stroke="#A855F7" strokeWidth="1" strokeOpacity="0.7" />
-      <path d="M16.2 15.5L13.8 13.5" fill="none" stroke="#A855F7" strokeWidth="1" strokeOpacity="0.7" />
+      <circle
+        cx="6"
+        cy="7"
+        r="1.8"
+        fill="#A855F7"
+        fillOpacity="0.55"
+        stroke="#A855F7"
+        strokeWidth="0.9"
+      />
+      <circle
+        cx="18"
+        cy="7"
+        r="1.8"
+        fill="#A855F7"
+        fillOpacity="0.55"
+        stroke="#A855F7"
+        strokeWidth="0.9"
+      />
+      <circle
+        cx="6"
+        cy="17"
+        r="1.8"
+        fill="#A855F7"
+        fillOpacity="0.55"
+        stroke="#A855F7"
+        strokeWidth="0.9"
+      />
+      <circle
+        cx="18"
+        cy="17"
+        r="1.8"
+        fill="#A855F7"
+        fillOpacity="0.55"
+        stroke="#A855F7"
+        strokeWidth="0.9"
+      />
+      <path
+        d="M7.8 8.5L10.2 10.5"
+        fill="none"
+        stroke="#A855F7"
+        strokeWidth="1"
+        strokeOpacity="0.7"
+      />
+      <path
+        d="M16.2 8.5L13.8 10.5"
+        fill="none"
+        stroke="#A855F7"
+        strokeWidth="1"
+        strokeOpacity="0.7"
+      />
+      <path
+        d="M7.8 15.5L10.2 13.5"
+        fill="none"
+        stroke="#A855F7"
+        strokeWidth="1"
+        strokeOpacity="0.7"
+      />
+      <path
+        d="M16.2 15.5L13.8 13.5"
+        fill="none"
+        stroke="#A855F7"
+        strokeWidth="1"
+        strokeOpacity="0.7"
+      />
     </Svg>
   ),
 
@@ -600,14 +1205,52 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#0284C7" stopOpacity="0.08" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#socketBg)" stroke="#0EA5E9" strokeWidth="0.6" strokeOpacity="0.4" />
-      <circle cx="5.5" cy="12" r="1.8" fill="#0EA5E9" fillOpacity="0.5" stroke="#0EA5E9" strokeWidth="1" />
-      <circle cx="18.5" cy="12" r="1.8" fill="#0EA5E9" fillOpacity="0.5" stroke="#0EA5E9" strokeWidth="1" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#socketBg)"
+        stroke="#0EA5E9"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <circle
+        cx="5.5"
+        cy="12"
+        r="1.8"
+        fill="#0EA5E9"
+        fillOpacity="0.5"
+        stroke="#0EA5E9"
+        strokeWidth="1"
+      />
+      <circle
+        cx="18.5"
+        cy="12"
+        r="1.8"
+        fill="#0EA5E9"
+        fillOpacity="0.5"
+        stroke="#0EA5E9"
+        strokeWidth="1"
+      />
       <path d="M7.3 12h9.4" fill="none" stroke="#0EA5E9" strokeWidth="1.4" />
       {/* top wave → right */}
-      <path d="M9.5 9c.8-1.6 2.5-1.6 3.2 0s2.5 1.6 3.2 0" fill="none" stroke="#0EA5E9" strokeWidth="1.2" strokeOpacity="0.7" />
+      <path
+        d="M9.5 9c.8-1.6 2.5-1.6 3.2 0s2.5 1.6 3.2 0"
+        fill="none"
+        stroke="#0EA5E9"
+        strokeWidth="1.2"
+        strokeOpacity="0.7"
+      />
       {/* bottom wave ← left */}
-      <path d="M8 15c.8 1.6 2.5 1.6 3.2 0s2.5-1.6 3.2 0" fill="none" stroke="#0EA5E9" strokeWidth="1.2" strokeOpacity="0.55" />
+      <path
+        d="M8 15c.8 1.6 2.5 1.6 3.2 0s2.5-1.6 3.2 0"
+        fill="none"
+        stroke="#0EA5E9"
+        strokeWidth="1.2"
+        strokeOpacity="0.55"
+      />
     </Svg>
   ),
 
@@ -624,8 +1267,28 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#14B8A6" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#jwtBg)" stroke="#14B8A6" strokeWidth="0.6" strokeOpacity="0.4" />
-      <rect x="5.5" y="11.5" width="13" height="8.5" rx="2" fill="url(#jwtGrad)" fillOpacity="0.20" stroke="#14B8A6" strokeWidth="1.1" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#jwtBg)"
+        stroke="#14B8A6"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <rect
+        x="5.5"
+        y="11.5"
+        width="13"
+        height="8.5"
+        rx="2"
+        fill="url(#jwtGrad)"
+        fillOpacity="0.20"
+        stroke="#14B8A6"
+        strokeWidth="1.1"
+      />
       <path d="M8.5 11.5V8.5a3.5 3.5 0 017 0v3" fill="none" stroke="#14B8A6" strokeWidth="1.5" />
       <circle cx="12" cy="16" r="1.8" fill="url(#jwtGrad)" stroke="none" />
       <path d="M12 17.8v1.5" fill="none" stroke="#14B8A6" strokeWidth="1.4" />
@@ -645,9 +1308,32 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#2563EB" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#shieldBg)" stroke="#2563EB" strokeWidth="0.6" strokeOpacity="0.4" />
-      <path d="M12 4l7.5 3.3v5c0 5-3.3 9.7-7.5 11C7.8 22 4.5 17.3 4.5 12.3V7.3L12 4z" fill="url(#shieldGrad)" fillOpacity="0.22" stroke="#2563EB" strokeWidth="1" />
-      <path d="M8.5 12.5l2.5 2.5 4.5-5" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#shieldBg)"
+        stroke="#2563EB"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <path
+        d="M12 4l7.5 3.3v5c0 5-3.3 9.7-7.5 11C7.8 22 4.5 17.3 4.5 12.3V7.3L12 4z"
+        fill="url(#shieldGrad)"
+        fillOpacity="0.22"
+        stroke="#2563EB"
+        strokeWidth="1"
+      />
+      <path
+        d="M8.5 12.5l2.5 2.5 4.5-5"
+        fill="none"
+        stroke="#2563EB"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </Svg>
   ),
 
@@ -666,12 +1352,40 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#880000" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#leafBg)" stroke="#880000" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#leafBg)"
+        stroke="#880000"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       {/* Filled leaf body */}
-      <path d="M8.5 15.5c0-7 5-10.5 8.5-10.5-1.5 0-3.5 1.5-3.5 4.5s2 3.5 2 6c0 2.5-1.5 4-3.5 4" fill="url(#leafGrad)" fillOpacity="0.25" stroke="#880000" strokeWidth="1.1" />
-      <path d="M8.5 15.5c7 1.5 10.5-2.5 10.5-10.5-1.5 0-3.5 1.5-3.5 4.5s2 3.5 2 6c0 2.5-1.5 4-3.5 4" fill="url(#leafGrad)" fillOpacity="0.45" stroke="#880000" strokeWidth="0.9" />
+      <path
+        d="M8.5 15.5c0-7 5-10.5 8.5-10.5-1.5 0-3.5 1.5-3.5 4.5s2 3.5 2 6c0 2.5-1.5 4-3.5 4"
+        fill="url(#leafGrad)"
+        fillOpacity="0.25"
+        stroke="#880000"
+        strokeWidth="1.1"
+      />
+      <path
+        d="M8.5 15.5c7 1.5 10.5-2.5 10.5-10.5-1.5 0-3.5 1.5-3.5 4.5s2 3.5 2 6c0 2.5-1.5 4-3.5 4"
+        fill="url(#leafGrad)"
+        fillOpacity="0.45"
+        stroke="#880000"
+        strokeWidth="0.9"
+      />
       <path d="M8.5 15.5c0 3.5 1.5 5 3 5" fill="none" stroke="#880000" strokeWidth="1.3" />
-      <path d="M4 21c1.5-3 4-5.5 6-6.5" fill="none" stroke="#880000" strokeWidth="1.1" strokeOpacity="0.6" />
+      <path
+        d="M4 21c1.5-3 4-5.5 6-6.5"
+        fill="none"
+        stroke="#880000"
+        strokeWidth="1.1"
+        strokeOpacity="0.6"
+      />
     </Svg>
   ),
 
@@ -688,16 +1402,52 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#4479A1" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#mysqlBg)" stroke="#4479A1" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#mysqlBg)"
+        stroke="#4479A1"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       {/* Cylinder top */}
-      <ellipse cx="12" cy="7" rx="6" ry="2" fill="url(#mysqlGrad)" fillOpacity="0.35" stroke="#4479A1" strokeWidth="1" />
+      <ellipse
+        cx="12"
+        cy="7"
+        rx="6"
+        ry="2"
+        fill="url(#mysqlGrad)"
+        fillOpacity="0.35"
+        stroke="#4479A1"
+        strokeWidth="1"
+      />
       {/* Cylinder body */}
       <path d="M6 7v10" fill="none" stroke="#4479A1" strokeWidth="1" />
       <path d="M18 7v10" fill="none" stroke="#4479A1" strokeWidth="1" />
       {/* Cylinder base */}
-      <ellipse cx="12" cy="17" rx="6" ry="2" fill="url(#mysqlGrad)" stroke="#4479A1" strokeWidth="1" />
+      <ellipse
+        cx="12"
+        cy="17"
+        rx="6"
+        ry="2"
+        fill="url(#mysqlGrad)"
+        stroke="#4479A1"
+        strokeWidth="1"
+      />
       {/* Middle ring */}
-      <ellipse cx="12" cy="12" rx="6" ry="2" fill="none" stroke="#4479A1" strokeWidth="0.9" strokeOpacity="0.6" />
+      <ellipse
+        cx="12"
+        cy="12"
+        rx="6"
+        ry="2"
+        fill="none"
+        stroke="#4479A1"
+        strokeWidth="0.9"
+        strokeOpacity="0.6"
+      />
     </Svg>
   ),
 
@@ -714,7 +1464,17 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#2D6E85" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#prismBg)" stroke="#4A5568" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#prismBg)"
+        stroke="#4A5568"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       {/* Left face — lightest */}
       <path d="M10.5 4.5L5.5 18l5.5 2.5z" fill="#2D3748" fillOpacity="0.30" stroke="none" />
       {/* Right face — darker */}
@@ -736,10 +1496,37 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#3B82F6" />
         </linearGradient>
       </defs>
-      <rect x="2.5" y="2.5" width="19" height="19" rx="2.5" fill="none" stroke="#3B82F6" strokeWidth="1.2" />
+      <rect
+        x="2.5"
+        y="2.5"
+        width="19"
+        height="19"
+        rx="2.5"
+        fill="none"
+        stroke="#3B82F6"
+        strokeWidth="1.2"
+      />
       {/* Header row filled */}
-      <rect x="2.5" y="2.5" width="19" height="5.5" rx="2.5" fill="url(#tableGrad)" fillOpacity="0.55" stroke="none" />
-      <rect x="2.5" y="5.5" width="19" height="2.5" rx="0" fill="url(#tableGrad)" fillOpacity="0.55" stroke="none" />
+      <rect
+        x="2.5"
+        y="2.5"
+        width="19"
+        height="5.5"
+        rx="2.5"
+        fill="url(#tableGrad)"
+        fillOpacity="0.55"
+        stroke="none"
+      />
+      <rect
+        x="2.5"
+        y="5.5"
+        width="19"
+        height="2.5"
+        rx="0"
+        fill="url(#tableGrad)"
+        fillOpacity="0.55"
+        stroke="none"
+      />
       <path d="M2.5 8h19" fill="none" stroke="#3B82F6" strokeWidth="1" />
       <path d="M2.5 13h19" fill="none" stroke="#3B82F6" strokeWidth="1" strokeOpacity="0.7" />
       <path d="M2.5 18h19" fill="none" stroke="#3B82F6" strokeWidth="1" strokeOpacity="0.5" />
@@ -750,9 +1537,39 @@ const C: Record<string, IconFC> = {
   // Database Design — ER diagram with colored entity boxes
   Schema: ({ className }) => (
     <Svg className={className}>
-      <rect x="2" y="2.5" width="8" height="5.5" rx="1.5" fill="#6366F1" fillOpacity="0.25" stroke="#6366F1" strokeWidth="1.1" />
-      <rect x="14" y="2.5" width="8" height="5.5" rx="1.5" fill="#6366F1" fillOpacity="0.25" stroke="#6366F1" strokeWidth="1.1" />
-      <rect x="8" y="16" width="8" height="5.5" rx="1.5" fill="#6366F1" fillOpacity="0.45" stroke="#6366F1" strokeWidth="1.1" />
+      <rect
+        x="2"
+        y="2.5"
+        width="8"
+        height="5.5"
+        rx="1.5"
+        fill="#6366F1"
+        fillOpacity="0.25"
+        stroke="#6366F1"
+        strokeWidth="1.1"
+      />
+      <rect
+        x="14"
+        y="2.5"
+        width="8"
+        height="5.5"
+        rx="1.5"
+        fill="#6366F1"
+        fillOpacity="0.25"
+        stroke="#6366F1"
+        strokeWidth="1.1"
+      />
+      <rect
+        x="8"
+        y="16"
+        width="8"
+        height="5.5"
+        rx="1.5"
+        fill="#6366F1"
+        fillOpacity="0.45"
+        stroke="#6366F1"
+        strokeWidth="1.1"
+      />
       <path d="M6 8v4c0 2 2 4 6 4" fill="none" stroke="#6366F1" strokeWidth="1.3" />
       <path d="M18 8v4c0 2-2 4-6 4" fill="none" stroke="#6366F1" strokeWidth="1.3" />
     </Svg>
@@ -771,10 +1588,40 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#0D9488" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#dbBoltBg)" stroke="#0D9488" strokeWidth="0.6" strokeOpacity="0.4" />
-      <ellipse cx="12" cy="6" rx="6.5" ry="2.2" fill="url(#dbBoltGrad)" fillOpacity="0.35" stroke="#0D9488" strokeWidth="0.9" />
-      <path d="M5.5 6v12c0 1.2 2.9 2.2 6.5 2.2s6.5-1 6.5-2.2V6" fill="none" stroke="#0D9488" strokeWidth="0.9" />
-      <path d="M5.5 12c0 1.2 2.9 2.2 6.5 2.2s6.5-1 6.5-2.2" fill="none" stroke="#0D9488" strokeWidth="0.8" strokeOpacity="0.6" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#dbBoltBg)"
+        stroke="#0D9488"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <ellipse
+        cx="12"
+        cy="6"
+        rx="6.5"
+        ry="2.2"
+        fill="url(#dbBoltGrad)"
+        fillOpacity="0.35"
+        stroke="#0D9488"
+        strokeWidth="0.9"
+      />
+      <path
+        d="M5.5 6v12c0 1.2 2.9 2.2 6.5 2.2s6.5-1 6.5-2.2V6"
+        fill="none"
+        stroke="#0D9488"
+        strokeWidth="0.9"
+      />
+      <path
+        d="M5.5 12c0 1.2 2.9 2.2 6.5 2.2s6.5-1 6.5-2.2"
+        fill="none"
+        stroke="#0D9488"
+        strokeWidth="0.8"
+        strokeOpacity="0.6"
+      />
       <polygon points="13 9.5 11 13.5 14 13.5 12.5 17" fill="url(#dbBoltGrad)" stroke="none" />
     </Svg>
   ),
@@ -790,7 +1637,17 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#DE4C36" stopOpacity="0.08" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#gitBg)" stroke="#F1502F" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#gitBg)"
+        stroke="#F1502F"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       <circle cx="12" cy="5.5" r="2" fill="#F1502F" stroke="none" />
       <circle cx="6.5" cy="18.5" r="2" fill="#F1502F" fillOpacity="0.75" stroke="none" />
       <circle cx="17.5" cy="18.5" r="2" fill="#F1502F" fillOpacity="0.75" stroke="none" />
@@ -809,14 +1666,41 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#1D63ED" />
         </linearGradient>
       </defs>
-      <rect x="3" y="3" width="18" height="6.5" rx="2" fill="url(#stackGrad)" fillOpacity="0.22" stroke="#1D63ED" strokeWidth="1.1" />
-      <rect x="3" y="14.5" width="18" height="6.5" rx="2" fill="url(#stackGrad)" fillOpacity="0.22" stroke="#1D63ED" strokeWidth="1.1" />
+      <rect
+        x="3"
+        y="3"
+        width="18"
+        height="6.5"
+        rx="2"
+        fill="url(#stackGrad)"
+        fillOpacity="0.22"
+        stroke="#1D63ED"
+        strokeWidth="1.1"
+      />
+      <rect
+        x="3"
+        y="14.5"
+        width="18"
+        height="6.5"
+        rx="2"
+        fill="url(#stackGrad)"
+        fillOpacity="0.22"
+        stroke="#1D63ED"
+        strokeWidth="1.1"
+      />
       <circle cx="7" cy="6.3" r="1.2" fill="#22C55E" stroke="none" />
       <circle cx="7" cy="17.8" r="1.2" fill="#22C55E" stroke="none" />
       <path d="M11 6.3h7" fill="none" stroke="#1D63ED" strokeWidth="1.4" strokeOpacity="0.8" />
       <path d="M11 17.8h7" fill="none" stroke="#1D63ED" strokeWidth="1.4" strokeOpacity="0.8" />
       {/* Middle connector */}
-      <path d="M12 9.5v5" fill="none" stroke="#1D63ED" strokeWidth="1.1" strokeOpacity="0.5" strokeDasharray="1.5 1.5" />
+      <path
+        d="M12 9.5v5"
+        fill="none"
+        stroke="#1D63ED"
+        strokeWidth="1.1"
+        strokeOpacity="0.5"
+        strokeDasharray="1.5 1.5"
+      />
     </Svg>
   ),
 
@@ -833,10 +1717,24 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#2088FF" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#gearBg)" stroke="#2088FF" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#gearBg)"
+        stroke="#2088FF"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       <path
         d="M12 4l1.6.9 1.8-.4.9 1.5.4 1.8 1.5 1.1-.6 1.7.6 1.7-1.5 1.1-.4 1.8-.9 1.5-1.8-.4-1.6.9-1.6-.9-1.8.4-.9-1.5-.4-1.8-1.5-1.1.6-1.7-.6-1.7 1.5-1.1.4-1.8.9-1.5 1.8.4z"
-        fill="url(#gearGrad)" fillOpacity="0.22" stroke="#2088FF" strokeWidth="0.9" />
+        fill="url(#gearGrad)"
+        fillOpacity="0.22"
+        stroke="#2088FF"
+        strokeWidth="0.9"
+      />
       <circle cx="12" cy="12" r="3" fill="url(#gearGrad)" stroke="none" />
       <path d="M10.8 10.8l2.8 1.2-2.8 1.2z" fill="white" fillOpacity="0.95" stroke="none" />
     </Svg>
@@ -855,13 +1753,41 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#F97316" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#deployBg)" stroke="#F97316" strokeWidth="0.6" strokeOpacity="0.4" />
-      <circle cx="12" cy="12" r="7.5" fill="url(#deployGrad)" fillOpacity="0.18" stroke="#F97316" strokeWidth="1" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#deployBg)"
+        stroke="#F97316"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <circle
+        cx="12"
+        cy="12"
+        r="7.5"
+        fill="url(#deployGrad)"
+        fillOpacity="0.18"
+        stroke="#F97316"
+        strokeWidth="1"
+      />
       {/* Circular arrow */}
-      <path d="M12 6v4l2.5-2" fill="none" stroke="#F97316" strokeWidth="1.5" strokeLinecap="round" />
+      <path
+        d="M12 6v4l2.5-2"
+        fill="none"
+        stroke="#F97316"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
       <path d="M5.5 12a6.5 6.5 0 006.5-6.5" fill="none" stroke="#F97316" strokeWidth="1.3" />
       {/* Rocket */}
-      <path d="M13.5 13.5l2.5-2.5c.8-2.5-.8-3.5-.8-3.5s-.8-.8-3.5.8l-2.5 2.5z" fill="url(#deployGrad)" stroke="none" />
+      <path
+        d="M13.5 13.5l2.5-2.5c.8-2.5-.8-3.5-.8-3.5s-.8-.8-3.5.8l-2.5 2.5z"
+        fill="url(#deployGrad)"
+        stroke="none"
+      />
     </Svg>
   ),
 
@@ -874,7 +1800,17 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#111" stopOpacity="0.08" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#vercelBg)" stroke="#555" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#vercelBg)"
+        stroke="#555"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       <path d="M12 4.5L3.5 19.5h17L12 4.5z" fill="currentColor" stroke="none" />
       {/* Specular */}
       <path d="M12 7L7 17.5h5L12 7z" fill="white" fillOpacity="0.12" stroke="none" />
@@ -890,13 +1826,30 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#009639" />
         </linearGradient>
       </defs>
-      <rect x="2.5" y="2.5" width="19" height="19" rx="3" fill="url(#nginxGrad)" fillOpacity="0.18" stroke="#009639" strokeWidth="1.2" />
+      <rect
+        x="2.5"
+        y="2.5"
+        width="19"
+        height="19"
+        rx="3"
+        fill="url(#nginxGrad)"
+        fillOpacity="0.18"
+        stroke="#009639"
+        strokeWidth="1.2"
+      />
       {/* Server status dots */}
       <circle cx="6" cy="6.5" r="1.1" fill="#22C55E" stroke="none" />
       <circle cx="9.5" cy="6.5" r="1.1" fill="#F59E0B" stroke="none" />
       <circle cx="13" cy="6.5" r="1.1" fill="#EF4444" stroke="none" />
       {/* N letterform */}
-      <path d="M7.5 17V9.5l9 7.5V9.5" fill="none" stroke="#009639" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M7.5 17V9.5l9 7.5V9.5"
+        fill="none"
+        stroke="#009639"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </Svg>
   ),
 
@@ -915,9 +1868,25 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#007ACC" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#vscBg)" stroke="#007ACC" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#vscBg)"
+        stroke="#007ACC"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       {/* Editor shell */}
-      <path d="M6 8.5l5-3.5 6.5 2.5v11L11 21l-5-3.5 3.5-3.5L6 11z" fill="url(#vscGrad)" fillOpacity="0.20" stroke="#007ACC" strokeWidth="1" />
+      <path
+        d="M6 8.5l5-3.5 6.5 2.5v11L11 21l-5-3.5 3.5-3.5L6 11z"
+        fill="url(#vscGrad)"
+        fillOpacity="0.20"
+        stroke="#007ACC"
+        strokeWidth="1"
+      />
       {/* Inner chevron V mark */}
       <path d="M7 12L9.5 9v6z" fill="url(#vscGrad)" fillOpacity="0.95" stroke="none" />
       <path d="M9.5 9l5.5-2.5v11l-5.5-2.5" fill="none" stroke="#007ACC" strokeWidth="1.1" />
@@ -937,8 +1906,26 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#FF6C37" />
         </radialGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#postBg)" stroke="#FF6C37" strokeWidth="0.6" strokeOpacity="0.4" />
-      <circle cx="12" cy="12" r="7.5" fill="url(#postGrad)" fillOpacity="0.20" stroke="#FF6C37" strokeWidth="1" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#postBg)"
+        stroke="#FF6C37"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <circle
+        cx="12"
+        cy="12"
+        r="7.5"
+        fill="url(#postGrad)"
+        fillOpacity="0.20"
+        stroke="#FF6C37"
+        strokeWidth="1"
+      />
       <ellipse cx="10" cy="9.5" rx="2" ry="1.3" fill="white" fillOpacity="0.10" stroke="none" />
       {/* Paper plane / send icon */}
       <path d="M6 12l11-4.5-4.5 11-1.5-4.5z" fill="#FF6C37" fillOpacity="0.90" stroke="none" />
@@ -979,9 +1966,26 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#0052CC" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#jiraBg)" stroke="#0052CC" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#jiraBg)"
+        stroke="#0052CC"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       {/* Upper-right chevron */}
-      <path d="M12 4l7.5 8-7.5 8" fill="none" stroke="url(#jiraGrad)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M12 4l7.5 8-7.5 8"
+        fill="none"
+        stroke="url(#jiraGrad)"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
       {/* Lower-left chevron */}
       <path d="M4.5 12l4.5 4L12 12l-3-4z" fill="url(#jiraGrad2)" stroke="none" />
     </Svg>
@@ -1018,13 +2022,41 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#333" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#cubeBg)" stroke="#555" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#cubeBg)"
+        stroke="#555"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       {/* Top face */}
-      <path d="M12 4L19.5 8.5L12 13L4.5 8.5z" fill="url(#cubeGrad)" fillOpacity="0.30" stroke="#555" strokeWidth="1" />
+      <path
+        d="M12 4L19.5 8.5L12 13L4.5 8.5z"
+        fill="url(#cubeGrad)"
+        fillOpacity="0.30"
+        stroke="#555"
+        strokeWidth="1"
+      />
       {/* Left face */}
-      <path d="M4.5 8.5v8L12 21v-8z" fill="url(#cubeGrad)" fillOpacity="0.18" stroke="#555" strokeWidth="1" />
+      <path
+        d="M4.5 8.5v8L12 21v-8z"
+        fill="url(#cubeGrad)"
+        fillOpacity="0.18"
+        stroke="#555"
+        strokeWidth="1"
+      />
       {/* Right face */}
-      <path d="M19.5 8.5v8L12 21v-8z" fill="url(#cubeGrad)" fillOpacity="0.40" stroke="#555" strokeWidth="1" />
+      <path
+        d="M19.5 8.5v8L12 21v-8z"
+        fill="url(#cubeGrad)"
+        fillOpacity="0.40"
+        stroke="#555"
+        strokeWidth="1"
+      />
     </Svg>
   ),
 
@@ -1037,7 +2069,17 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#16A34A" stopOpacity="0.08" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#treeBg)" stroke="#22C55E" strokeWidth="0.6" strokeOpacity="0.4" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#treeBg)"
+        stroke="#22C55E"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
       <circle cx="12" cy="5.5" r="2" fill="#22C55E" stroke="none" />
       <circle cx="7" cy="12" r="2" fill="#22C55E" fillOpacity="0.75" stroke="none" />
       <circle cx="17" cy="12" r="2" fill="#22C55E" fillOpacity="0.75" stroke="none" />
@@ -1061,12 +2103,54 @@ const C: Record<string, IconFC> = {
           <stop offset="100%" stopColor="#6D28D9" stopOpacity="0.08" />
         </linearGradient>
       </defs>
-      <rect x="2" y="2" width="20" height="20" rx="4" fill="url(#graphBg)" stroke="#8B5CF6" strokeWidth="0.6" strokeOpacity="0.4" />
-      <circle cx="5.5" cy="6" r="2" fill="#8B5CF6" fillOpacity="0.70" stroke="#8B5CF6" strokeWidth="0.9" />
-      <circle cx="18.5" cy="6" r="2" fill="#8B5CF6" fillOpacity="0.70" stroke="#8B5CF6" strokeWidth="0.9" />
+      <rect
+        x="2"
+        y="2"
+        width="20"
+        height="20"
+        rx="4"
+        fill="url(#graphBg)"
+        stroke="#8B5CF6"
+        strokeWidth="0.6"
+        strokeOpacity="0.4"
+      />
+      <circle
+        cx="5.5"
+        cy="6"
+        r="2"
+        fill="#8B5CF6"
+        fillOpacity="0.70"
+        stroke="#8B5CF6"
+        strokeWidth="0.9"
+      />
+      <circle
+        cx="18.5"
+        cy="6"
+        r="2"
+        fill="#8B5CF6"
+        fillOpacity="0.70"
+        stroke="#8B5CF6"
+        strokeWidth="0.9"
+      />
       <circle cx="12" cy="12" r="2.5" fill="#8B5CF6" stroke="none" />
-      <circle cx="5.5" cy="18" r="2" fill="#8B5CF6" fillOpacity="0.55" stroke="#8B5CF6" strokeWidth="0.9" />
-      <circle cx="18.5" cy="18" r="2" fill="#8B5CF6" fillOpacity="0.55" stroke="#8B5CF6" strokeWidth="0.9" />
+      <circle
+        cx="5.5"
+        cy="18"
+        r="2"
+        fill="#8B5CF6"
+        fillOpacity="0.55"
+        stroke="#8B5CF6"
+        strokeWidth="0.9"
+      />
+      <circle
+        cx="18.5"
+        cy="18"
+        r="2"
+        fill="#8B5CF6"
+        fillOpacity="0.55"
+        stroke="#8B5CF6"
+        strokeWidth="0.9"
+      />
       <path d="M7.5 7L10.2 10" fill="none" stroke="#8B5CF6" strokeWidth="1.3" />
       <path d="M16.5 7L13.8 10" fill="none" stroke="#8B5CF6" strokeWidth="1.3" />
       <path d="M10.2 14L7.5 17" fill="none" stroke="#8B5CF6" strokeWidth="1.3" />
@@ -1079,8 +2163,7 @@ const C: Record<string, IconFC> = {
 // COMPREHENSIVE ICON MAPPING (All 55+ seeded skills)
 // ============================================================================
 
-const normalize = (value?: string) =>
-  (value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+const normalize = (value?: string) => (value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   // Premium SVG logos

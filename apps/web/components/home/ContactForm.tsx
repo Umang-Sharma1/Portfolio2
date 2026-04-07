@@ -501,7 +501,7 @@ const SystemInput = ({
             onChange={onChange}
             disabled={disabled}
             placeholder={placeholder}
-            rows={5}
+            rows={3}
             onBlur={(e) => {
               setIsFocused(false);
               onBlur(e);
@@ -776,7 +776,7 @@ export const ContactSection = () => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
               className={cn(
-                'relative p-8 md:p-14 rounded-[4rem] glassmorphism border-[0.5px] transition-all duration-1000',
+                'relative p-6 md:p-10 rounded-[4rem] glassmorphism border-[0.5px] transition-all duration-1000',
                 Object.values(errors).some((e) => !!e)
                   ? 'border-vision-crimson/30 shadow-[0_0_60px_rgba(var(--glow-crimson),0.1)]'
                   : 'border-slate-200 dark:border-white/10 shadow-[0_40px_80px_rgba(0,0,0,0.1)]'
@@ -787,8 +787,8 @@ export const ContactSection = () => {
               <div className="absolute top-8 right-8 w-6 h-6 border-t-2 border-r-2 border-vision-cyan/10 rounded-tr-xl group-hover:border-vision-cyan/40 transition-colors pointer-events-none" />
               <div className="absolute bottom-8 left-8 w-6 h-6 border-b-2 border-l-2 border-vision-cyan/10 rounded-bl-xl group-hover:border-vision-cyan/40 transition-colors pointer-events-none" />
               <div className="absolute bottom-8 right-8 w-6 h-6 border-b-2 border-r-2 border-vision-crimson/10 rounded-br-xl group-hover:border-vision-crimson/40 transition-colors pointer-events-none" />
-              <form onSubmit={handleSubmit} className="space-y-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <SystemInput
                     label="Identity"
                     name="name"
@@ -823,12 +823,12 @@ export const ContactSection = () => {
                   disabled={status !== 'IDLE'}
                 />
 
-                <div className="relative pt-6">
+                <div className="relative pt-2">
                   <button
                     type="submit"
                     disabled={status !== 'IDLE'}
                     className={cn(
-                      'group relative w-full h-24 rounded-3xl overflow-hidden transition-all duration-1000',
+                      'group relative w-full h-16 rounded-3xl overflow-hidden transition-all duration-1000',
                       'bg-rose-50/80 dark:bg-white/[0.03] border-2 border-rose-200/60 dark:border-white/10 shadow-xl',
                       status === 'SUCCESS' &&
                         'border-vision-cyan/60 shadow-[0_0_40px_rgba(190,18,60,0.15)] dark:shadow-[0_0_40px_rgba(6,182,212,0.2)]',
@@ -884,7 +884,7 @@ export const ContactSection = () => {
                 </div>
               </form>
 
-              <div className="mt-12 flex justify-between text-[8px] font-mono font-black text-slate-400 dark:text-text-dark/30 uppercase tracking-[0.5em] border-t border-slate-100 dark:border-white/5 pt-6">
+              <div className="mt-6 flex justify-between text-[8px] font-mono font-black text-slate-400 dark:text-text-dark/30 uppercase tracking-[0.5em] border-t border-slate-100 dark:border-white/5 pt-4">
                 <div className="flex gap-10">
                   <span>Packet: Secure</span>
                   <span>Encryption: 256bit</span>

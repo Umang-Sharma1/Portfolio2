@@ -218,7 +218,7 @@ export const Footer = () => {
               </div>
               <div>
                 <h4 className="font-display font-black text-2xl tracking-tighter text-text-light dark:text-text-dark uppercase italic">
-                  Voyager <span className="text-vision-cyan">OS</span>
+                  Umang<span className="text-vision-cyan">.OS</span>
                 </h4>
                 <div className="text-[8px] font-mono font-black text-vision-cyan tracking-[0.4em] uppercase mt-1">
                   System_Ready // v2.5
@@ -342,7 +342,7 @@ export const Footer = () => {
           className="pt-8 border-t border-text-light/5 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6"
         >
           <div className="flex items-center gap-6 text-[9px] font-mono font-black text-text-light/30 dark:text-text-dark/30 uppercase tracking-[0.3em]">
-            <span>© {new Date().getFullYear()} Voyager-OS</span>
+            <span>© {new Date().getFullYear()} Umang.OS</span>
             <div className="h-4 w-[1px] bg-current opacity-20 hidden md:block" />
             <span className="hidden md:block">Orbital_Sector_09</span>
           </div>

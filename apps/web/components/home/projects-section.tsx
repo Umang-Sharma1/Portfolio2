@@ -1,7 +1,15 @@
 ﻿'use client';
 
 import React, { useRef, useState, memo, useEffect, useMemo, useCallback } from 'react';
-import { motion, useInView, useMotionValue, useSpring, useTransform, AnimatePresence, useAnimation } from 'framer-motion';
+import {
+  motion,
+  useInView,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  AnimatePresence,
+  useAnimation,
+} from 'framer-motion';
 import Link from 'next/link';
 import { useQuery } from '@apollo/client';
 import { GET_FEATURED_PROJECTS } from '@/lib/graphql/queries';
@@ -128,23 +136,67 @@ const Icons = {
     </svg>
   ),
   ChevronLeft: ({ className }: { className?: string }) => (
-    <svg className={className} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      className={className}
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M15 18l-6-6 6-6" />
     </svg>
   ),
   ChevronRight: ({ className }: { className?: string }) => (
-    <svg className={className} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      className={className}
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M9 18l6-6-6-6" />
     </svg>
   ),
   Filter: ({ className }: { className?: string }) => (
-    <svg className={className} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      className={className}
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
     </svg>
   ),
   Nodes: ({ className }: { className?: string }) => (
-    <svg className={className} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.6 8.6L15.4 15.4"/><circle cx="18" cy="6" r="3"/><path d="M15.4 8.6L8.6 15.4"/>
+    <svg
+      className={className}
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="6" cy="6" r="3" />
+      <circle cx="18" cy="18" r="3" />
+      <path d="M8.6 8.6L15.4 15.4" />
+      <circle cx="18" cy="6" r="3" />
+      <path d="M15.4 8.6L8.6 15.4" />
     </svg>
   ),
 };
@@ -163,7 +215,8 @@ const MISSIONS: ProjectData[] = [
     featured: true,
     technologies: ['React 19', 'Three.js', 'Rust', 'WebAssembly'],
     images: {
-      thumbnail: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80',
+      thumbnail:
+        'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80',
     },
     metrics: {
       lighthouse: { performance: 99, accessibility: 100, bestPractices: 100, seo: 95 },
@@ -200,8 +253,17 @@ const MISSIONS: ProjectData[] = [
         { from: 'n3', to: 'n2', animated: true },
       ],
     },
-    links: { github: 'https://github.com/yourusername/aether-nexus', live: 'https://aether-nexus.vercel.app' },
-    features: ['Real-time spatial sync', 'Orbital edge nodes', 'High-frequency laser links', 'Zero-latency streaming', 'Distributed cluster management'],
+    links: {
+      github: 'https://github.com/yourusername/aether-nexus',
+      live: 'https://aether-nexus.vercel.app',
+    },
+    features: [
+      'Real-time spatial sync',
+      'Orbital edge nodes',
+      'High-frequency laser links',
+      'Zero-latency streaming',
+      'Distributed cluster management',
+    ],
   },
   {
     id: 'LOG_02',
@@ -214,7 +276,8 @@ const MISSIONS: ProjectData[] = [
     featured: true,
     technologies: ['Python', 'GenAI', 'TensorFlow', 'gRPC'],
     images: {
-      thumbnail: 'https://images.unsplash.com/photo-1633356122544-f134324ef6db?auto=format&fit=crop&w=800&q=80',
+      thumbnail:
+        'https://images.unsplash.com/photo-1633356122544-f134324ef6db?auto=format&fit=crop&w=800&q=80',
     },
     metrics: {
       lighthouse: { performance: 92, accessibility: 98, bestPractices: 95, seo: 90 },
@@ -241,8 +304,17 @@ const MISSIONS: ProjectData[] = [
       ],
       connections: [{ from: 's1', to: 's2', animated: true }],
     },
-    links: { github: 'https://github.com/yourusername/spectral-sentinel', live: 'https://spectral-sentinel.vercel.app' },
-    features: ['Behavioral pattern analysis', 'Real-time threat detection', 'Zero-day exploit prevention', 'Distributed firewall mesh', 'Auto-remediation engine'],
+    links: {
+      github: 'https://github.com/yourusername/spectral-sentinel',
+      live: 'https://spectral-sentinel.vercel.app',
+    },
+    features: [
+      'Behavioral pattern analysis',
+      'Real-time threat detection',
+      'Zero-day exploit prevention',
+      'Distributed firewall mesh',
+      'Auto-remediation engine',
+    ],
   },
   {
     id: 'LOG_03',
@@ -255,7 +327,8 @@ const MISSIONS: ProjectData[] = [
     featured: true,
     technologies: ['Go', 'Kubernetes', 'PostgreSQL', 'Redis'],
     images: {
-      thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
+      thumbnail:
+        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
     },
     metrics: {
       lighthouse: { performance: 96, accessibility: 95, bestPractices: 100, seo: 94 },
@@ -282,8 +355,17 @@ const MISSIONS: ProjectData[] = [
       ],
       connections: [{ from: 'v1', to: 'v2', animated: true }],
     },
-    links: { github: 'https://github.com/yourusername/void-protocol', live: 'https://void-protocol.vercel.app' },
-    features: ['Quantum-resistant encryption', 'Cold-storage retrieval', 'Kubernetes orchestration', 'Sub-millisecond query time', 'Auto-scaling clusters'],
+    links: {
+      github: 'https://github.com/yourusername/void-protocol',
+      live: 'https://void-protocol.vercel.app',
+    },
+    features: [
+      'Quantum-resistant encryption',
+      'Cold-storage retrieval',
+      'Kubernetes orchestration',
+      'Sub-millisecond query time',
+      'Auto-scaling clusters',
+    ],
   },
   {
     id: 'LOG_04',
@@ -296,7 +378,8 @@ const MISSIONS: ProjectData[] = [
     featured: true,
     technologies: ['Apache Kafka', 'Flink', 'TypeScript', 'ClickHouse'],
     images: {
-      thumbnail: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',
+      thumbnail:
+        'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',
     },
     metrics: {
       lighthouse: { performance: 97, accessibility: 96, bestPractices: 100, seo: 93 },
@@ -323,8 +406,17 @@ const MISSIONS: ProjectData[] = [
       ],
       connections: [{ from: 'p1', to: 'p2', animated: true }],
     },
-    links: { github: 'https://github.com/yourusername/phantom-grid', live: 'https://phantom-grid.vercel.app' },
-    features: ['Millions of events/sec', 'Sub-ms latency', 'Real-time analytics', 'Kafka event streaming', 'ClickHouse analytics DB'],
+    links: {
+      github: 'https://github.com/yourusername/phantom-grid',
+      live: 'https://phantom-grid.vercel.app',
+    },
+    features: [
+      'Millions of events/sec',
+      'Sub-ms latency',
+      'Real-time analytics',
+      'Kafka event streaming',
+      'ClickHouse analytics DB',
+    ],
   },
   {
     id: 'LOG_05',
@@ -337,7 +429,8 @@ const MISSIONS: ProjectData[] = [
     featured: true,
     technologies: ['Next.js 14', 'OpenAI', 'WebSocket', 'Docker'],
     images: {
-      thumbnail: 'https://images.unsplash.com/photo-1516534775068-bb57027c26d5?auto=format&fit=crop&w=800&q=80',
+      thumbnail:
+        'https://images.unsplash.com/photo-1516534775068-bb57027c26d5?auto=format&fit=crop&w=800&q=80',
     },
     metrics: {
       lighthouse: { performance: 94, accessibility: 99, bestPractices: 98, seo: 96 },
@@ -364,8 +457,17 @@ const MISSIONS: ProjectData[] = [
       ],
       connections: [{ from: 'nv1', to: 'nv2', animated: true }],
     },
-    links: { github: 'https://github.com/yourusername/nova-terminal', live: 'https://nova-terminal.vercel.app' },
-    features: ['AI code analysis', 'Live collaboration', 'CI/CD integration', 'WebSocket real-time sync', 'Multi-language support'],
+    links: {
+      github: 'https://github.com/yourusername/nova-terminal',
+      live: 'https://nova-terminal.vercel.app',
+    },
+    features: [
+      'AI code analysis',
+      'Live collaboration',
+      'CI/CD integration',
+      'WebSocket real-time sync',
+      'Multi-language support',
+    ],
   },
   {
     id: 'LOG_06',
@@ -378,7 +480,8 @@ const MISSIONS: ProjectData[] = [
     featured: true,
     technologies: ['Solidity', 'Ethers.js', 'Next.js', 'IPFS'],
     images: {
-      thumbnail: 'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=800&q=80',
+      thumbnail:
+        'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=800&q=80',
     },
     metrics: {
       lighthouse: { performance: 91, accessibility: 97, bestPractices: 100, seo: 90 },
@@ -405,8 +508,17 @@ const MISSIONS: ProjectData[] = [
       ],
       connections: [{ from: 'e1', to: 'e2', animated: true }],
     },
-    links: { github: 'https://github.com/yourusername/eclipse-vault', live: 'https://eclipse-vault.vercel.app' },
-    features: ['Zero-knowledge proofs', 'Multi-chain wallet support', 'Decentralized identity', 'IPFS storage layer', 'Smart contract auditing'],
+    links: {
+      github: 'https://github.com/yourusername/eclipse-vault',
+      live: 'https://eclipse-vault.vercel.app',
+    },
+    features: [
+      'Zero-knowledge proofs',
+      'Multi-chain wallet support',
+      'Decentralized identity',
+      'IPFS storage layer',
+      'Smart contract auditing',
+    ],
   },
 ];
 
@@ -625,10 +737,22 @@ const ProjectCard = memo(
 
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
-    const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), { damping: 20, stiffness: 200 });
-    const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), { damping: 20, stiffness: 200 });
-    const contentX = useSpring(useTransform(mouseX, [-0.5, 0.5], [10, -10]), { damping: 25, stiffness: 150 });
-    const contentY = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), { damping: 25, stiffness: 150 });
+    const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), {
+      damping: 20,
+      stiffness: 200,
+    });
+    const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), {
+      damping: 20,
+      stiffness: 200,
+    });
+    const contentX = useSpring(useTransform(mouseX, [-0.5, 0.5], [10, -10]), {
+      damping: 25,
+      stiffness: 150,
+    });
+    const contentY = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), {
+      damping: 25,
+      stiffness: 150,
+    });
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
       if (!cardRef.current || isFlipped) return;
@@ -649,17 +773,24 @@ const ProjectCard = memo(
       mouseX.set(0);
       mouseY.set(0);
       const toBack = !isFlipped;
-      await flipControls.start({ rotateY: toBack ? -90 : 90, transition: { duration: 0.22, ease: 'easeIn' as const } });
+      await flipControls.start({
+        rotateY: toBack ? -90 : 90,
+        transition: { duration: 0.22, ease: 'easeIn' as const },
+      });
       setDisplayBack(toBack);
       setIsFlipped(toBack);
-      await flipControls.start({ rotateY: 0, transition: { duration: 0.22, ease: 'easeOut' as const } });
+      await flipControls.start({
+        rotateY: 0,
+        transition: { duration: 0.22, ease: 'easeOut' as const },
+      });
       isFlippingRef.current = false;
     };
 
     const perfScore = 0; // gauge removed
-    const statusDotClass = mission.status === 'in-progress'
-      ? 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]'
-      : 'bg-vision-cyan shadow-[0_0_8px_rgba(var(--glow-cyan),1)]';
+    const statusDotClass =
+      mission.status === 'in-progress'
+        ? 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]'
+        : 'bg-vision-cyan shadow-[0_0_8px_rgba(var(--glow-cyan),1)]';
 
     return (
       <MotionDiv
@@ -672,7 +803,6 @@ const ProjectCard = memo(
       >
         {/* Flip controller */}
         <MotionDiv animate={flipControls} className="h-full">
-
           {/* Tilt + border effects wrapper */}
           <MotionDiv
             ref={cardRef}
@@ -683,7 +813,8 @@ const ProjectCard = memo(
             style={{ rotateX: isHero ? 0 : rotateX, rotateY: isHero ? 0 : rotateY }}
             className={cn(
               'relative h-full transition-shadow duration-700',
-              !isHero && 'cursor-pointer hover:shadow-[0_0_60px_rgba(var(--glow-cyan),0.2),0_0_120px_rgba(var(--glow-cyan),0.08)]',
+              !isHero &&
+                'cursor-pointer hover:shadow-[0_0_60px_rgba(var(--glow-cyan),0.2),0_0_120px_rgba(var(--glow-cyan),0.08)]',
               'rounded-[2.5rem]'
             )}
           >
@@ -692,7 +823,10 @@ const ProjectCard = memo(
               <div className="absolute -inset-[1px] rounded-[2.5rem] overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                 <div
                   className="absolute inset-0 animate-spin-slow"
-                  style={{ background: 'conic-gradient(from 0deg, transparent 0%, rgba(var(--glow-cyan),1) 10%, transparent 20%, transparent 40%, rgba(var(--glow-crimson),1) 50%, transparent 60%, transparent 80%, rgba(var(--glow-orange),1) 90%, transparent 100%)' }}
+                  style={{
+                    background:
+                      'conic-gradient(from 0deg, transparent 0%, rgba(var(--glow-cyan),1) 10%, transparent 20%, transparent 40%, rgba(var(--glow-crimson),1) 50%, transparent 60%, transparent 80%, rgba(var(--glow-orange),1) 90%, transparent 100%)',
+                  }}
                 />
                 <div className="absolute inset-[1.5px] rounded-[2.4rem] bg-white dark:bg-space-black" />
               </div>
@@ -704,20 +838,24 @@ const ProjectCard = memo(
                 <div
                   className="absolute h-[10px] w-[100px] animate-border-beam"
                   style={{
-                    background: 'linear-gradient(90deg, transparent, rgba(var(--glow-cyan),1), transparent)',
+                    background:
+                      'linear-gradient(90deg, transparent, rgba(var(--glow-cyan),1), transparent)',
                     offsetPath: 'rect(0 100% 100% 0 round 20px)',
-                    boxShadow: '0 0 40px 10px rgba(var(--glow-cyan),0.9), 0 0 80px 20px rgba(var(--glow-cyan),0.4)',
+                    boxShadow:
+                      '0 0 40px 10px rgba(var(--glow-cyan),0.9), 0 0 80px 20px rgba(var(--glow-cyan),0.4)',
                     filter: 'blur(0.3px)',
                   }}
                 />
                 <div
                   className="absolute h-[10px] w-[60px] animate-border-beam"
                   style={{
-                    background: 'linear-gradient(90deg, transparent, rgba(var(--glow-crimson),1), transparent)',
+                    background:
+                      'linear-gradient(90deg, transparent, rgba(var(--glow-crimson),1), transparent)',
                     offsetPath: 'rect(0 100% 100% 0 round 20px)',
                     animationDelay: '-1.5s',
                     animationDuration: '4s',
-                    boxShadow: '0 0 35px 8px rgba(var(--glow-crimson),0.8), 0 0 70px 16px rgba(var(--glow-crimson),0.35)',
+                    boxShadow:
+                      '0 0 35px 8px rgba(var(--glow-crimson),0.8), 0 0 70px 16px rgba(var(--glow-crimson),0.35)',
                     filter: 'blur(0.3px)',
                   }}
                 />
@@ -738,7 +876,10 @@ const ProjectCard = memo(
               {/* Dotted background */}
               <div
                 className="absolute inset-0 pointer-events-none opacity-[0.04] dark:opacity-[0.08] z-0"
-                style={{ backgroundImage: 'radial-gradient(currentColor 1px, transparent 1px)', backgroundSize: '24px 24px' }}
+                style={{
+                  backgroundImage: 'radial-gradient(currentColor 1px, transparent 1px)',
+                  backgroundSize: '24px 24px',
+                }}
               />
 
               {/* Ambient HUD glow (non-hero) */}
@@ -764,7 +905,10 @@ const ProjectCard = memo(
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.15 }}
-                    className={cn('flex w-full', isHero ? 'flex-col md:flex-row h-full' : 'flex-col min-h-[420px]')}
+                    className={cn(
+                      'flex w-full',
+                      isHero ? 'flex-col md:flex-row h-full' : 'flex-col min-h-[420px]'
+                    )}
                   >
                     {/* Image section */}
                     <div
@@ -788,24 +932,51 @@ const ProjectCard = memo(
                         <div className="w-full h-full bg-gradient-to-br from-vision-crimson/30 via-slate-800 to-vision-cyan/30" />
                       )}
                       {/* Fade overlay */}
-                      <div className={cn('absolute inset-0', isHero ? 'bg-gradient-to-r from-transparent via-transparent to-white dark:to-space-black' : 'bg-gradient-to-t from-white dark:from-space-black via-transparent to-transparent')} />
+                      <div
+                        className={cn(
+                          'absolute inset-0',
+                          isHero
+                            ? 'bg-gradient-to-r from-transparent via-transparent to-white dark:to-space-black'
+                            : 'bg-gradient-to-t from-white dark:from-space-black via-transparent to-transparent'
+                        )}
+                      />
                       {/* ID badge */}
                       <div className="absolute top-3.5 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 backdrop-blur-sm border border-white/20">
                         <div className="h-1.5 w-1.5 rounded-full bg-vision-crimson shadow-[0_0_8px_rgba(var(--glow-crimson),1)] animate-pulse" />
-                        <span className="text-[9px] font-mono font-black text-white uppercase tracking-[0.5em]">#{String(idx + 1).padStart(2, '0')}</span>
+                        <span className="text-[9px] font-mono font-black text-white uppercase tracking-[0.5em]">
+                          #{String(idx + 1).padStart(2, '0')}
+                        </span>
                       </div>
                       {/* Status badge */}
                       <div className="absolute top-3.5 right-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 backdrop-blur-sm border border-white/20">
-                        <div className={cn('h-1.5 w-1.5 rounded-full animate-pulse', statusDotClass)} />
-                        <span className="text-[9px] font-mono font-black text-white uppercase tracking-[0.4em]">{mission.status === 'in-progress' ? 'Active' : 'Done'}</span>
+                        <div
+                          className={cn('h-1.5 w-1.5 rounded-full animate-pulse', statusDotClass)}
+                        />
+                        <span className="text-[9px] font-mono font-black text-white uppercase tracking-[0.4em]">
+                          {mission.status === 'in-progress' ? 'Active' : 'Done'}
+                        </span>
                       </div>
                       {/* Lighthouse gauge removed */}
                       {/* Flip hint */}
                       {!isHero && (
                         <div className="absolute bottom-3 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-sm border border-white/20">
-                            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(0,200,232,1)" strokeWidth="2.5"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-                            <span className="text-[8px] font-mono font-black text-vision-cyan uppercase tracking-[0.3em]">Details</span>
+                            <svg
+                              width="9"
+                              height="9"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="rgba(0,200,232,1)"
+                              strokeWidth="2.5"
+                            >
+                              <path d="M17 1l4 4-4 4" />
+                              <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+                              <path d="M7 23l-4-4 4-4" />
+                              <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+                            </svg>
+                            <span className="text-[8px] font-mono font-black text-vision-cyan uppercase tracking-[0.3em]">
+                              Details
+                            </span>
                           </div>
                         </div>
                       )}
@@ -814,20 +985,38 @@ const ProjectCard = memo(
                     {/* Content */}
                     <MotionDiv
                       style={!isHero ? { x: contentX, y: contentY } : undefined}
-                      className={cn('relative z-10 flex flex-col flex-1', isHero ? 'px-8 py-8 md:py-10 justify-center' : 'px-7 pt-4 pb-7')}
+                      className={cn(
+                        'relative z-10 flex flex-col flex-1',
+                        isHero ? 'px-8 py-8 md:py-10 justify-center' : 'px-7 pt-4 pb-7'
+                      )}
                     >
                       <div className="text-[9px] font-mono font-bold text-slate-400 dark:text-text-dark/30 uppercase tracking-[0.4em] italic mb-2.5">
                         {mission.category}
                       </div>
-                      <h3 className={cn('font-display font-black text-slate-900 dark:text-text-dark tracking-tighter uppercase italic group-hover:text-vision-cyan transition-colors duration-500 leading-tight mb-2', isHero ? 'text-3xl md:text-4xl' : 'text-2xl')}>
+                      <h3
+                        className={cn(
+                          'font-display font-black text-slate-900 dark:text-text-dark tracking-tighter uppercase italic group-hover:text-vision-cyan transition-colors duration-500 leading-tight mb-2',
+                          isHero ? 'text-3xl md:text-4xl' : 'text-2xl'
+                        )}
+                      >
                         {mission.title}
                       </h3>
-                      <p className={cn('text-[13px] font-medium leading-relaxed text-slate-500 dark:text-text-dark/50 mb-5', isHero ? 'line-clamp-4 md:line-clamp-none max-w-lg' : 'line-clamp-2')}>
-                        {isHero ? mission.fullDescription || mission.description : mission.description}
+                      <p
+                        className={cn(
+                          'text-[13px] font-medium leading-relaxed text-slate-500 dark:text-text-dark/50 mb-5',
+                          isHero ? 'line-clamp-4 md:line-clamp-none max-w-lg' : 'line-clamp-2'
+                        )}
+                      >
+                        {isHero
+                          ? mission.fullDescription || mission.description
+                          : mission.description}
                       </p>
                       <div className="flex flex-wrap gap-2 mb-auto">
                         {mission.technologies.slice(0, isHero ? 6 : 3).map((t) => (
-                          <span key={t} className="px-3.5 py-1.5 bg-slate-100 dark:bg-white/5 rounded-xl text-[9px] font-mono font-black text-slate-600 dark:text-text-dark/40 border border-slate-200 dark:border-white/5 group-hover:border-vision-cyan/30 transition-all uppercase tracking-tighter">
+                          <span
+                            key={t}
+                            className="px-3.5 py-1.5 bg-slate-100 dark:bg-white/5 rounded-xl text-[9px] font-mono font-black text-slate-600 dark:text-text-dark/40 border border-slate-200 dark:border-white/5 group-hover:border-vision-cyan/30 transition-all uppercase tracking-tighter"
+                          >
                             {t}
                           </span>
                         ))}
@@ -841,7 +1030,9 @@ const ProjectCard = memo(
                         <div className="mt-4 p-3 rounded-xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200/50 dark:border-white/[0.06]">
                           <div className="flex items-center gap-1.5 mb-1">
                             <Icons.Nodes className="text-vision-cyan opacity-50" />
-                            <span className="text-[8px] font-mono font-black text-slate-400 dark:text-white/20 uppercase tracking-[0.3em]">Architecture</span>
+                            <span className="text-[8px] font-mono font-black text-slate-400 dark:text-white/20 uppercase tracking-[0.3em]">
+                              Architecture
+                            </span>
                           </div>
                           <ArchitectureMiniMap architecture={mission.architecture} />
                         </div>
@@ -860,7 +1051,10 @@ const ProjectCard = memo(
                           )}
                         </div>
                         <button
-                          onClick={(e) => { e.stopPropagation(); isHero ? onSelect(mission) : handleFlip(); }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            isHero ? onSelect(mission) : handleFlip();
+                          }}
                           className="h-11 w-11 rounded-2xl glassmorphism flex items-center justify-center text-slate-400 dark:text-text-dark/40 hover:text-white dark:hover:text-space-black hover:bg-vision-crimson dark:hover:bg-vision-cyan hover:scale-110 transition-all border border-slate-200 dark:border-white/5 shadow-[0_15px_30px_rgba(0,0,0,0.1)]"
                         >
                           <Icons.External />
@@ -889,10 +1083,22 @@ const ProjectCard = memo(
                         </h3>
                       </div>
                       <button
-                        onClick={(e) => { e.stopPropagation(); handleFlip(); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleFlip();
+                        }}
                         className="h-9 w-9 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-400 hover:text-vision-crimson transition-colors shrink-0 ml-3"
                       >
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="3"
+                        >
+                          <path d="M18 6 6 18M6 6l12 12" />
+                        </svg>
                       </button>
                     </div>
 
@@ -904,9 +1110,22 @@ const ProjectCard = memo(
                         </div>
                         <ul className="space-y-2">
                           {mission.features.slice(0, 4).map((f, i) => (
-                            <li key={i} className="flex items-start gap-2.5 text-[11px] text-slate-600 dark:text-text-dark/60 font-mono">
+                            <li
+                              key={i}
+                              className="flex items-start gap-2.5 text-[11px] text-slate-600 dark:text-text-dark/60 font-mono"
+                            >
                               <div className="h-4 w-4 rounded-md bg-vision-cyan/10 border border-vision-cyan/30 flex items-center justify-center shrink-0 mt-0.5">
-                                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="text-vision-cyan" strokeWidth="3.5"><polyline points="20 6 9 17 4 12" /></svg>
+                                <svg
+                                  width="8"
+                                  height="8"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  className="text-vision-cyan"
+                                  strokeWidth="3.5"
+                                >
+                                  <polyline points="20 6 9 17 4 12" />
+                                </svg>
                               </div>
                               <span className="leading-snug">{f}</span>
                             </li>
@@ -937,7 +1156,9 @@ const ProjectCard = memo(
                           onClick={(e) => e.stopPropagation()}
                           className="flex items-center justify-center gap-2.5 w-full py-2.5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-vision-cyan/40 hover:text-vision-cyan transition-all text-[10px] font-mono font-black text-slate-600 dark:text-text-dark/50 uppercase tracking-[0.3em]"
                         >
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                          </svg>
                           GitHub
                         </a>
                       )}
@@ -954,7 +1175,10 @@ const ProjectCard = memo(
                         </a>
                       )}
                       <button
-                        onClick={(e) => { e.stopPropagation(); onSelect(mission); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelect(mission);
+                        }}
                         className="flex items-center justify-center gap-2.5 w-full py-2.5 rounded-2xl bg-vision-crimson/10 border border-vision-crimson/30 hover:bg-vision-crimson/20 hover:border-vision-crimson/50 transition-all text-[10px] font-mono font-black text-vision-crimson uppercase tracking-[0.3em]"
                       >
                         Full Details
@@ -1081,7 +1305,10 @@ const PremiumCTA = memo(function PremiumCTA({ projectCount }: { projectCount?: n
         <div className="absolute -inset-[1px] rounded-2xl overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
           <div
             className="absolute inset-0 animate-spin-slow"
-            style={{ background: 'conic-gradient(from 0deg, transparent 0%, rgba(var(--glow-cyan),1) 10%, transparent 20%, transparent 40%, rgba(var(--glow-crimson),1) 50%, transparent 60%, transparent 80%, rgba(var(--glow-orange),1) 90%, transparent 100%)' }}
+            style={{
+              background:
+                'conic-gradient(from 0deg, transparent 0%, rgba(var(--glow-cyan),1) 10%, transparent 20%, transparent 40%, rgba(var(--glow-crimson),1) 50%, transparent 60%, transparent 80%, rgba(var(--glow-orange),1) 90%, transparent 100%)',
+            }}
           />
           <div className="absolute inset-[1.5px] rounded-[calc(1rem-1.5px)] bg-white dark:bg-space-black" />
         </div>
@@ -1090,7 +1317,12 @@ const PremiumCTA = memo(function PremiumCTA({ projectCount }: { projectCount?: n
         <span className="absolute inset-0 bg-white/80 dark:bg-white/[0.04] backdrop-blur-xl border-2 border-slate-200/80 dark:border-white/[0.08] rounded-2xl group-hover:border-transparent transition-colors duration-500" />
 
         {/* Ambient glow on hover */}
-        <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl" style={{ boxShadow: '0 0 60px rgba(0,200,232,0.15), inset 0 0 40px rgba(0,200,232,0.05)' }} />
+        <span
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
+          style={{
+            boxShadow: '0 0 60px rgba(0,200,232,0.15), inset 0 0 40px rgba(0,200,232,0.05)',
+          }}
+        />
 
         {/* Sweep shine */}
         <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-vision-cyan/[0.08] to-transparent pointer-events-none" />
@@ -1202,9 +1434,7 @@ export const ProjectsSection = ({ onModalToggle }: { onModalToggle?: (open: bool
   // Filtered missions
   const missions = useMemo(
     () =>
-      activeFilter === 'All'
-        ? allMissions
-        : allMissions.filter((m) => m.category === activeFilter),
+      activeFilter === 'All' ? allMissions : allMissions.filter((m) => m.category === activeFilter),
     [allMissions, activeFilter]
   );
 
@@ -1300,12 +1530,7 @@ export const ProjectsSection = ({ onModalToggle }: { onModalToggle?: (open: bool
           {/* Hero card — first project, full width */}
           {heroMission && (
             <div className="mb-8">
-              <ProjectCard
-                mission={heroMission}
-                idx={0}
-                onSelect={setSelectedProject}
-                isHero
-              />
+              <ProjectCard mission={heroMission} idx={0} onSelect={setSelectedProject} isHero />
             </div>
           )}
 

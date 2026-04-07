@@ -59,7 +59,7 @@ const typePolicies: TypePolicies = {
     fields: {
       // Projects with pagination
       projects: {
-        keyArgs: ['filter', 'sort'],
+        keyArgs: ['filter', 'sort', 'pagination'],
         merge: paginatedMerge,
       },
 

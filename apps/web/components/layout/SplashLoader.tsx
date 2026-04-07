@@ -129,11 +129,9 @@ const BootLine = memo(function BootLine({
     <motion.div
       initial={{ opacity: 0, x: -8 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.3, delay: index * BOOT_LINE_DELAY / 1000 }}
+      transition={{ duration: 0.3, delay: (index * BOOT_LINE_DELAY) / 1000 }}
       className={`font-mono text-[10px] sm:text-xs tracking-wider ${
-        isLast
-          ? 'text-vision-cyan'
-          : 'text-slate-400 dark:text-white/30'
+        isLast ? 'text-vision-cyan' : 'text-slate-400 dark:text-white/30'
       }`}
     >
       {text}
@@ -166,9 +164,12 @@ export const SplashLoader = memo(function SplashLoader({ onComplete }: SplashLoa
     const timers: NodeJS.Timeout[] = [];
     BOOT_LINES.forEach((_, i) => {
       timers.push(
-        setTimeout(() => {
-          setVisibleLines(i + 1);
-        }, (i + 1) * BOOT_LINE_DELAY)
+        setTimeout(
+          () => {
+            setVisibleLines(i + 1);
+          },
+          (i + 1) * BOOT_LINE_DELAY
+        )
       );
     });
     return () => timers.forEach(clearTimeout);

@@ -417,10 +417,15 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
                       {project.category}
                     </span>
                     <span className="inline-flex items-center gap-1.5 text-[9px] font-mono font-black tracking-[0.35em] uppercase">
-                      <span className={`h-1.5 w-1.5 rounded-full animate-pulse ${
-                        project.status === 'in-progress' ? 'bg-amber-400' :
-                        project.status === 'planned' ? 'bg-vision-orange' : 'bg-emerald-400'
-                      }`} />
+                      <span
+                        className={`h-1.5 w-1.5 rounded-full animate-pulse ${
+                          project.status === 'in-progress'
+                            ? 'bg-amber-400'
+                            : project.status === 'planned'
+                              ? 'bg-vision-orange'
+                              : 'bg-emerald-400'
+                        }`}
+                      />
                       <span className="text-white/40">{project.status}</span>
                     </span>
                   </div>
@@ -467,10 +472,12 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
           </div>
 
           {/* Content Area */}
-          <div className={cn(
-            'flex-1 overflow-y-auto relative z-10 custom-scrollbar bg-white dark:bg-space-black',
-            activeTab === 'Architecture' ? 'p-0' : 'px-8 md:px-12 py-8 space-y-10'
-          )}>
+          <div
+            className={cn(
+              'flex-1 overflow-y-auto relative z-10 custom-scrollbar bg-white dark:bg-space-black',
+              activeTab === 'Architecture' ? 'p-0' : 'px-8 md:px-12 py-8 space-y-10'
+            )}
+          >
             <AnimatePresence mode="wait">
               <MotionDiv
                 key={activeTab}
@@ -480,230 +487,324 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
                 transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                 className={activeTab === 'Architecture' ? 'h-full' : 'space-y-10'}
               >
-                  {activeTab === 'Overview' && (
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                      <div className="lg:col-span-7 space-y-8">
+                {activeTab === 'Overview' && (
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                    <div className="lg:col-span-7 space-y-8">
+                      <div className="space-y-4">
+                        <h4 className="text-[10px] font-mono font-black text-vision-cyan uppercase tracking-[0.5em] flex items-center gap-4">
+                          <div className="h-[1px] w-10 bg-vision-cyan/40" /> Mission_Core
+                        </h4>
+                        <p className="text-lg md:text-xl font-bold leading-relaxed text-slate-700 dark:text-text-dark/80 italic">
+                          {project.fullDescription || project.description}
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap gap-3">
+                        {project.technologies.map((tech) => (
+                          <span
+                            key={tech}
+                            className="px-5 py-2.5 glassmorphism rounded-2xl text-[10px] font-mono font-black text-slate-500 dark:text-text-dark/40 uppercase border border-slate-200 dark:border-white/5 hover:border-vision-cyan/40 transition-all bg-white/60 dark:bg-black/30"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Features */}
+                      {project.features && project.features.length > 0 && (
                         <div className="space-y-4">
                           <h4 className="text-[10px] font-mono font-black text-vision-cyan uppercase tracking-[0.5em] flex items-center gap-4">
-                            <div className="h-[1px] w-10 bg-vision-cyan/40" /> Mission_Core
+                            <div className="h-[1px] w-10 bg-vision-cyan/40" /> Key_Features
                           </h4>
-                          <p className="text-lg md:text-xl font-bold leading-relaxed text-slate-700 dark:text-text-dark/80 italic">
-                            {project.fullDescription || project.description}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            {project.features.map((feature, i) => (
+                              <div
+                                key={i}
+                                className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/5"
+                              >
+                                <div className="h-5 w-5 rounded-lg bg-vision-cyan/10 border border-vision-cyan/30 flex items-center justify-center shrink-0 mt-0.5">
+                                  <svg
+                                    width="10"
+                                    height="10"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    className="text-vision-cyan"
+                                    strokeWidth="3"
+                                  >
+                                    <polyline points="20 6 9 17 4 12" />
+                                  </svg>
+                                </div>
+                                <span className="text-[12px] font-mono text-slate-600 dark:text-text-dark/60 leading-snug">
+                                  {feature}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Challenges */}
+                      {project.challenges && (
+                        <div className="space-y-3">
+                          <h4 className="text-[10px] font-mono font-black text-vision-crimson uppercase tracking-[0.5em] flex items-center gap-4">
+                            <div className="h-[1px] w-10 bg-vision-crimson/40" /> Challenges
+                          </h4>
+                          <p className="text-[13px] font-medium leading-relaxed text-slate-600 dark:text-text-dark/60 italic p-4 rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5">
+                            {project.challenges}
                           </p>
                         </div>
-                        <div className="flex flex-wrap gap-3">
-                          {project.technologies.map((tech) => (
-                            <span
-                              key={tech}
-                              className="px-5 py-2.5 glassmorphism rounded-2xl text-[10px] font-mono font-black text-slate-500 dark:text-text-dark/40 uppercase border border-slate-200 dark:border-white/5 hover:border-vision-cyan/40 transition-all bg-white/60 dark:bg-black/30"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
+                      )}
 
-                        {/* Features */}
-                        {project.features && project.features.length > 0 && (
-                          <div className="space-y-4">
-                            <h4 className="text-[10px] font-mono font-black text-vision-cyan uppercase tracking-[0.5em] flex items-center gap-4">
-                              <div className="h-[1px] w-10 bg-vision-cyan/40" /> Key_Features
-                            </h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                              {project.features.map((feature, i) => (
-                                <div key={i} className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/5">
-                                  <div className="h-5 w-5 rounded-lg bg-vision-cyan/10 border border-vision-cyan/30 flex items-center justify-center shrink-0 mt-0.5">
-                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="text-vision-cyan" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg>
-                                  </div>
-                                  <span className="text-[12px] font-mono text-slate-600 dark:text-text-dark/60 leading-snug">{feature}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Challenges */}
-                        {project.challenges && (
-                          <div className="space-y-3">
-                            <h4 className="text-[10px] font-mono font-black text-vision-crimson uppercase tracking-[0.5em] flex items-center gap-4">
-                              <div className="h-[1px] w-10 bg-vision-crimson/40" /> Challenges
-                            </h4>
-                            <p className="text-[13px] font-medium leading-relaxed text-slate-600 dark:text-text-dark/60 italic p-4 rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5">
-                              {project.challenges}
-                            </p>
-                          </div>
-                        )}
-
-                        {/* Learnings */}
-                        {project.learnings && (
-                          <div className="space-y-3">
-                            <h4 className="text-[10px] font-mono font-black text-vision-orange uppercase tracking-[0.5em] flex items-center gap-4">
-                              <div className="h-[1px] w-10 bg-vision-orange/40" /> Learnings
-                            </h4>
-                            <p className="text-[13px] font-medium leading-relaxed text-slate-600 dark:text-text-dark/60 italic p-4 rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5">
-                              {project.learnings}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="lg:col-span-5">
-                        <div className="p-8 rounded-[2.5rem] glassmorphism border border-slate-200 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] space-y-10 shadow-xl relative overflow-hidden backdrop-blur-2xl">
-                          <h4 className="text-[10px] font-mono font-black text-vision-crimson uppercase tracking-[0.5em] relative z-10 flex items-center gap-3">
-                            <Icons.Activity className="w-4 h-4 animate-pulse" /> Telemetry_Output
+                      {/* Learnings */}
+                      {project.learnings && (
+                        <div className="space-y-3">
+                          <h4 className="text-[10px] font-mono font-black text-vision-orange uppercase tracking-[0.5em] flex items-center gap-4">
+                            <div className="h-[1px] w-10 bg-vision-orange/40" /> Learnings
                           </h4>
-                          <div className="grid grid-cols-2 gap-8 relative z-10">
-                            <div className="space-y-1.5">
-                              <div className="text-[9px] font-mono text-slate-400 uppercase tracking-widest font-black italic">
-                                DELAY
-                              </div>
-                              <div className="text-xl font-display font-black text-slate-900 dark:text-text-dark">
-                                {project.metrics?.responseTime}
-                              </div>
-                            </div>
-                            <div className="space-y-1.5">
-                              <div className="text-[9px] font-mono text-slate-400 uppercase tracking-widest font-black italic">
-                                UPTIME
-                              </div>
-                              <div className="text-xl font-display font-black text-vision-cyan text-glow-cyan">
-                                {project.metrics?.uptime}
-                              </div>
-                            </div>
-                            <div className="space-y-1.5">
-                              <div className="text-[9px] font-mono text-slate-400 uppercase tracking-widest font-black italic">
-                                LOAD
-                              </div>
-                              <div className="text-xl font-display font-black text-vision-orange">
-                                {project.metrics?.loadTime}
-                              </div>
-                            </div>
-                            <div className="space-y-1.5">
-                              <div className="text-[9px] font-mono text-slate-400 uppercase tracking-widest font-black italic">
-                                LINK
-                              </div>
-                              <div className="text-xl font-display font-black text-green-500/90">
-                                SECURE
-                              </div>
-                            </div>
-                          </div>
+                          <p className="text-[13px] font-medium leading-relaxed text-slate-600 dark:text-text-dark/60 italic p-4 rounded-2xl bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5">
+                            {project.learnings}
+                          </p>
                         </div>
-                      </div>
+                      )}
                     </div>
-                  )}
 
-                  {activeTab === 'Architecture' && (
-                    <div className="flex flex-col h-full min-h-[420px]">
-                      <div className="px-8 md:px-12 pt-8 pb-4 flex items-center gap-4 border-b border-slate-100 dark:border-white/5 shrink-0">
-                        <h4 className="text-[10px] font-mono font-black text-vision-cyan uppercase tracking-[0.5em] flex items-center gap-3">
-                          <Icons.Cpu className="w-4 h-4" /> Topology_Visualization
+                    <div className="lg:col-span-5">
+                      <div className="p-8 rounded-[2.5rem] glassmorphism border border-slate-200 dark:border-white/10 bg-slate-50/60 dark:bg-white/[0.03] space-y-10 shadow-xl relative overflow-hidden backdrop-blur-2xl">
+                        <h4 className="text-[10px] font-mono font-black text-vision-crimson uppercase tracking-[0.5em] relative z-10 flex items-center gap-3">
+                          <Icons.Activity className="w-4 h-4 animate-pulse" /> Telemetry_Output
                         </h4>
-                        <span className="text-[9px] font-mono text-slate-400 dark:text-text-dark/20 tracking-[0.3em]">
-                          {project.architecture?.nodes.length ?? 0} nodes · {project.architecture?.connections.length ?? 0} connections
-                        </span>
-                      </div>
-                      <div className="flex-1 p-4 md:p-6">
-                        <ArchitectureMap
-                          nodes={project.architecture?.nodes || []}
-                          connections={project.architecture?.connections || []}
-                        />
+                        <div className="grid grid-cols-2 gap-8 relative z-10">
+                          <div className="space-y-1.5">
+                            <div className="text-[9px] font-mono text-slate-400 uppercase tracking-widest font-black italic">
+                              DELAY
+                            </div>
+                            <div className="text-xl font-display font-black text-slate-900 dark:text-text-dark">
+                              {project.metrics?.responseTime}
+                            </div>
+                          </div>
+                          <div className="space-y-1.5">
+                            <div className="text-[9px] font-mono text-slate-400 uppercase tracking-widest font-black italic">
+                              UPTIME
+                            </div>
+                            <div className="text-xl font-display font-black text-vision-cyan text-glow-cyan">
+                              {project.metrics?.uptime}
+                            </div>
+                          </div>
+                          <div className="space-y-1.5">
+                            <div className="text-[9px] font-mono text-slate-400 uppercase tracking-widest font-black italic">
+                              LOAD
+                            </div>
+                            <div className="text-xl font-display font-black text-vision-orange">
+                              {project.metrics?.loadTime}
+                            </div>
+                          </div>
+                          <div className="space-y-1.5">
+                            <div className="text-[9px] font-mono text-slate-400 uppercase tracking-widest font-black italic">
+                              LINK
+                            </div>
+                            <div className="text-xl font-display font-black text-green-500/90">
+                              SECURE
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  )}
+                  </div>
+                )}
 
-                  {activeTab === 'Links' && (
-                    <div className="space-y-8">
-                      <h4 className="text-[10px] font-mono font-black text-vision-cyan uppercase tracking-[0.5em] flex items-center gap-4">
-                        <div className="h-[1px] w-10 bg-vision-cyan/40" /> External_Links
+                {activeTab === 'Architecture' && (
+                  <div className="flex flex-col h-full min-h-[420px]">
+                    <div className="px-8 md:px-12 pt-8 pb-4 flex items-center gap-4 border-b border-slate-100 dark:border-white/5 shrink-0">
+                      <h4 className="text-[10px] font-mono font-black text-vision-cyan uppercase tracking-[0.5em] flex items-center gap-3">
+                        <Icons.Cpu className="w-4 h-4" /> Topology_Visualization
                       </h4>
+                      <span className="text-[9px] font-mono text-slate-400 dark:text-text-dark/20 tracking-[0.3em]">
+                        {project.architecture?.nodes.length ?? 0} nodes ·{' '}
+                        {project.architecture?.connections.length ?? 0} connections
+                      </span>
+                    </div>
+                    <div className="flex-1 p-4 md:p-6">
+                      <ArchitectureMap
+                        nodes={project.architecture?.nodes || []}
+                        connections={project.architecture?.connections || []}
+                      />
+                    </div>
+                  </div>
+                )}
 
-                      {/* Link cards */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {project.links?.github ? (
-                          <a
-                            href={project.links.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group/link flex items-center gap-5 p-6 rounded-[2rem] bg-slate-900 dark:bg-white/[0.04] border border-slate-700 dark:border-white/10 hover:border-vision-cyan/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(var(--glow-cyan),0.1)]"
-                          >
-                            <div className="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0 border border-white/10 group-hover/link:border-vision-cyan/40 transition-colors">
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-white/70 group-hover/link:text-vision-cyan transition-colors"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <div className="text-[11px] font-mono font-black text-white/90 group-hover/link:text-vision-cyan transition-colors uppercase tracking-[0.2em]">GitHub Repo</div>
-                              <div className="text-[10px] font-mono text-white/30 mt-0.5 truncate">{project.links.github}</div>
-                            </div>
-                            <Icons.External className="shrink-0 opacity-30 group-hover/link:opacity-100 group-hover/link:text-vision-cyan transition-all text-white" />
-                          </a>
-                        ) : (
-                          <div className="flex items-center gap-5 p-6 rounded-[2rem] border border-dashed border-slate-300 dark:border-white/10 opacity-30">
-                            <div className="h-12 w-12 rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center shrink-0">
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-slate-400"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                            </div>
-                            <span className="text-[11px] font-mono font-black text-slate-500 dark:text-text-dark/30 uppercase tracking-[0.2em]">No GitHub link yet</span>
-                          </div>
-                        )}
+                {activeTab === 'Links' && (
+                  <div className="space-y-8">
+                    <h4 className="text-[10px] font-mono font-black text-vision-cyan uppercase tracking-[0.5em] flex items-center gap-4">
+                      <div className="h-[1px] w-10 bg-vision-cyan/40" /> External_Links
+                    </h4>
 
-                        {project.links?.live ? (
-                          <a
-                            href={project.links.live}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group/link flex items-center gap-5 p-6 rounded-[2rem] bg-vision-cyan/5 border border-vision-cyan/20 hover:border-vision-cyan/50 transition-all duration-300 hover:bg-vision-cyan/10 hover:shadow-[0_0_30px_rgba(var(--glow-cyan),0.12)]"
-                          >
-                            <div className="h-12 w-12 rounded-2xl bg-vision-cyan/10 flex items-center justify-center shrink-0 border border-vision-cyan/30 group-hover/link:border-vision-cyan/60 transition-colors">
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="text-vision-cyan" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <div className="text-[11px] font-mono font-black text-vision-cyan uppercase tracking-[0.2em]">Live Demo</div>
-                              <div className="text-[10px] font-mono text-vision-cyan/40 mt-0.5 truncate">{project.links.live}</div>
-                            </div>
-                            <Icons.External className="shrink-0 opacity-40 group-hover/link:opacity-100 transition-opacity text-vision-cyan" />
-                          </a>
-                        ) : (
-                          <div className="flex items-center gap-5 p-6 rounded-[2rem] border border-dashed border-slate-300 dark:border-white/10 opacity-30">
-                            <div className="h-12 w-12 rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center shrink-0">
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="text-slate-400" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg>
-                            </div>
-                            <span className="text-[11px] font-mono font-black text-slate-500 dark:text-text-dark/30 uppercase tracking-[0.2em]">No live link yet</span>
+                    {/* Link cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {project.links?.github ? (
+                        <a
+                          href={project.links.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group/link flex items-center gap-5 p-6 rounded-[2rem] bg-slate-900 dark:bg-white/[0.04] border border-slate-700 dark:border-white/10 hover:border-vision-cyan/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(var(--glow-cyan),0.1)]"
+                        >
+                          <div className="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0 border border-white/10 group-hover/link:border-vision-cyan/40 transition-colors">
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                              className="text-white/70 group-hover/link:text-vision-cyan transition-colors"
+                            >
+                              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
                           </div>
-                        )}
+                          <div className="min-w-0 flex-1">
+                            <div className="text-[11px] font-mono font-black text-white/90 group-hover/link:text-vision-cyan transition-colors uppercase tracking-[0.2em]">
+                              GitHub Repo
+                            </div>
+                            <div className="text-[10px] font-mono text-white/30 mt-0.5 truncate">
+                              {project.links.github}
+                            </div>
+                          </div>
+                          <Icons.External className="shrink-0 opacity-30 group-hover/link:opacity-100 group-hover/link:text-vision-cyan transition-all text-white" />
+                        </a>
+                      ) : (
+                        <div className="flex items-center gap-5 p-6 rounded-[2rem] border border-dashed border-slate-300 dark:border-white/10 opacity-30">
+                          <div className="h-12 w-12 rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center shrink-0">
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                              className="text-slate-400"
+                            >
+                              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                          </div>
+                          <span className="text-[11px] font-mono font-black text-slate-500 dark:text-text-dark/30 uppercase tracking-[0.2em]">
+                            No GitHub link yet
+                          </span>
+                        </div>
+                      )}
+
+                      {project.links?.live ? (
+                        <a
+                          href={project.links.live}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group/link flex items-center gap-5 p-6 rounded-[2rem] bg-vision-cyan/5 border border-vision-cyan/20 hover:border-vision-cyan/50 transition-all duration-300 hover:bg-vision-cyan/10 hover:shadow-[0_0_30px_rgba(var(--glow-cyan),0.12)]"
+                        >
+                          <div className="h-12 w-12 rounded-2xl bg-vision-cyan/10 flex items-center justify-center shrink-0 border border-vision-cyan/30 group-hover/link:border-vision-cyan/60 transition-colors">
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              className="text-vision-cyan"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <circle cx="12" cy="12" r="10" />
+                              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                              <path d="M2 12h20" />
+                            </svg>
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="text-[11px] font-mono font-black text-vision-cyan uppercase tracking-[0.2em]">
+                              Live Demo
+                            </div>
+                            <div className="text-[10px] font-mono text-vision-cyan/40 mt-0.5 truncate">
+                              {project.links.live}
+                            </div>
+                          </div>
+                          <Icons.External className="shrink-0 opacity-40 group-hover/link:opacity-100 transition-opacity text-vision-cyan" />
+                        </a>
+                      ) : (
+                        <div className="flex items-center gap-5 p-6 rounded-[2rem] border border-dashed border-slate-300 dark:border-white/10 opacity-30">
+                          <div className="h-12 w-12 rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center shrink-0">
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              className="text-slate-400"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <circle cx="12" cy="12" r="10" />
+                              <path d="M2 12h20" />
+                            </svg>
+                          </div>
+                          <span className="text-[11px] font-mono font-black text-slate-500 dark:text-text-dark/30 uppercase tracking-[0.2em]">
+                            No live link yet
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Project meta grid */}
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                      <div className="p-5 rounded-[1.5rem] bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/5 space-y-1.5">
+                        <div className="text-[9px] font-mono uppercase tracking-[0.4em] text-slate-400 dark:text-text-dark/30 font-black">
+                          Category
+                        </div>
+                        <div className="text-[13px] font-mono font-black text-slate-900 dark:text-text-dark">
+                          {project.category}
+                        </div>
                       </div>
-
-                      {/* Project meta grid */}
-                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div className="p-5 rounded-[1.5rem] bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/5 space-y-1.5">
-                          <div className="text-[9px] font-mono uppercase tracking-[0.4em] text-slate-400 dark:text-text-dark/30 font-black">Category</div>
-                          <div className="text-[13px] font-mono font-black text-slate-900 dark:text-text-dark">{project.category}</div>
+                      <div className="p-5 rounded-[1.5rem] bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/5 space-y-1.5">
+                        <div className="text-[9px] font-mono uppercase tracking-[0.4em] text-slate-400 dark:text-text-dark/30 font-black">
+                          Status
                         </div>
-                        <div className="p-5 rounded-[1.5rem] bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/5 space-y-1.5">
-                          <div className="text-[9px] font-mono uppercase tracking-[0.4em] text-slate-400 dark:text-text-dark/30 font-black">Status</div>
-                          <div className="flex items-center gap-2">
-                            <span className={`h-2 w-2 rounded-full ${project.status === 'in-progress' ? 'bg-amber-400' : project.status === 'planned' ? 'bg-vision-orange' : 'bg-emerald-400'}`} />
-                            <span className="text-[13px] font-mono font-black text-slate-900 dark:text-text-dark capitalize">{project.status}</span>
-                          </div>
-                        </div>
-                        <div className="p-5 rounded-[1.5rem] bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/5 space-y-1.5">
-                          <div className="text-[9px] font-mono uppercase tracking-[0.4em] text-slate-400 dark:text-text-dark/30 font-black">Tech Stack</div>
-                          <div className="text-[13px] font-mono font-black text-vision-cyan">{project.technologies.length} tools</div>
-                        </div>
-                        <div className="p-5 rounded-[1.5rem] bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/5 space-y-1.5">
-                          <div className="text-[9px] font-mono uppercase tracking-[0.4em] text-slate-400 dark:text-text-dark/30 font-black">Features</div>
-                          <div className="text-[13px] font-mono font-black text-vision-crimson">{project.features?.length ?? 0} listed</div>
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`h-2 w-2 rounded-full ${project.status === 'in-progress' ? 'bg-amber-400' : project.status === 'planned' ? 'bg-vision-orange' : 'bg-emerald-400'}`}
+                          />
+                          <span className="text-[13px] font-mono font-black text-slate-900 dark:text-text-dark capitalize">
+                            {project.status}
+                          </span>
                         </div>
                       </div>
-
-                      {/* Tech tags */}
-                      <div className="space-y-3">
-                        <div className="text-[9px] font-mono font-black text-slate-400 dark:text-text-dark/30 uppercase tracking-[0.4em]">Full Stack</div>
-                        <div className="flex flex-wrap gap-2">
-                          {project.technologies.map((tech) => (
-                            <span key={tech} className="px-4 py-2 rounded-xl text-[10px] font-mono font-black text-slate-600 dark:text-text-dark/50 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 hover:border-vision-cyan/40 transition-all uppercase tracking-tight">
-                              {tech}
-                            </span>
-                          ))}
+                      <div className="p-5 rounded-[1.5rem] bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/5 space-y-1.5">
+                        <div className="text-[9px] font-mono uppercase tracking-[0.4em] text-slate-400 dark:text-text-dark/30 font-black">
+                          Tech Stack
+                        </div>
+                        <div className="text-[13px] font-mono font-black text-vision-cyan">
+                          {project.technologies.length} tools
+                        </div>
+                      </div>
+                      <div className="p-5 rounded-[1.5rem] bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/5 space-y-1.5">
+                        <div className="text-[9px] font-mono uppercase tracking-[0.4em] text-slate-400 dark:text-text-dark/30 font-black">
+                          Features
+                        </div>
+                        <div className="text-[13px] font-mono font-black text-vision-crimson">
+                          {project.features?.length ?? 0} listed
                         </div>
                       </div>
                     </div>
-                  )}
+
+                    {/* Tech tags */}
+                    <div className="space-y-3">
+                      <div className="text-[9px] font-mono font-black text-slate-400 dark:text-text-dark/30 uppercase tracking-[0.4em]">
+                        Full Stack
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {project.technologies.map((tech) => (
+                          <span
+                            key={tech}
+                            className="px-4 py-2 rounded-xl text-[10px] font-mono font-black text-slate-600 dark:text-text-dark/50 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 hover:border-vision-cyan/40 transition-all uppercase tracking-tight"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </MotionDiv>
             </AnimatePresence>
           </div>
@@ -725,7 +826,9 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
                   className="h-10 w-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-vision-cyan/40 hover:text-vision-cyan transition-all text-slate-500 dark:text-text-dark/40"
                   title="GitHub Repository"
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                  </svg>
                 </a>
               )}
               {project.links?.live && (

@@ -17,13 +17,17 @@ const Icons = {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
       <defs>
         <radialGradient id="sun-core" cx="50%" cy="35%" r="60%">
-          <stop offset="0%" stopColor={isDark ? "#FDE68A" : "#FBBF24"} />
-          <stop offset="55%" stopColor={isDark ? "#F59E0B" : "#D97706"} />
-          <stop offset="100%" stopColor={isDark ? "#D97706" : "#92400E"} />
+          <stop offset="0%" stopColor={isDark ? '#FDE68A' : '#FBBF24'} />
+          <stop offset="55%" stopColor={isDark ? '#F59E0B' : '#D97706'} />
+          <stop offset="100%" stopColor={isDark ? '#D97706' : '#92400E'} />
         </radialGradient>
         <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor={isDark ? "#FCD34D" : "#F59E0B"} stopOpacity={isDark ? "0.35" : "0.45"} />
-          <stop offset="100%" stopColor={isDark ? "#F59E0B" : "#D97706"} stopOpacity="0" />
+          <stop
+            offset="0%"
+            stopColor={isDark ? '#FCD34D' : '#F59E0B'}
+            stopOpacity={isDark ? '0.35' : '0.45'}
+          />
+          <stop offset="100%" stopColor={isDark ? '#F59E0B' : '#D97706'} stopOpacity="0" />
         </radialGradient>
       </defs>
       {/* Soft outer glow */}
@@ -36,15 +40,23 @@ const Icons = {
           cy="4.2"
           rx="0.9"
           ry="1.8"
-          fill={isDark ? "#F59E0B" : "#D97706"}
-          fillOpacity={i % 2 === 0 ? (isDark ? 0.9 : 0.95) : (isDark ? 0.55 : 0.7)}
+          fill={isDark ? '#F59E0B' : '#D97706'}
+          fillOpacity={i % 2 === 0 ? (isDark ? 0.9 : 0.95) : isDark ? 0.55 : 0.7}
           transform={`rotate(${deg} 12 12)`}
         />
       ))}
       {/* Core orb */}
       <circle cx="12" cy="12" r="4.4" fill="url(#sun-core)" />
       {/* Specular highlight */}
-      <ellipse cx="10.4" cy="10.5" rx="1.4" ry="0.9" fill="white" fillOpacity={isDark ? "0.55" : "0.35"} transform="rotate(-30 10.4 10.5)" />
+      <ellipse
+        cx="10.4"
+        cy="10.5"
+        rx="1.4"
+        ry="0.9"
+        fill="white"
+        fillOpacity={isDark ? '0.55' : '0.35'}
+        transform="rotate(-30 10.4 10.5)"
+      />
     </svg>
   ),
 
@@ -53,29 +65,52 @@ const Icons = {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
       <defs>
         <radialGradient id="moon-fill" cx="40%" cy="30%" r="70%">
-          <stop offset="0%" stopColor={isDark ? "#E2E8F0" : "#CBD5E1"} />
-          <stop offset="45%" stopColor={isDark ? "#94A3B8" : "#64748B"} />
-          <stop offset="100%" stopColor={isDark ? "#475569" : "#334155"} />
+          <stop offset="0%" stopColor={isDark ? '#E2E8F0' : '#CBD5E1'} />
+          <stop offset="45%" stopColor={isDark ? '#94A3B8' : '#64748B'} />
+          <stop offset="100%" stopColor={isDark ? '#475569' : '#334155'} />
         </radialGradient>
       </defs>
       {/* Soft glow ring */}
-      <circle cx="12" cy="12" r="8.5" fill={isDark ? "#94A3B8" : "#64748B"} fillOpacity={isDark ? "0.08" : "0.12"} />
-      {/* Moon body */}
-      <path
-        d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
-        fill="url(#moon-fill)"
+      <circle
+        cx="12"
+        cy="12"
+        r="8.5"
+        fill={isDark ? '#94A3B8' : '#64748B'}
+        fillOpacity={isDark ? '0.08' : '0.12'}
       />
+      {/* Moon body */}
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="url(#moon-fill)" />
       {/* Inner crescent shadow to add depth */}
       <path
         d="M18.5 14.5A6.5 6.5 0 0 1 10 6a6.5 6.5 0 0 0 8.5 8.5z"
-        fill={isDark ? "#1E293B" : "#334155"}
-        fillOpacity={isDark ? "0.18" : "0.25"}
+        fill={isDark ? '#1E293B' : '#334155'}
+        fillOpacity={isDark ? '0.18' : '0.25'}
       />
       {/* Specular arc on crescent tip */}
-      <ellipse cx="13.8" cy="5.8" rx="1.1" ry="0.55" fill="white" fillOpacity={isDark ? "0.5" : "0.25"} transform="rotate(-40 13.8 5.8)" />
+      <ellipse
+        cx="13.8"
+        cy="5.8"
+        rx="1.1"
+        ry="0.55"
+        fill="white"
+        fillOpacity={isDark ? '0.5' : '0.25'}
+        transform="rotate(-40 13.8 5.8)"
+      />
       {/* Small star dots */}
-      <circle cx="19" cy="6" r="0.7" fill={isDark ? "#E2E8F0" : "#94A3B8"} fillOpacity={isDark ? "0.7" : "0.6"} />
-      <circle cx="21" cy="9.5" r="0.45" fill={isDark ? "#CBD5E1" : "#64748B"} fillOpacity={isDark ? "0.6" : "0.5"} />
+      <circle
+        cx="19"
+        cy="6"
+        r="0.7"
+        fill={isDark ? '#E2E8F0' : '#94A3B8'}
+        fillOpacity={isDark ? '0.7' : '0.6'}
+      />
+      <circle
+        cx="21"
+        cy="9.5"
+        r="0.45"
+        fill={isDark ? '#CBD5E1' : '#64748B'}
+        fillOpacity={isDark ? '0.6' : '0.5'}
+      />
     </svg>
   ),
 
@@ -108,28 +143,71 @@ const Icons = {
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
       <defs>
         <linearGradient id="hex-a" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={isDark ? "#22D3EE" : "#0891B2"} stopOpacity={isDark ? "0.9" : "0.8"} />
-          <stop offset="100%" stopColor={isDark ? "#0891B2" : "#0E7490"} stopOpacity={isDark ? "0.7" : "0.8"} />
+          <stop
+            offset="0%"
+            stopColor={isDark ? '#22D3EE' : '#0891B2'}
+            stopOpacity={isDark ? '0.9' : '0.8'}
+          />
+          <stop
+            offset="100%"
+            stopColor={isDark ? '#0891B2' : '#0E7490'}
+            stopOpacity={isDark ? '0.7' : '0.8'}
+          />
         </linearGradient>
         <linearGradient id="hex-b" x1="100%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor={isDark ? "#A78BFA" : "#7C3AED"} stopOpacity={isDark ? "0.85" : "0.8"} />
-          <stop offset="100%" stopColor={isDark ? "#6D28D9" : "#5B21B6"} stopOpacity={isDark ? "0.65" : "0.7"} />
+          <stop
+            offset="0%"
+            stopColor={isDark ? '#A78BFA' : '#7C3AED'}
+            stopOpacity={isDark ? '0.85' : '0.8'}
+          />
+          <stop
+            offset="100%"
+            stopColor={isDark ? '#6D28D9' : '#5B21B6'}
+            stopOpacity={isDark ? '0.65' : '0.7'}
+          />
         </linearGradient>
         <linearGradient id="hex-c" x1="50%" y1="0%" x2="50%" y2="100%">
-          <stop offset="0%" stopColor={isDark ? "#FDE68A" : "#D97706"} stopOpacity={isDark ? "0.9" : "0.85"} />
-          <stop offset="100%" stopColor={isDark ? "#D97706" : "#92400E"} stopOpacity={isDark ? "0.7" : "0.75"} />
+          <stop
+            offset="0%"
+            stopColor={isDark ? '#FDE68A' : '#D97706'}
+            stopOpacity={isDark ? '0.9' : '0.85'}
+          />
+          <stop
+            offset="100%"
+            stopColor={isDark ? '#D97706' : '#92400E'}
+            stopOpacity={isDark ? '0.7' : '0.75'}
+          />
         </linearGradient>
       </defs>
       {/* Center hex — amber */}
       <path d="M12 3.5L15.2 7V10.5L12 14L8.8 10.5V7Z" fill="url(#hex-c)" />
       {/* Top-left hex — cyan */}
-      <path d="M6.4 0.5L9.6 4V7.5L6.4 11L3.2 7.5V4Z" fill="url(#hex-a)" fillOpacity={isDark ? "0.75" : "0.65"} />
+      <path
+        d="M6.4 0.5L9.6 4V7.5L6.4 11L3.2 7.5V4Z"
+        fill="url(#hex-a)"
+        fillOpacity={isDark ? '0.75' : '0.65'}
+      />
       {/* Top-right hex — violet */}
-      <path d="M17.6 0.5L20.8 4V7.5L17.6 11L14.4 7.5V4Z" fill="url(#hex-b)" fillOpacity={isDark ? "0.75" : "0.65"} />
+      <path
+        d="M17.6 0.5L20.8 4V7.5L17.6 11L14.4 7.5V4Z"
+        fill="url(#hex-b)"
+        fillOpacity={isDark ? '0.75' : '0.65'}
+      />
       {/* Bottom hex — muted cyan */}
-      <path d="M12 10.5L15.2 14V17.5L12 21L8.8 17.5V14Z" fill="url(#hex-a)" fillOpacity={isDark ? "0.45" : "0.35"} />
+      <path
+        d="M12 10.5L15.2 14V17.5L12 21L8.8 17.5V14Z"
+        fill="url(#hex-a)"
+        fillOpacity={isDark ? '0.45' : '0.35'}
+      />
       {/* Center specular */}
-      <path d="M10 4.8L12 3.8L14 4.8" stroke="white" strokeOpacity={isDark ? "0.4" : "0.2"} strokeWidth="0.6" strokeLinecap="round" fill="none" />
+      <path
+        d="M10 4.8L12 3.8L14 4.8"
+        stroke="white"
+        strokeOpacity={isDark ? '0.4' : '0.2'}
+        strokeWidth="0.6"
+        strokeLinecap="round"
+        fill="none"
+      />
     </svg>
   ),
 
@@ -138,27 +216,51 @@ const Icons = {
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
       <defs>
         <linearGradient id="ml-1" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor={isDark ? "#22D3EE" : "#0891B2"} />
-          <stop offset="100%" stopColor={isDark ? "#06B6D4" : "#0E7490"} />
+          <stop offset="0%" stopColor={isDark ? '#22D3EE' : '#0891B2'} />
+          <stop offset="100%" stopColor={isDark ? '#06B6D4' : '#0E7490'} />
         </linearGradient>
         <linearGradient id="ml-2" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor={isDark ? "#A78BFA" : "#7C3AED"} />
-          <stop offset="100%" stopColor={isDark ? "#7C3AED" : "#5B21B6"} />
+          <stop offset="0%" stopColor={isDark ? '#A78BFA' : '#7C3AED'} />
+          <stop offset="100%" stopColor={isDark ? '#7C3AED' : '#5B21B6'} />
         </linearGradient>
         <linearGradient id="ml-3" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor={isDark ? "#F59E0B" : "#D97706"} />
-          <stop offset="100%" stopColor={isDark ? "#D97706" : "#92400E"} />
+          <stop offset="0%" stopColor={isDark ? '#F59E0B' : '#D97706'} />
+          <stop offset="100%" stopColor={isDark ? '#D97706' : '#92400E'} />
         </linearGradient>
       </defs>
       {/* Top bar — cyan, full width */}
       <rect x="3" y="5" width="18" height="2.8" rx="1.4" fill="url(#ml-1)" />
-      <rect x="3.5" y="5.3" width="4" height="0.9" rx="0.4" fill="white" fillOpacity={isDark ? "0.35" : "0.15"} />
+      <rect
+        x="3.5"
+        y="5.3"
+        width="4"
+        height="0.9"
+        rx="0.4"
+        fill="white"
+        fillOpacity={isDark ? '0.35' : '0.15'}
+      />
       {/* Middle bar — violet, shorter */}
       <rect x="3" y="10.6" width="13" height="2.8" rx="1.4" fill="url(#ml-2)" />
-      <rect x="3.5" y="10.9" width="3" height="0.9" rx="0.4" fill="white" fillOpacity={isDark ? "0.25" : "0.1"} />
+      <rect
+        x="3.5"
+        y="10.9"
+        width="3"
+        height="0.9"
+        rx="0.4"
+        fill="white"
+        fillOpacity={isDark ? '0.25' : '0.1'}
+      />
       {/* Bottom bar — amber, shortest */}
       <rect x="3" y="16.2" width="9" height="2.8" rx="1.4" fill="url(#ml-3)" />
-      <rect x="3.5" y="16.5" width="2" height="0.9" rx="0.4" fill="white" fillOpacity={isDark ? "0.3" : "0.12"} />
+      <rect
+        x="3.5"
+        y="16.5"
+        width="2"
+        height="0.9"
+        rx="0.4"
+        fill="white"
+        fillOpacity={isDark ? '0.3' : '0.12'}
+      />
     </svg>
   ),
 
@@ -178,21 +280,80 @@ const Icons = {
       {/* Filled tinted circle background */}
       <circle cx="12" cy="12" r="10.5" fill="url(#xclose-bg)" />
       {/* Colored ring */}
-      <circle cx="12" cy="12" r="10.5" fill="none" stroke="url(#xclose-ring)" strokeOpacity="0.55" strokeWidth="1.2" />
+      <circle
+        cx="12"
+        cy="12"
+        r="10.5"
+        fill="none"
+        stroke="url(#xclose-ring)"
+        strokeOpacity="0.55"
+        strokeWidth="1.2"
+      />
       {/* Inner indicator ring */}
-      <circle cx="12" cy="12" r="7.5" fill="none" stroke="#EF4444" strokeOpacity="0.15" strokeWidth="0.5" />
+      <circle
+        cx="12"
+        cy="12"
+        r="7.5"
+        fill="none"
+        stroke="#EF4444"
+        strokeOpacity="0.15"
+        strokeWidth="0.5"
+      />
       {/* 4 corner tick marks */}
-      <line x1="12" y1="1" x2="12" y2="3.5" stroke="#EF4444" strokeOpacity="0.4" strokeWidth="1" strokeLinecap="round" />
-      <line x1="12" y1="20.5" x2="12" y2="23" stroke="#EF4444" strokeOpacity="0.4" strokeWidth="1" strokeLinecap="round" />
-      <line x1="1" y1="12" x2="3.5" y2="12" stroke="#EF4444" strokeOpacity="0.4" strokeWidth="1" strokeLinecap="round" />
-      <line x1="20.5" y1="12" x2="23" y2="12" stroke="#EF4444" strokeOpacity="0.4" strokeWidth="1" strokeLinecap="round" />
+      <line
+        x1="12"
+        y1="1"
+        x2="12"
+        y2="3.5"
+        stroke="#EF4444"
+        strokeOpacity="0.4"
+        strokeWidth="1"
+        strokeLinecap="round"
+      />
+      <line
+        x1="12"
+        y1="20.5"
+        x2="12"
+        y2="23"
+        stroke="#EF4444"
+        strokeOpacity="0.4"
+        strokeWidth="1"
+        strokeLinecap="round"
+      />
+      <line
+        x1="1"
+        y1="12"
+        x2="3.5"
+        y2="12"
+        stroke="#EF4444"
+        strokeOpacity="0.4"
+        strokeWidth="1"
+        strokeLinecap="round"
+      />
+      <line
+        x1="20.5"
+        y1="12"
+        x2="23"
+        y2="12"
+        stroke="#EF4444"
+        strokeOpacity="0.4"
+        strokeWidth="1"
+        strokeLinecap="round"
+      />
       {/* X strokes — bright red */}
       <path d="M8.5 8.5L15.5 15.5" stroke="#EF4444" strokeWidth="2.2" strokeLinecap="round" />
       <path d="M15.5 8.5L8.5 15.5" stroke="#EF4444" strokeWidth="2.2" strokeLinecap="round" />
       {/* Center node */}
       <circle cx="12" cy="12" r="1.2" fill="#EF4444" />
       {/* Top arc specular */}
-      <path d="M8 3.5 A9 9 0 0 1 16 3.5" stroke="white" strokeOpacity="0.25" strokeWidth="0.8" fill="none" strokeLinecap="round" />
+      <path
+        d="M8 3.5 A9 9 0 0 1 16 3.5"
+        stroke="white"
+        strokeOpacity="0.25"
+        strokeWidth="0.8"
+        fill="none"
+        strokeLinecap="round"
+      />
     </svg>
   ),
 
@@ -234,8 +395,24 @@ const Icons = {
 
       {/* Outer colored halos — visible even on light bg */}
       <circle cx="16" cy="16" r="15" fill="url(#ul-ring-glow)" />
-      <circle cx="16" cy="16" r="14.5" fill="none" stroke="#06B6D4" strokeOpacity="0.35" strokeWidth="0.7" />
-      <circle cx="16" cy="16" r="13.5" fill="none" stroke="#7C3AED" strokeOpacity="0.2" strokeWidth="0.4" />
+      <circle
+        cx="16"
+        cy="16"
+        r="14.5"
+        fill="none"
+        stroke="#06B6D4"
+        strokeOpacity="0.35"
+        strokeWidth="0.7"
+      />
+      <circle
+        cx="16"
+        cy="16"
+        r="13.5"
+        fill="none"
+        stroke="#7C3AED"
+        strokeOpacity="0.2"
+        strokeWidth="0.4"
+      />
 
       {/* ── U body ── */}
       {/* Left pillar */}
@@ -258,7 +435,11 @@ const Icons = {
       {/* Arch inner highlight */}
       <path
         d="M10.2 18.5 Q10.2 23.5 16 23.5 Q21.8 23.5 21.8 18.5"
-        fill="none" stroke="white" strokeOpacity="0.3" strokeWidth="1.4" strokeLinecap="round"
+        fill="none"
+        stroke="white"
+        strokeOpacity="0.3"
+        strokeWidth="1.4"
+        strokeLinecap="round"
       />
 
       {/* ── Jewel badge — top right ── */}
@@ -267,13 +448,33 @@ const Icons = {
       {/* Jewel fill */}
       <circle cx="27" cy="6.5" r="4" fill="url(#ul-jewel)" />
       {/* Jewel border ring */}
-      <circle cx="27" cy="6.5" r="4" fill="none" stroke="white" strokeOpacity="0.4" strokeWidth="0.6" />
+      <circle
+        cx="27"
+        cy="6.5"
+        r="4"
+        fill="none"
+        stroke="white"
+        strokeOpacity="0.4"
+        strokeWidth="0.6"
+      />
       {/* Jewel facet lines */}
-      <path d="M24.5 5L27 3.5L29.5 5L29.5 7.2L27 8.9L24.5 7.2Z"
-        fill="none" stroke="white" strokeOpacity="0.35" strokeWidth="0.5" />
+      <path
+        d="M24.5 5L27 3.5L29.5 5L29.5 7.2L27 8.9L24.5 7.2Z"
+        fill="none"
+        stroke="white"
+        strokeOpacity="0.35"
+        strokeWidth="0.5"
+      />
       {/* Jewel specular */}
-      <ellipse cx="25.9" cy="5.2" rx="1.2" ry="0.6" fill="white" fillOpacity="0.7"
-        transform="rotate(-30 25.9 5.2)" />
+      <ellipse
+        cx="25.9"
+        cy="5.2"
+        rx="1.2"
+        ry="0.6"
+        fill="white"
+        fillOpacity="0.7"
+        transform="rotate(-30 25.9 5.2)"
+      />
     </svg>
   ),
 
@@ -301,7 +502,14 @@ const Icons = {
       {/* Chimney */}
       <rect x="9" y="3.5" width="1.4" height="2.5" rx="0.5" fill="#EA580C" fillOpacity="0.85" />
       {/* Roof ridge specular */}
-      <path d="M3.5 6L7 2.6L10.5 6" stroke="white" strokeOpacity="0.35" strokeWidth="0.6" fill="none" strokeLinecap="round" />
+      <path
+        d="M3.5 6L7 2.6L10.5 6"
+        stroke="white"
+        strokeOpacity="0.35"
+        strokeWidth="0.6"
+        fill="none"
+        strokeLinecap="round"
+      />
       {/* Window — glowing cyan */}
       <rect x="5.9" y="8.4" width="2.2" height="2.2" rx="0.5" fill="#22D3EE" fillOpacity="0.85" />
       <rect x="6.2" y="8.6" width="0.8" height="0.8" rx="0.2" fill="white" fillOpacity="0.5" />
@@ -334,11 +542,25 @@ const Icons = {
       {/* Table top — bright cap */}
       <path d="M3.5 2.2L10.5 2.2L7 0.6Z" fill="#C4B5FD" />
       {/* Center belt divider */}
-      <line x1="1.5" y1="6" x2="12.5" y2="6" stroke="white" strokeOpacity="0.25" strokeWidth="0.5" />
+      <line
+        x1="1.5"
+        y1="6"
+        x2="12.5"
+        y2="6"
+        stroke="white"
+        strokeOpacity="0.25"
+        strokeWidth="0.5"
+      />
       {/* Vertical center crease */}
       <line x1="7" y1="6" x2="7" y2="13" stroke="white" strokeOpacity="0.15" strokeWidth="0.4" />
       {/* Top specular */}
-      <path d="M5 1.5L9 1.5" stroke="white" strokeOpacity="0.5" strokeWidth="0.7" strokeLinecap="round" />
+      <path
+        d="M5 1.5L9 1.5"
+        stroke="white"
+        strokeOpacity="0.5"
+        strokeWidth="0.7"
+        strokeLinecap="round"
+      />
     </svg>
   ),
 
@@ -411,10 +633,29 @@ const Icons = {
       {/* Envelope body */}
       <rect x="1" y="3.5" width="12" height="8.5" rx="1.5" fill="url(#nc-body)" />
       {/* Flap line — colorful gradient V */}
-      <path d="M1.5 4.2L7 8.8L12.5 4.2" fill="none" stroke="url(#nc-flap)" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M1.5 4.2L7 8.8L12.5 4.2"
+        fill="none"
+        stroke="url(#nc-flap)"
+        strokeWidth="1.1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
       {/* Bottom fold */}
-      <path d="M1.5 11.5L5.5 8.5" stroke="#94A3B8" strokeOpacity="0.25" strokeWidth="0.6" strokeLinecap="round" />
-      <path d="M12.5 11.5L8.5 8.5" stroke="#94A3B8" strokeOpacity="0.25" strokeWidth="0.6" strokeLinecap="round" />
+      <path
+        d="M1.5 11.5L5.5 8.5"
+        stroke="#94A3B8"
+        strokeOpacity="0.25"
+        strokeWidth="0.6"
+        strokeLinecap="round"
+      />
+      <path
+        d="M12.5 11.5L8.5 8.5"
+        stroke="#94A3B8"
+        strokeOpacity="0.25"
+        strokeWidth="0.6"
+        strokeLinecap="round"
+      />
       {/* Wax seal — red */}
       <circle cx="7" cy="8.2" r="1.5" fill="#EF4444" />
       <circle cx="6.55" cy="7.8" r="0.5" fill="white" fillOpacity="0.55" />
@@ -426,15 +667,21 @@ const Icons = {
 const NeuralPulse = () => {
   // 5 nodes at fixed positions (cx, cy) + their colors
   const nodes = [
-    { cx: 14, cy: 4,  r: 2,    color: '#22D3EE', delay: 0 },
-    { cx: 4,  cy: 13, r: 1.6,  color: '#7C3AED', delay: 0.7 },
-    { cx: 24, cy: 11, r: 1.6,  color: '#F59E0B', delay: 1.3 },
-    { cx: 9,  cy: 23, r: 1.4,  color: '#22D3EE', delay: 1.9 },
-    { cx: 21, cy: 22, r: 1.4,  color: '#EF4444', delay: 2.4 },
+    { cx: 14, cy: 4, r: 2, color: '#22D3EE', delay: 0 },
+    { cx: 4, cy: 13, r: 1.6, color: '#7C3AED', delay: 0.7 },
+    { cx: 24, cy: 11, r: 1.6, color: '#F59E0B', delay: 1.3 },
+    { cx: 9, cy: 23, r: 1.4, color: '#22D3EE', delay: 1.9 },
+    { cx: 21, cy: 22, r: 1.4, color: '#EF4444', delay: 2.4 },
   ];
   // Edges: pairs of node indices
   const edges = [
-    [0, 1], [0, 2], [1, 3], [2, 4], [1, 2], [3, 4], [0, 3],
+    [0, 1],
+    [0, 2],
+    [1, 3],
+    [2, 4],
+    [1, 2],
+    [3, 4],
+    [0, 3],
   ] as const;
 
   return (
@@ -453,8 +700,10 @@ const NeuralPulse = () => {
         {edges.map(([a, b], i) => (
           <line
             key={i}
-            x1={nodes[a].cx} y1={nodes[a].cy}
-            x2={nodes[b].cx} y2={nodes[b].cy}
+            x1={nodes[a].cx}
+            y1={nodes[a].cy}
+            x2={nodes[b].cx}
+            y2={nodes[b].cy}
             stroke={nodes[a].color}
             strokeOpacity="0.18"
             strokeWidth="0.7"
@@ -463,20 +712,12 @@ const NeuralPulse = () => {
 
         {/* Static node base rings */}
         {nodes.map((n, i) => (
-          <circle
-            key={i}
-            cx={n.cx} cy={n.cy} r={n.r + 1.2}
-            fill={n.color} fillOpacity="0.08"
-          />
+          <circle key={i} cx={n.cx} cy={n.cy} r={n.r + 1.2} fill={n.color} fillOpacity="0.08" />
         ))}
 
         {/* Filled node cores */}
         {nodes.map((n, i) => (
-          <circle
-            key={i}
-            cx={n.cx} cy={n.cy} r={n.r}
-            fill={`url(#npn-${i})`}
-          />
+          <circle key={i} cx={n.cx} cy={n.cy} r={n.r} fill={`url(#npn-${i})`} />
         ))}
       </svg>
 
@@ -486,24 +727,19 @@ const NeuralPulse = () => {
           key={i}
           className="absolute rounded-full"
           style={{
-            width: '3px', height: '3px',
+            width: '3px',
+            height: '3px',
             background: nodes[a].color,
             boxShadow: `0 0 5px ${nodes[a].color}`,
             // Start at node A position (normalized to 28px viewBox, div is 28px = w-7)
             left: `${(nodes[a].cx / 28) * 100}%`,
-            top:  `${(nodes[a].cy / 28) * 100}%`,
+            top: `${(nodes[a].cy / 28) * 100}%`,
             translateX: '-50%',
             translateY: '-50%',
           }}
           animate={{
-            left: [
-              `${(nodes[a].cx / 28) * 100}%`,
-              `${(nodes[b].cx / 28) * 100}%`,
-            ],
-            top: [
-              `${(nodes[a].cy / 28) * 100}%`,
-              `${(nodes[b].cy / 28) * 100}%`,
-            ],
+            left: [`${(nodes[a].cx / 28) * 100}%`, `${(nodes[b].cx / 28) * 100}%`],
+            top: [`${(nodes[a].cy / 28) * 100}%`, `${(nodes[b].cy / 28) * 100}%`],
             opacity: [0, 1, 1, 0],
             scale: [0.5, 1.2, 1, 0.4],
           }}
@@ -544,9 +780,7 @@ const NavItem = ({
       transition={{ type: 'spring', stiffness: 420, damping: 24 }}
       className={cn(
         'group nav-glow-item relative px-4 py-2 text-[10px] font-mono font-black tracking-[0.3em] uppercase rounded-lg transition-colors duration-200',
-        isActive
-          ? 'text-vision-cyan'
-          : 'text-slate-600 dark:text-slate-400 hover:text-vision-cyan'
+        isActive ? 'text-vision-cyan' : 'text-slate-600 dark:text-slate-400 hover:text-vision-cyan'
       )}
     >
       {isActive && (
@@ -593,7 +827,11 @@ export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const startTime = useRef(Date.now());
   const { scrollYProgress } = useScroll();
-  const progressScaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 40, restDelta: 0.001 });
+  const progressScaleX = useSpring(scrollYProgress, {
+    stiffness: 200,
+    damping: 40,
+    restDelta: 0.001,
+  });
 
   useEffect(() => {
     setMounted(true);
@@ -746,11 +984,13 @@ export const Header = () => {
               className="flex items-center gap-3 md:gap-4 group cursor-pointer bg-white/80 dark:bg-black/20 p-2 pr-4 md:pr-6 rounded-2xl border border-slate-200 dark:border-white/10 glassmorphism transition-all hover:border-vision-cyan/40 shadow-lg"
               onClick={() => setNavContext(navContext === 'LOCAL' ? 'GLOBAL' : 'LOCAL')}
             >
-              <div className="h-9 w-9 md:h-10 md:w-10 rounded-xl flex items-center justify-center border group-hover:scale-110 transition-all duration-300"
+              <div
+                className="h-9 w-9 md:h-10 md:w-10 rounded-xl flex items-center justify-center border group-hover:scale-110 transition-all duration-300"
                 style={{
                   background: 'linear-gradient(135deg, #E0F7FA 0%, #EDE9FE 50%, #FEF3C7 100%)',
                   border: '1px solid rgba(139,92,246,0.35)',
-                  boxShadow: '0 0 14px rgba(139,92,246,0.18), 0 0 7px rgba(34,211,238,0.14), inset 0 1px 0 rgba(255,255,255,0.7)'
+                  boxShadow:
+                    '0 0 14px rgba(139,92,246,0.18), 0 0 7px rgba(34,211,238,0.14), inset 0 1px 0 rgba(255,255,255,0.7)',
                 }}
               >
                 <Icons.UmangLogo />
@@ -916,11 +1156,12 @@ export const Header = () => {
               className="relative flex items-center justify-between px-8 py-5 border-b border-slate-100 dark:border-white/[0.06]"
             >
               <div className="flex items-center gap-3">
-                <div className="h-9 w-9 rounded-xl flex items-center justify-center"
+                <div
+                  className="h-9 w-9 rounded-xl flex items-center justify-center"
                   style={{
                     background: 'linear-gradient(135deg, #E0F7FA 0%, #EDE9FE 50%, #FEF3C7 100%)',
                     border: '1px solid rgba(139,92,246,0.35)',
-                    boxShadow: '0 0 14px rgba(139,92,246,0.2), inset 0 1px 0 rgba(255,255,255,0.7)'
+                    boxShadow: '0 0 14px rgba(139,92,246,0.2), inset 0 1px 0 rgba(255,255,255,0.7)',
                   }}
                 >
                   <Icons.UmangLogo />

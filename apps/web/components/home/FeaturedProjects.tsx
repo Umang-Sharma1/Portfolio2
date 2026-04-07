@@ -95,7 +95,7 @@ const FEATURED_PROJECTS: Project[] = [
     title: 'Developer Portfolio',
     tagline: 'This website — 3D immersive experience',
     description:
-      "The portfolio you are viewing right now. Built with Next.js 14, Three.js for 3D graphics, Framer Motion for animations, and GraphQL for data. Features dark/light mode, responsive design, and a cyberpunk terminal aesthetic.",
+      'The portfolio you are viewing right now. Built with Next.js 14, Three.js for 3D graphics, Framer Motion for animations, and GraphQL for data. Features dark/light mode, responsive design, and a cyberpunk terminal aesthetic.',
     thumbnail: '/projects/portfolio.jpg',
     technologies: ['Next.js', 'Three.js', 'GraphQL', 'Tailwind', 'Framer Motion'],
     githubUrl: 'https://github.com/example/portfolio',
@@ -289,20 +289,24 @@ const ProjectCard = memo(function ProjectCard({
           <div
             className="absolute h-[8px] w-[80px] animate-border-beam"
             style={{
-              background: 'linear-gradient(90deg, transparent, rgba(var(--glow-cyan),1), transparent)',
+              background:
+                'linear-gradient(90deg, transparent, rgba(var(--glow-cyan),1), transparent)',
               offsetPath: 'rect(0 100% 100% 0 round 32px)',
-              boxShadow: '0 0 30px 8px rgba(var(--glow-cyan),0.9), 0 0 60px 16px rgba(var(--glow-cyan),0.4)',
+              boxShadow:
+                '0 0 30px 8px rgba(var(--glow-cyan),0.9), 0 0 60px 16px rgba(var(--glow-cyan),0.4)',
               filter: 'blur(0.3px)',
             }}
           />
           <div
             className="absolute h-[8px] w-[60px] animate-border-beam"
             style={{
-              background: 'linear-gradient(90deg, transparent, rgba(var(--glow-crimson),1), transparent)',
+              background:
+                'linear-gradient(90deg, transparent, rgba(var(--glow-crimson),1), transparent)',
               offsetPath: 'rect(0 100% 100% 0 round 32px)',
               animationDelay: '-1.5s',
               animationDuration: '4s',
-              boxShadow: '0 0 25px 6px rgba(var(--glow-crimson),0.8), 0 0 50px 12px rgba(var(--glow-crimson),0.35)',
+              boxShadow:
+                '0 0 25px 6px rgba(var(--glow-crimson),0.8), 0 0 50px 12px rgba(var(--glow-crimson),0.35)',
               filter: 'blur(0.3px)',
             }}
           />
@@ -321,7 +325,10 @@ const ProjectCard = memo(function ProjectCard({
 
           {/* Ambient glows */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-0 group-hover/card:opacity-100 transition-opacity duration-700">
-            <div className="absolute top-0 right-0 w-72 h-72 blur-[100px] translate-x-1/2 -translate-y-1/3" style={{ background: `${glowColor.replace('1)', '0.08)')}` }} />
+            <div
+              className="absolute top-0 right-0 w-72 h-72 blur-[100px] translate-x-1/2 -translate-y-1/3"
+              style={{ background: `${glowColor.replace('1)', '0.08)')}` }}
+            />
             <div className="absolute bottom-0 left-0 w-72 h-72 bg-vision-cyan/[0.06] blur-[100px] -translate-x-1/3 translate-y-1/2" />
           </div>
 
@@ -393,7 +400,10 @@ const ProjectCard = memo(function ProjectCard({
           </div>
 
           {/* ── Content ── */}
-          <motion.div style={{ x: contentX, y: contentY, willChange: 'transform' }} className="relative z-10 p-6 md:p-8">
+          <motion.div
+            style={{ x: contentX, y: contentY, willChange: 'transform' }}
+            className="relative z-10 p-6 md:p-8"
+          >
             {/* Category + users */}
             <div className="flex items-center justify-between mb-4">
               <span
@@ -714,8 +724,7 @@ const SectionHeader = memo(function SectionHeader() {
 
       {/* Heading */}
       <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-slate-900 dark:text-text-dark tracking-tighter uppercase italic leading-[0.92] mb-5">
-        <span className="text-vision-crimson">Selected</span>{' '}
-        <span>Work</span>
+        <span className="text-vision-crimson">Selected</span> <span>Work</span>
       </h2>
 
       {/* Subtitle */}
@@ -841,7 +850,10 @@ export function FeaturedProjects({ className }: { className?: string }) {
                   <div className="h-3 w-full rounded bg-slate-100 dark:bg-white/[0.03]" />
                   <div className="flex gap-2 pt-2">
                     {[1, 2, 3].map((j) => (
-                      <div key={j} className="h-6 w-16 rounded-lg bg-slate-100 dark:bg-white/[0.03]" />
+                      <div
+                        key={j}
+                        className="h-6 w-16 rounded-lg bg-slate-100 dark:bg-white/[0.03]"
+                      />
                     ))}
                   </div>
                 </div>

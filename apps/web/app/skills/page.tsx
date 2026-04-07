@@ -985,7 +985,7 @@ const ScrambleText = memo(function ScrambleText({
               if (char === ' ' || char === '/' || char === '.' || char === ':') return char;
               return CHARS[Math.floor(Math.random() * CHARS.length)];
             })
-            .join(''),
+            .join('')
         );
         if (iterRef.current >= text.length) clearInterval(interval);
       }, 38);
@@ -1007,12 +1007,12 @@ const ScanReticle = memo(function ScanReticle() {
   return (
     <div className="pointer-events-none flex items-center justify-center">
       <div className="relative w-48 h-48 opacity-75 dark:opacity-35">
-
         {/* ── Ambient glow backdrop ── */}
         <div
           className="absolute inset-0 rounded-full animate-pulse"
           style={{
-            background: 'radial-gradient(circle, rgba(0,200,232,0.18) 0%, rgba(0,200,232,0.06) 40%, transparent 68%)',
+            background:
+              'radial-gradient(circle, rgba(0,200,232,0.18) 0%, rgba(0,200,232,0.06) 40%, transparent 68%)',
             animationDuration: '3.5s',
             filter: 'blur(8px)',
           }}
@@ -1025,7 +1025,14 @@ const ScanReticle = memo(function ScanReticle() {
           fill="none"
         >
           <defs>
-            <linearGradient id="reticleSweep" x1="50" y1="50" x2="50" y2="5" gradientUnits="userSpaceOnUse">
+            <linearGradient
+              id="reticleSweep"
+              x1="50"
+              y1="50"
+              x2="50"
+              y2="5"
+              gradientUnits="userSpaceOnUse"
+            >
               <stop offset="0%" stopColor="#00C8E8" stopOpacity="0.85" />
               <stop offset="100%" stopColor="#00C8E8" stopOpacity="0.05" />
             </linearGradient>
@@ -1037,7 +1044,15 @@ const ScanReticle = memo(function ScanReticle() {
               </feMerge>
             </filter>
           </defs>
-          <line x1="50" y1="50" x2="50" y2="5" stroke="url(#reticleSweep)" strokeWidth="1.3" filter="url(#sweepGlow)" />
+          <line
+            x1="50"
+            y1="50"
+            x2="50"
+            y2="5"
+            stroke="url(#reticleSweep)"
+            strokeWidth="1.3"
+            filter="url(#sweepGlow)"
+          />
         </svg>
 
         {/* ── Outer dashed ring + cardinal markers — slow CW ── */}
@@ -1055,10 +1070,19 @@ const ScanReticle = memo(function ScanReticle() {
               </feMerge>
             </filter>
           </defs>
-          <circle cx="50" cy="50" r="46" stroke="#00C8E8" strokeWidth="0.7" strokeOpacity="0.85" strokeDasharray="9 5" filter="url(#ringGlow)" />
-          <rect x="47" y="1"   width="6" height="3.5" rx="0.6" fill="#00C8E8" fillOpacity="0.85" />
+          <circle
+            cx="50"
+            cy="50"
+            r="46"
+            stroke="#00C8E8"
+            strokeWidth="0.7"
+            strokeOpacity="0.85"
+            strokeDasharray="9 5"
+            filter="url(#ringGlow)"
+          />
+          <rect x="47" y="1" width="6" height="3.5" rx="0.6" fill="#00C8E8" fillOpacity="0.85" />
           <rect x="47" y="95.5" width="6" height="3.5" rx="0.6" fill="#00C8E8" fillOpacity="0.85" />
-          <rect x="1"   y="47" width="3.5" height="6" rx="0.6" fill="#00C8E8" fillOpacity="0.85" />
+          <rect x="1" y="47" width="3.5" height="6" rx="0.6" fill="#00C8E8" fillOpacity="0.85" />
           <rect x="95.5" y="47" width="3.5" height="6" rx="0.6" fill="#00C8E8" fillOpacity="0.85" />
         </svg>
 
@@ -1077,11 +1101,52 @@ const ScanReticle = memo(function ScanReticle() {
               </feMerge>
             </filter>
           </defs>
-          <circle cx="50" cy="50" r="30" stroke="#E8204A" strokeWidth="0.6" strokeOpacity="0.75" strokeDasharray="6 4" filter="url(#crimsonGlow)" />
-          <line x1="71.2" y1="28.8" x2="74.7" y2="25.3" stroke="#E8204A" strokeWidth="0.9" strokeOpacity="0.75" />
-          <line x1="71.2" y1="71.2" x2="74.7" y2="74.7" stroke="#E8204A" strokeWidth="0.9" strokeOpacity="0.75" />
-          <line x1="28.8" y1="28.8" x2="25.3" y2="25.3" stroke="#E8204A" strokeWidth="0.9" strokeOpacity="0.75" />
-          <line x1="28.8" y1="71.2" x2="25.3" y2="74.7" stroke="#E8204A" strokeWidth="0.9" strokeOpacity="0.75" />
+          <circle
+            cx="50"
+            cy="50"
+            r="30"
+            stroke="#E8204A"
+            strokeWidth="0.6"
+            strokeOpacity="0.75"
+            strokeDasharray="6 4"
+            filter="url(#crimsonGlow)"
+          />
+          <line
+            x1="71.2"
+            y1="28.8"
+            x2="74.7"
+            y2="25.3"
+            stroke="#E8204A"
+            strokeWidth="0.9"
+            strokeOpacity="0.75"
+          />
+          <line
+            x1="71.2"
+            y1="71.2"
+            x2="74.7"
+            y2="74.7"
+            stroke="#E8204A"
+            strokeWidth="0.9"
+            strokeOpacity="0.75"
+          />
+          <line
+            x1="28.8"
+            y1="28.8"
+            x2="25.3"
+            y2="25.3"
+            stroke="#E8204A"
+            strokeWidth="0.9"
+            strokeOpacity="0.75"
+          />
+          <line
+            x1="28.8"
+            y1="71.2"
+            x2="25.3"
+            y2="74.7"
+            stroke="#E8204A"
+            strokeWidth="0.9"
+            strokeOpacity="0.75"
+          />
         </svg>
 
         {/* ── Static layer — all fixed elements ── */}
@@ -1103,30 +1168,129 @@ const ScanReticle = memo(function ScanReticle() {
             </filter>
           </defs>
           <circle cx="50" cy="50" r="48" stroke="#00C8E8" strokeWidth="0.25" strokeOpacity="0.22" />
-          <circle cx="50" cy="50" r="20" stroke="#00C8E8" strokeWidth="0.35" strokeOpacity="0.45" filter="url(#staticGlow)" />
-          <circle cx="50" cy="50" r="9"  stroke="#00C8E8" strokeWidth="0.30" strokeOpacity="0.40" filter="url(#staticGlow)" />
+          <circle
+            cx="50"
+            cy="50"
+            r="20"
+            stroke="#00C8E8"
+            strokeWidth="0.35"
+            strokeOpacity="0.45"
+            filter="url(#staticGlow)"
+          />
+          <circle
+            cx="50"
+            cy="50"
+            r="9"
+            stroke="#00C8E8"
+            strokeWidth="0.30"
+            strokeOpacity="0.40"
+            filter="url(#staticGlow)"
+          />
 
           {/* 4 cardinal crosshair ticks */}
-          <line x1="50" y1="41" x2="50" y2="22" stroke="#00C8E8" strokeWidth="1.1" strokeOpacity="0.92" filter="url(#staticGlow)" />
-          <line x1="50" y1="59" x2="50" y2="78" stroke="#00C8E8" strokeWidth="1.1" strokeOpacity="0.92" filter="url(#staticGlow)" />
-          <line x1="41" y1="50" x2="22" y2="50" stroke="#00C8E8" strokeWidth="1.1" strokeOpacity="0.92" filter="url(#staticGlow)" />
-          <line x1="59" y1="50" x2="78" y2="50" stroke="#00C8E8" strokeWidth="1.1" strokeOpacity="0.92" filter="url(#staticGlow)" />
+          <line
+            x1="50"
+            y1="41"
+            x2="50"
+            y2="22"
+            stroke="#00C8E8"
+            strokeWidth="1.1"
+            strokeOpacity="0.92"
+            filter="url(#staticGlow)"
+          />
+          <line
+            x1="50"
+            y1="59"
+            x2="50"
+            y2="78"
+            stroke="#00C8E8"
+            strokeWidth="1.1"
+            strokeOpacity="0.92"
+            filter="url(#staticGlow)"
+          />
+          <line
+            x1="41"
+            y1="50"
+            x2="22"
+            y2="50"
+            stroke="#00C8E8"
+            strokeWidth="1.1"
+            strokeOpacity="0.92"
+            filter="url(#staticGlow)"
+          />
+          <line
+            x1="59"
+            y1="50"
+            x2="78"
+            y2="50"
+            stroke="#00C8E8"
+            strokeWidth="1.1"
+            strokeOpacity="0.92"
+            filter="url(#staticGlow)"
+          />
 
           {/* Corner brackets */}
-          <path d="M13 5 L4 5 L4 13"  stroke="#00C8E8" strokeWidth="1.1" strokeOpacity="0.75" />
+          <path d="M13 5 L4 5 L4 13" stroke="#00C8E8" strokeWidth="1.1" strokeOpacity="0.75" />
           <path d="M87 5 L96 5 L96 13" stroke="#00C8E8" strokeWidth="1.1" strokeOpacity="0.75" />
           <path d="M13 95 L4 95 L4 87" stroke="#00C8E8" strokeWidth="1.1" strokeOpacity="0.75" />
           <path d="M87 95 L96 95 L96 87" stroke="#00C8E8" strokeWidth="1.1" strokeOpacity="0.75" />
 
           {/* Compass labels */}
-          <text x="50" y="19.5" textAnchor="middle" fontSize="4.2" fill="#00C8E8" fillOpacity="0.65" fontFamily="monospace">N</text>
-          <text x="50" y="85"   textAnchor="middle" fontSize="4.2" fill="#00C8E8" fillOpacity="0.65" fontFamily="monospace">S</text>
-          <text x="17" y="52"   textAnchor="middle" fontSize="4.2" fill="#00C8E8" fillOpacity="0.65" fontFamily="monospace">W</text>
-          <text x="83" y="52"   textAnchor="middle" fontSize="4.2" fill="#00C8E8" fillOpacity="0.65" fontFamily="monospace">E</text>
+          <text
+            x="50"
+            y="19.5"
+            textAnchor="middle"
+            fontSize="4.2"
+            fill="#00C8E8"
+            fillOpacity="0.65"
+            fontFamily="monospace"
+          >
+            N
+          </text>
+          <text
+            x="50"
+            y="85"
+            textAnchor="middle"
+            fontSize="4.2"
+            fill="#00C8E8"
+            fillOpacity="0.65"
+            fontFamily="monospace"
+          >
+            S
+          </text>
+          <text
+            x="17"
+            y="52"
+            textAnchor="middle"
+            fontSize="4.2"
+            fill="#00C8E8"
+            fillOpacity="0.65"
+            fontFamily="monospace"
+          >
+            W
+          </text>
+          <text
+            x="83"
+            y="52"
+            textAnchor="middle"
+            fontSize="4.2"
+            fill="#00C8E8"
+            fillOpacity="0.65"
+            fontFamily="monospace"
+          >
+            E
+          </text>
 
           {/* Center filled dot — glowing core */}
-          <circle cx="50" cy="50" r="4.5" fill="#00C8E8" fillOpacity="0.20" filter="url(#centerGlow)" />
-          <circle cx="50" cy="50" r="3"   fill="#00C8E8" fillOpacity="0.95" />
+          <circle
+            cx="50"
+            cy="50"
+            r="4.5"
+            fill="#00C8E8"
+            fillOpacity="0.20"
+            filter="url(#centerGlow)"
+          />
+          <circle cx="50" cy="50" r="3" fill="#00C8E8" fillOpacity="0.95" />
           <circle cx="49.1" cy="49.1" r="1.1" fill="white" fillOpacity="0.95" />
         </svg>
 
@@ -1138,7 +1302,14 @@ const ScanReticle = memo(function ScanReticle() {
         {/* ── Second ping — wider, slower ── */}
         <div
           className="absolute rounded-full border border-vision-cyan/25 animate-ping"
-          style={{ width: '60%', height: '60%', top: '20%', left: '20%', animationDuration: '4.5s', animationDelay: '1s' }}
+          style={{
+            width: '60%',
+            height: '60%',
+            top: '20%',
+            left: '20%',
+            animationDuration: '4.5s',
+            animationDelay: '1s',
+          }}
         />
       </div>
     </div>
@@ -1243,7 +1414,10 @@ const HeroSection = memo(function HeroSection({
         {/* Light mode background — atmospheric, mirroring dark mode */}
         <div
           className="absolute inset-0 z-0 dark:hidden rounded-[2.5rem] overflow-hidden"
-          style={{ background: 'linear-gradient(145deg, #eff6ff 0%, #f8faff 30%, #f0fdff 62%, #fff7f0 100%)' }}
+          style={{
+            background:
+              'linear-gradient(145deg, #eff6ff 0%, #f8faff 30%, #f0fdff 62%, #fff7f0 100%)',
+          }}
         >
           {/* Fine dot-grid — echoes the dark scan grid */}
           <div
@@ -1309,23 +1483,35 @@ const HeroSection = memo(function HeroSection({
               {/* NODES chip — glass */}
               <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full font-mono backdrop-blur-xl border bg-white/50 dark:bg-white/[0.06] border-white/70 dark:border-vision-cyan/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),inset_0_-1px_0_rgba(0,0,0,0.04),0_2px_12px_rgba(0,0,0,0.07),0_0_16px_rgba(0,200,232,0.08)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_20px_rgba(0,200,232,0.12)]">
                 <span className="h-1.5 w-1.5 rounded-full bg-sky-500 dark:bg-vision-cyan flex-shrink-0 shadow-[0_0_6px_rgba(0,200,232,0.6)]" />
-                <span className="text-[7px] font-black uppercase tracking-[0.32em] text-slate-500 dark:text-white/30">NODES</span>
+                <span className="text-[7px] font-black uppercase tracking-[0.32em] text-slate-500 dark:text-white/30">
+                  NODES
+                </span>
                 <span className="h-2.5 w-px bg-slate-200/80 dark:bg-white/[0.12]" />
-                <span className="text-[9px] font-black tabular-nums text-sky-600 dark:text-vision-cyan">{animatedCount}</span>
+                <span className="text-[9px] font-black tabular-nums text-sky-600 dark:text-vision-cyan">
+                  {animatedCount}
+                </span>
               </span>
               {/* CAT chip — glass */}
               <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full font-mono backdrop-blur-xl border bg-white/50 dark:bg-white/[0.06] border-white/70 dark:border-vision-orange/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),inset_0_-1px_0_rgba(0,0,0,0.04),0_2px_12px_rgba(0,0,0,0.07),0_0_16px_rgba(255,107,43,0.08)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_20px_rgba(255,107,43,0.12)]">
                 <span className="h-1.5 w-1.5 rounded-full bg-orange-500 dark:bg-vision-orange flex-shrink-0 shadow-[0_0_6px_rgba(255,107,43,0.6)]" />
-                <span className="text-[7px] font-black uppercase tracking-[0.32em] text-slate-500 dark:text-white/30">CAT</span>
+                <span className="text-[7px] font-black uppercase tracking-[0.32em] text-slate-500 dark:text-white/30">
+                  CAT
+                </span>
                 <span className="h-2.5 w-px bg-slate-200/80 dark:bg-white/[0.12]" />
-                <span className="text-[9px] font-black tabular-nums text-orange-600 dark:text-vision-orange">7</span>
+                <span className="text-[9px] font-black tabular-nums text-orange-600 dark:text-vision-orange">
+                  7
+                </span>
               </span>
               {/* STATUS chip — glass */}
               <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full font-mono backdrop-blur-xl border bg-white/50 dark:bg-white/[0.06] border-white/70 dark:border-emerald-500/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),inset_0_-1px_0_rgba(0,0,0,0.04),0_2px_12px_rgba(0,0,0,0.07),0_0_16px_rgba(52,211,153,0.08)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_20px_rgba(52,211,153,0.12)]">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 flex-shrink-0 animate-pulse shadow-[0_0_6px_rgba(52,211,153,0.6)]" />
-                <span className="text-[7px] font-black uppercase tracking-[0.32em] text-slate-500 dark:text-white/30">STATUS</span>
+                <span className="text-[7px] font-black uppercase tracking-[0.32em] text-slate-500 dark:text-white/30">
+                  STATUS
+                </span>
                 <span className="h-2.5 w-px bg-slate-200/80 dark:bg-white/[0.12]" />
-                <span className="text-[9px] font-black tabular-nums text-emerald-600 dark:text-emerald-400">LIVE</span>
+                <span className="text-[9px] font-black tabular-nums text-emerald-600 dark:text-emerald-400">
+                  LIVE
+                </span>
               </span>
             </motion.div>
           </div>
@@ -1333,7 +1519,6 @@ const HeroSection = memo(function HeroSection({
           {/* Title Row — stable, no parallax */}
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
             <div className="space-y-4">
-
               {/* Title — char-stagger blur on "Technical", letter-spacing collapse on "Arsenal." */}
               <div className="text-5xl md:text-6xl lg:text-7xl font-display font-black tracking-tighter uppercase italic leading-[0.9] overflow-hidden">
                 {/* "Technical" — each character blurs in from below, staggered */}
@@ -1343,7 +1528,11 @@ const HeroSection = memo(function HeroSection({
                       key={i}
                       initial={{ opacity: 0, y: 56, filter: 'blur(16px)' }}
                       animate={isInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
-                      transition={{ delay: 0.15 + i * 0.08, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{
+                        delay: 0.15 + i * 0.08,
+                        duration: 0.7,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
                       className="inline-block"
                     >
                       {char}
@@ -1353,7 +1542,9 @@ const HeroSection = memo(function HeroSection({
                 {/* "Arsenal." — wide letter-spacing collapses + blur clears + gradient flows */}
                 <motion.span
                   initial={{ opacity: 0, letterSpacing: '0.5em', filter: 'blur(28px)' }}
-                  animate={isInView ? { opacity: 1, letterSpacing: '-0.02em', filter: 'blur(0px)' } : {}}
+                  animate={
+                    isInView ? { opacity: 1, letterSpacing: '-0.02em', filter: 'blur(0px)' } : {}
+                  }
                   transition={{ delay: 1.1, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
                   className="block text-transparent bg-clip-text bg-gradient-to-r from-vision-crimson via-vision-orange to-vision-cyan animate-gradient-x"
                   style={{ backgroundSize: '200% 100%' }}
@@ -1376,10 +1567,22 @@ const HeroSection = memo(function HeroSection({
               {/* Description — word-by-word blur fade stagger */}
               <motion.p className="text-sm font-bold text-slate-500 dark:text-white/40 max-w-lg leading-relaxed">
                 {[
-                  'Full-spectrum', 'engineering', 'skillset', 'spanning',
-                  'frontend,', 'backend,', 'databases,', 'DevOps,',
-                  'and', 'beyond.', 'Each', 'node', 'represents',
-                  'hands-on', 'deployment', 'experience.'
+                  'Full-spectrum',
+                  'engineering',
+                  'skillset',
+                  'spanning',
+                  'frontend,',
+                  'backend,',
+                  'databases,',
+                  'DevOps,',
+                  'and',
+                  'beyond.',
+                  'Each',
+                  'node',
+                  'represents',
+                  'hands-on',
+                  'deployment',
+                  'experience.',
                 ].map((word, i) => (
                   <motion.span
                     key={i}
@@ -1583,7 +1786,9 @@ const SortDropdown = memo(function SortDropdown({
         <Icons.Sort className="h-3.5 w-3.5" />
         <span className="text-slate-300 dark:text-white/15 font-mono">{selected.icon}</span>
         {selected.label}
-        <Icons.ChevronDown className={cn('h-3.5 w-3.5 transition-transform duration-200', isOpen && 'rotate-180')} />
+        <Icons.ChevronDown
+          className={cn('h-3.5 w-3.5 transition-transform duration-200', isOpen && 'rotate-180')}
+        />
       </button>
 
       <AnimatePresence>
@@ -1611,14 +1816,19 @@ const SortDropdown = memo(function SortDropdown({
             >
               {/* Header */}
               <div className="px-3 py-2 border-b border-slate-100/80 dark:border-white/[0.06]">
-                <span className="text-[7px] font-mono font-black tracking-[0.4em] uppercase text-slate-400 dark:text-white/20">Sort order</span>
+                <span className="text-[7px] font-mono font-black tracking-[0.4em] uppercase text-slate-400 dark:text-white/20">
+                  Sort order
+                </span>
               </div>
               {options.map((option) => {
                 const isActive = sortBy === option.value;
                 return (
                   <button
                     key={option.value}
-                    onClick={() => { onSortChange(option.value); setIsOpen(false); }}
+                    onClick={() => {
+                      onSortChange(option.value);
+                      setIsOpen(false);
+                    }}
                     className={cn(
                       'w-full flex items-center gap-3 px-3 py-2.5 text-left transition-colors duration-150',
                       isActive
@@ -1626,14 +1836,22 @@ const SortDropdown = memo(function SortDropdown({
                         : 'hover:bg-slate-50/80 dark:hover:bg-white/[0.04]'
                     )}
                   >
-                    <span className={cn(
-                      'text-[11px] w-4 text-center font-mono',
-                      isActive ? 'text-vision-cyan' : 'text-slate-300 dark:text-white/15'
-                    )}>{option.icon}</span>
-                    <span className={cn(
-                      'text-[10px] font-mono font-black tracking-[0.15em] uppercase',
-                      isActive ? 'text-vision-cyan' : 'text-slate-500 dark:text-white/35'
-                    )}>{option.label}</span>
+                    <span
+                      className={cn(
+                        'text-[11px] w-4 text-center font-mono',
+                        isActive ? 'text-vision-cyan' : 'text-slate-300 dark:text-white/15'
+                      )}
+                    >
+                      {option.icon}
+                    </span>
+                    <span
+                      className={cn(
+                        'text-[10px] font-mono font-black tracking-[0.15em] uppercase',
+                        isActive ? 'text-vision-cyan' : 'text-slate-500 dark:text-white/35'
+                      )}
+                    >
+                      {option.label}
+                    </span>
                     {isActive && (
                       <span className="ml-auto h-1.5 w-1.5 rounded-full bg-vision-cyan shadow-[0_0_6px_rgba(var(--glow-cyan),0.8)]" />
                     )}
@@ -1664,16 +1882,17 @@ const ProficiencyBar = memo(function ProficiencyBar({
   const isInView = useInView(ref, { once: true, amount: 0.5 });
 
   return (
-    <div ref={ref} className="w-full h-1.5 bg-slate-100 dark:bg-white/[0.06] rounded-full overflow-hidden">
+    <div
+      ref={ref}
+      className="w-full h-1.5 bg-slate-100 dark:bg-white/[0.06] rounded-full overflow-hidden"
+    >
       <motion.div
         initial={{ width: 0 }}
         animate={isInView ? { width: `${proficiency}%` } : { width: 0 }}
         transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
         className="h-full rounded-full"
         style={{
-          background: color
-            ? `linear-gradient(to right, ${color}80, ${color})`
-            : undefined,
+          background: color ? `linear-gradient(to right, ${color}80, ${color})` : undefined,
           boxShadow: color ? `0 0 8px ${color}60` : undefined,
         }}
       />
@@ -1829,7 +2048,11 @@ const SkillCard = memo(function SkillCard({
                   {skill.proficiency}%
                 </span>
               </div>
-              <ProficiencyBar proficiency={skill.proficiency} color={skill.color} delay={(index % 12) * 0.05} />
+              <ProficiencyBar
+                proficiency={skill.proficiency}
+                color={skill.color}
+                delay={(index % 12) * 0.05}
+              />
             </div>
 
             {/* Stats Row */}
@@ -1899,13 +2122,55 @@ const SkillCard = memo(function SkillCard({
  * Per-category color palette (cycles through 7 accents)
  */
 const CATEGORY_PALETTE = [
-  { bar: 'from-sky-400 to-vision-cyan',    text: 'text-sky-600 dark:text-vision-cyan',       badge: 'bg-sky-50 dark:bg-vision-cyan/[0.08] text-sky-600 dark:text-vision-cyan border-sky-200 dark:border-vision-cyan/20',    glow: '0 0 28px rgba(var(--glow-cyan),0.22)'       },
-  { bar: 'from-vision-orange to-amber-400',text: 'text-orange-600 dark:text-vision-orange',  badge: 'bg-orange-50 dark:bg-vision-orange/[0.08] text-orange-600 dark:text-vision-orange border-orange-200 dark:border-vision-orange/20', glow: '0 0 28px rgba(255,107,43,0.22)'             },
-  { bar: 'from-violet-500 to-purple-400',  text: 'text-violet-600 dark:text-violet-400',     badge: 'bg-violet-50 dark:bg-violet-500/[0.08] text-violet-600 dark:text-violet-400 border-violet-200 dark:border-violet-500/20',  glow: '0 0 28px rgba(139,92,246,0.22)'             },
-  { bar: 'from-emerald-500 to-teal-400',   text: 'text-emerald-600 dark:text-emerald-400',   badge: 'bg-emerald-50 dark:bg-emerald-500/[0.08] text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/20',glow: '0 0 28px rgba(52,211,153,0.22)'             },
-  { bar: 'from-rose-500 to-vision-crimson',text: 'text-rose-600 dark:text-vision-crimson',   badge: 'bg-rose-50 dark:bg-vision-crimson/[0.08] text-rose-600 dark:text-vision-crimson border-rose-200 dark:border-vision-crimson/20',  glow: '0 0 28px rgba(var(--glow-crimson),0.22)'    },
-  { bar: 'from-amber-500 to-yellow-400',   text: 'text-amber-600 dark:text-amber-400',       badge: 'bg-amber-50 dark:bg-amber-500/[0.08] text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-500/20',       glow: '0 0 28px rgba(245,158,11,0.22)'             },
-  { bar: 'from-pink-500 to-fuchsia-400',   text: 'text-pink-600 dark:text-pink-400',         badge: 'bg-pink-50 dark:bg-pink-500/[0.08] text-pink-600 dark:text-pink-400 border-pink-200 dark:border-pink-500/20',           glow: '0 0 28px rgba(236,72,153,0.22)'             },
+  {
+    bar: 'from-sky-400 to-vision-cyan',
+    text: 'text-sky-600 dark:text-vision-cyan',
+    badge:
+      'bg-sky-50 dark:bg-vision-cyan/[0.08] text-sky-600 dark:text-vision-cyan border-sky-200 dark:border-vision-cyan/20',
+    glow: '0 0 28px rgba(var(--glow-cyan),0.22)',
+  },
+  {
+    bar: 'from-vision-orange to-amber-400',
+    text: 'text-orange-600 dark:text-vision-orange',
+    badge:
+      'bg-orange-50 dark:bg-vision-orange/[0.08] text-orange-600 dark:text-vision-orange border-orange-200 dark:border-vision-orange/20',
+    glow: '0 0 28px rgba(255,107,43,0.22)',
+  },
+  {
+    bar: 'from-violet-500 to-purple-400',
+    text: 'text-violet-600 dark:text-violet-400',
+    badge:
+      'bg-violet-50 dark:bg-violet-500/[0.08] text-violet-600 dark:text-violet-400 border-violet-200 dark:border-violet-500/20',
+    glow: '0 0 28px rgba(139,92,246,0.22)',
+  },
+  {
+    bar: 'from-emerald-500 to-teal-400',
+    text: 'text-emerald-600 dark:text-emerald-400',
+    badge:
+      'bg-emerald-50 dark:bg-emerald-500/[0.08] text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/20',
+    glow: '0 0 28px rgba(52,211,153,0.22)',
+  },
+  {
+    bar: 'from-rose-500 to-vision-crimson',
+    text: 'text-rose-600 dark:text-vision-crimson',
+    badge:
+      'bg-rose-50 dark:bg-vision-crimson/[0.08] text-rose-600 dark:text-vision-crimson border-rose-200 dark:border-vision-crimson/20',
+    glow: '0 0 28px rgba(var(--glow-crimson),0.22)',
+  },
+  {
+    bar: 'from-amber-500 to-yellow-400',
+    text: 'text-amber-600 dark:text-amber-400',
+    badge:
+      'bg-amber-50 dark:bg-amber-500/[0.08] text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-500/20',
+    glow: '0 0 28px rgba(245,158,11,0.22)',
+  },
+  {
+    bar: 'from-pink-500 to-fuchsia-400',
+    text: 'text-pink-600 dark:text-pink-400',
+    badge:
+      'bg-pink-50 dark:bg-pink-500/[0.08] text-pink-600 dark:text-pink-400 border-pink-200 dark:border-pink-500/20',
+    glow: '0 0 28px rgba(236,72,153,0.22)',
+  },
 ] as const;
 
 /**
@@ -1940,10 +2205,7 @@ const CategorySection = memo(function CategorySection({
       className="mb-16"
     >
       {/* Category Header */}
-      <button
-        onClick={onToggle}
-        className="group w-full text-left mb-6 focus:outline-none"
-      >
+      <button onClick={onToggle} className="group w-full text-left mb-6 focus:outline-none">
         {/* Main row */}
         <div
           className={cn(
@@ -1951,7 +2213,7 @@ const CategorySection = memo(function CategorySection({
             'border backdrop-blur-sm',
             isExpanded
               ? 'bg-white/70 dark:bg-white/[0.04] border-transparent'
-              : 'bg-white/50 dark:bg-white/[0.025] border-slate-200/60 dark:border-white/[0.07] hover:border-slate-300/80 dark:hover:border-white/[0.12]',
+              : 'bg-white/50 dark:bg-white/[0.025] border-slate-200/60 dark:border-white/[0.07] hover:border-slate-300/80 dark:hover:border-white/[0.12]'
           )}
           style={isExpanded ? { boxShadow: palette.glow, borderColor: 'transparent' } : {}}
         >
@@ -1967,11 +2229,15 @@ const CategorySection = memo(function CategorySection({
           </div>
 
           {/* Index number */}
-          <span className={cn(
-            'shrink-0 font-mono font-black text-[11px] tabular-nums w-7 text-center',
-            isExpanded ? palette.text : 'text-slate-300 dark:text-white/15 group-hover:text-slate-400 dark:group-hover:text-white/30',
-            'transition-colors duration-200'
-          )}>
+          <span
+            className={cn(
+              'shrink-0 font-mono font-black text-[11px] tabular-nums w-7 text-center',
+              isExpanded
+                ? palette.text
+                : 'text-slate-300 dark:text-white/15 group-hover:text-slate-400 dark:group-hover:text-white/30',
+              'transition-colors duration-200'
+            )}
+          >
             {idx}
           </span>
 
@@ -1979,26 +2245,36 @@ const CategorySection = memo(function CategorySection({
           <span className="h-4 w-px bg-slate-200/80 dark:bg-white/[0.08] shrink-0" />
 
           {/* Category name */}
-          <h2 className={cn(
-            'flex-1 font-display font-black uppercase italic tracking-tight transition-colors duration-200',
-            'text-xl md:text-2xl',
-            isExpanded ? palette.text : 'text-slate-800 dark:text-white/75 group-hover:text-slate-900 dark:group-hover:text-white/90'
-          )}>
+          <h2
+            className={cn(
+              'flex-1 font-display font-black uppercase italic tracking-tight transition-colors duration-200',
+              'text-xl md:text-2xl',
+              isExpanded
+                ? palette.text
+                : 'text-slate-800 dark:text-white/75 group-hover:text-slate-900 dark:group-hover:text-white/90'
+            )}
+          >
             {category}
           </h2>
 
           {/* Skill count badge */}
-          <span className={cn(
-            'shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border font-mono text-[9px] font-black tracking-[0.2em] uppercase backdrop-blur-sm transition-all duration-200',
-            isExpanded ? palette.badge : 'bg-slate-50/80 dark:bg-white/[0.05] text-slate-400 dark:text-white/25 border-slate-200/60 dark:border-white/[0.07]'
-          )}>
-            <span className={cn(
-              'h-1.5 w-1.5 rounded-full',
-              isExpanded ? 'animate-pulse' : 'opacity-40',
-              palette.text.split(' ')[0].replace('text-', 'bg-') + ' ' + (
-                palette.text.split(' ')[1]?.replace('text-', 'bg-') ?? ''
-              )
-            )} />
+          <span
+            className={cn(
+              'shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border font-mono text-[9px] font-black tracking-[0.2em] uppercase backdrop-blur-sm transition-all duration-200',
+              isExpanded
+                ? palette.badge
+                : 'bg-slate-50/80 dark:bg-white/[0.05] text-slate-400 dark:text-white/25 border-slate-200/60 dark:border-white/[0.07]'
+            )}
+          >
+            <span
+              className={cn(
+                'h-1.5 w-1.5 rounded-full',
+                isExpanded ? 'animate-pulse' : 'opacity-40',
+                palette.text.split(' ')[0].replace('text-', 'bg-') +
+                  ' ' +
+                  (palette.text.split(' ')[1]?.replace('text-', 'bg-') ?? '')
+              )}
+            />
             {skills.length}
           </span>
 
@@ -2006,7 +2282,10 @@ const CategorySection = memo(function CategorySection({
           <motion.div
             animate={{ rotate: isExpanded ? 180 : 0 }}
             transition={{ duration: 0.25 }}
-            className={cn('shrink-0 transition-colors duration-200', isExpanded ? palette.text : 'text-slate-300 dark:text-white/20')}
+            className={cn(
+              'shrink-0 transition-colors duration-200',
+              isExpanded ? palette.text : 'text-slate-300 dark:text-white/20'
+            )}
           >
             <Icons.ChevronDown className="h-4 w-4" />
           </motion.div>
@@ -2126,8 +2405,7 @@ const EmptyState = memo(function EmptyState({
         No Nodes Found.
       </h3>
       <p className="text-xs font-bold text-slate-400 dark:text-white/30 mb-8">
-        Query{' '}
-        <span className="font-mono text-vision-crimson">&ldquo;{searchQuery}&rdquo;</span>{' '}
+        Query <span className="font-mono text-vision-crimson">&ldquo;{searchQuery}&rdquo;</span>{' '}
         returned zero results.
       </p>
       <button
@@ -2177,7 +2455,8 @@ const AnimatedStatValue = memo(function AnimatedStatValue({
 
   return (
     <span ref={ref}>
-      {count.toLocaleString()}{suffix}
+      {count.toLocaleString()}
+      {suffix}
     </span>
   );
 });
@@ -2359,18 +2638,22 @@ export default function SkillsPage() {
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/60 dark:bg-white/[0.04] border border-slate-200/60 dark:border-white/[0.07] backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] dark:shadow-none">
                 <span className="h-1.5 w-1.5 rounded-full bg-vision-cyan animate-pulse shadow-[0_0_6px_rgba(var(--glow-cyan),0.7)]" />
                 <span className="text-[9px] font-mono font-black uppercase tracking-[0.25em] text-slate-400 dark:text-white/25">
-                  <span className="text-vision-cyan">{filteredSkills.length}</span>{' '}nodes
+                  <span className="text-vision-cyan">{filteredSkills.length}</span> nodes
                 </span>
                 {selectedCategory !== 'All' && (
                   <>
                     <span className="h-3 w-px bg-slate-200 dark:bg-white/[0.10]" />
-                    <span className="text-[9px] font-mono font-black uppercase tracking-[0.2em] text-vision-orange">{selectedCategory}</span>
+                    <span className="text-[9px] font-mono font-black uppercase tracking-[0.2em] text-vision-orange">
+                      {selectedCategory}
+                    </span>
                   </>
                 )}
                 {searchQuery && (
                   <>
                     <span className="h-3 w-px bg-slate-200 dark:bg-white/[0.10]" />
-                    <span className="text-[9px] font-mono font-black text-vision-crimson">&ldquo;{searchQuery}&rdquo;</span>
+                    <span className="text-[9px] font-mono font-black text-vision-crimson">
+                      &ldquo;{searchQuery}&rdquo;
+                    </span>
                   </>
                 )}
               </div>
@@ -2408,21 +2691,24 @@ export default function SkillsPage() {
             className="relative mt-20"
           >
             {/* Outer atmosphere — glow orbs + stars surrounding the panel */}
-            <div className="absolute -inset-8 sm:-inset-12 pointer-events-none overflow-hidden" aria-hidden>
+            <div
+              className="absolute -inset-8 sm:-inset-12 pointer-events-none overflow-hidden"
+              aria-hidden
+            >
               {/* Large ambient orbs */}
               <div className="absolute -top-20 left-[15%] w-72 h-72 rounded-full bg-vision-cyan/[0.10] dark:bg-vision-cyan/[0.06] blur-[100px]" />
               <div className="absolute -bottom-16 right-[20%] w-64 h-64 rounded-full bg-vision-crimson/[0.08] dark:bg-vision-crimson/[0.04] blur-[90px]" />
               <div className="absolute top-1/3 right-[5%] w-48 h-48 rounded-full bg-vision-orange/[0.07] dark:bg-vision-orange/[0.03] blur-[80px]" />
               {/* Scattered outer star particles */}
               {[
-                { x: '2%',  y: '8%',  s: 2.5, d: 3.2, c: '#00C8E8' },
-                { x: '8%',  y: '85%', s: 2,   d: 4.1, c: '#FF2A6D' },
-                { x: '95%', y: '12%', s: 3,   d: 2.8, c: '#FF6B2B' },
-                { x: '92%', y: '88%', s: 2,   d: 3.6, c: '#00C8E8' },
-                { x: '50%', y: '2%',  s: 2.5, d: 4.5, c: '#FF2A6D' },
-                { x: '50%', y: '96%', s: 2,   d: 3.0, c: '#FF6B2B' },
-                { x: '18%', y: '95%', s: 3,   d: 2.4, c: '#00C8E8' },
-                { x: '80%', y: '5%',  s: 2,   d: 3.9, c: '#FF2A6D' },
+                { x: '2%', y: '8%', s: 2.5, d: 3.2, c: '#00C8E8' },
+                { x: '8%', y: '85%', s: 2, d: 4.1, c: '#FF2A6D' },
+                { x: '95%', y: '12%', s: 3, d: 2.8, c: '#FF6B2B' },
+                { x: '92%', y: '88%', s: 2, d: 3.6, c: '#00C8E8' },
+                { x: '50%', y: '2%', s: 2.5, d: 4.5, c: '#FF2A6D' },
+                { x: '50%', y: '96%', s: 2, d: 3.0, c: '#FF6B2B' },
+                { x: '18%', y: '95%', s: 3, d: 2.4, c: '#00C8E8' },
+                { x: '80%', y: '5%', s: 2, d: 3.9, c: '#FF2A6D' },
               ].map((p, i) => (
                 <span
                   key={`outer-${i}`}
@@ -2474,22 +2760,22 @@ export default function SkillsPage() {
               {/* Starry particles — larger, brighter, more */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1]">
                 {[
-                  { x: '6%',  y: '15%', s: 3,   d: 2.5, c: '#00C8E8' },
+                  { x: '6%', y: '15%', s: 3, d: 2.5, c: '#00C8E8' },
                   { x: '15%', y: '55%', s: 2.5, d: 3.8, c: '#FF6B2B' },
-                  { x: '22%', y: '80%', s: 2,   d: 2.8, c: '#FF2A6D' },
+                  { x: '22%', y: '80%', s: 2, d: 2.8, c: '#FF2A6D' },
                   { x: '30%', y: '28%', s: 3.5, d: 4.0, c: '#00C8E8' },
-                  { x: '38%', y: '68%', s: 2,   d: 3.2, c: '#FF6B2B' },
-                  { x: '45%', y: '12%', s: 3,   d: 2.2, c: '#FF2A6D' },
+                  { x: '38%', y: '68%', s: 2, d: 3.2, c: '#FF6B2B' },
+                  { x: '45%', y: '12%', s: 3, d: 2.2, c: '#FF2A6D' },
                   { x: '52%', y: '85%', s: 2.5, d: 4.5, c: '#00C8E8' },
-                  { x: '60%', y: '35%', s: 3,   d: 3.0, c: '#FF6B2B' },
-                  { x: '68%', y: '72%', s: 2,   d: 3.5, c: '#00C8E8' },
+                  { x: '60%', y: '35%', s: 3, d: 3.0, c: '#FF6B2B' },
+                  { x: '68%', y: '72%', s: 2, d: 3.5, c: '#00C8E8' },
                   { x: '75%', y: '20%', s: 3.5, d: 2.6, c: '#FF2A6D' },
                   { x: '82%', y: '58%', s: 2.5, d: 4.2, c: '#FF6B2B' },
-                  { x: '90%', y: '40%', s: 3,   d: 3.0, c: '#00C8E8' },
-                  { x: '95%', y: '78%', s: 2,   d: 2.8, c: '#FF2A6D' },
-                  { x: '10%', y: '40%', s: 2,   d: 5.0, c: '#00C8E8' },
+                  { x: '90%', y: '40%', s: 3, d: 3.0, c: '#00C8E8' },
+                  { x: '95%', y: '78%', s: 2, d: 2.8, c: '#FF2A6D' },
+                  { x: '10%', y: '40%', s: 2, d: 5.0, c: '#00C8E8' },
                   { x: '48%', y: '50%', s: 2.5, d: 3.6, c: '#FF6B2B' },
-                  { x: '85%', y: '15%', s: 2,   d: 4.8, c: '#FF2A6D' },
+                  { x: '85%', y: '15%', s: 2, d: 4.8, c: '#FF2A6D' },
                 ].map((p, i) => (
                   <span
                     key={i}
@@ -2519,7 +2805,14 @@ export default function SkillsPage() {
                 <div className="flex items-center gap-3">
                   <div className="h-1.5 w-1.5 rounded-full bg-vision-cyan/60 animate-pulse" />
                   <span className="text-[8px] font-mono text-slate-300 dark:text-white/15 uppercase tracking-[0.3em]">
-                    last_sync: {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()}
+                    last_sync:{' '}
+                    {new Date()
+                      .toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })
+                      .toUpperCase()}
                   </span>
                 </div>
               </div>
@@ -2622,7 +2915,9 @@ export default function SkillsPage() {
                     {/* Animated underline sweep */}
                     <span
                       className="absolute bottom-0 left-1/2 w-0 group-hover:w-3/5 h-px transition-all duration-500 -translate-x-1/2"
-                      style={{ background: `linear-gradient(to right, transparent, ${stat.hex}70, transparent)` }}
+                      style={{
+                        background: `linear-gradient(to right, transparent, ${stat.hex}70, transparent)`,
+                      }}
                     />
                   </div>
                 ))}
@@ -2636,7 +2931,9 @@ export default function SkillsPage() {
                   return (
                     <div key={tier} className="flex items-center gap-1.5">
                       <div className={`h-1.5 w-1.5 rounded-full ${dots[i]}`} />
-                      <span className={`text-[8px] font-mono font-black uppercase tracking-[0.25em] ${colors[i]}`}>
+                      <span
+                        className={`text-[8px] font-mono font-black uppercase tracking-[0.25em] ${colors[i]}`}
+                      >
                         {tier}
                       </span>
                     </div>

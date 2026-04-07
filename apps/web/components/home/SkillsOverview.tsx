@@ -1,13 +1,7 @@
 'use client';
 
 import React, { useRef, memo, useState, useEffect, useCallback } from 'react';
-import {
-  motion,
-  useInView,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from 'framer-motion';
+import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import { useQuery } from '@apollo/client';
 import { GET_SKILLS } from '@/lib/graphql/queries';
@@ -424,10 +418,7 @@ const SkillCard = memo(function SkillCard({
         perspective: '1200px',
         willChange: isHovered ? 'transform' : 'auto',
       }}
-      className={cn(
-        'group relative rounded-[2rem] cursor-pointer',
-        config
-      )}
+      className={cn('group relative rounded-[2rem] cursor-pointer', config)}
     >
       {/* ── Animated Border Beam (on hover) ── */}
       {/* Layer 1: spinning conic gradient masked to border width */}
@@ -446,20 +437,24 @@ const SkillCard = memo(function SkillCard({
         <div
           className="absolute h-[6px] w-[60px] animate-border-beam"
           style={{
-            background: 'linear-gradient(90deg, transparent, rgba(var(--glow-cyan),1), transparent)',
+            background:
+              'linear-gradient(90deg, transparent, rgba(var(--glow-cyan),1), transparent)',
             offsetPath: 'rect(0 100% 100% 0 round 32px)',
-            boxShadow: '0 0 30px 8px rgba(var(--glow-cyan),0.9), 0 0 60px 16px rgba(var(--glow-cyan),0.4)',
+            boxShadow:
+              '0 0 30px 8px rgba(var(--glow-cyan),0.9), 0 0 60px 16px rgba(var(--glow-cyan),0.4)',
             filter: 'blur(0.3px)',
           }}
         />
         <div
           className="absolute h-[6px] w-[50px] animate-border-beam"
           style={{
-            background: 'linear-gradient(90deg, transparent, rgba(var(--glow-crimson),1), transparent)',
+            background:
+              'linear-gradient(90deg, transparent, rgba(var(--glow-crimson),1), transparent)',
             offsetPath: 'rect(0 100% 100% 0 round 32px)',
             animationDelay: '-1.5s',
             animationDuration: '4s',
-            boxShadow: '0 0 25px 6px rgba(var(--glow-crimson),0.8), 0 0 50px 12px rgba(var(--glow-crimson),0.35)',
+            boxShadow:
+              '0 0 25px 6px rgba(var(--glow-crimson),0.8), 0 0 50px 12px rgba(var(--glow-crimson),0.35)',
             filter: 'blur(0.3px)',
           }}
         />
@@ -481,7 +476,9 @@ const SkillCard = memo(function SkillCard({
           <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000">
             <div
               className="absolute inset-0 blur-[20px] opacity-20"
-              style={{ background: `radial-gradient(circle at center, ${skill.color}, transparent)` }}
+              style={{
+                background: `radial-gradient(circle at center, ${skill.color}, transparent)`,
+              }}
             />
           </div>
 
@@ -521,11 +518,15 @@ const SkillCard = memo(function SkillCard({
               <div className="flex justify-between items-center text-[8px] font-mono font-black text-slate-400 dark:text-text-dark/30 uppercase tracking-widest">
                 <div className="flex items-center gap-1.5">
                   <span className="text-vision-cyan">EXP:</span>
-                  <span className="text-slate-900 dark:text-text-dark/70">{skill.yearsOfExperience}Y</span>
+                  <span className="text-slate-900 dark:text-text-dark/70">
+                    {skill.yearsOfExperience}Y
+                  </span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="text-vision-crimson">PROJ:</span>
-                  <span className="text-slate-900 dark:text-text-dark/70">{skill.projectCount}</span>
+                  <span className="text-slate-900 dark:text-text-dark/70">
+                    {skill.projectCount}
+                  </span>
                 </div>
               </div>
             </div>
@@ -590,7 +591,9 @@ const SkillCard = memo(function SkillCard({
                 </div>
                 <div className="text-[7px] font-mono font-bold text-slate-400 dark:text-white/30 uppercase tracking-[0.2em] mt-0.5 flex items-center gap-1">
                   Projects
-                  <span className="text-vision-cyan opacity-0 group-hover/proj:opacity-100 transition-opacity">→</span>
+                  <span className="text-vision-cyan opacity-0 group-hover/proj:opacity-100 transition-opacity">
+                    →
+                  </span>
                 </div>
               </Link>
             ) : (

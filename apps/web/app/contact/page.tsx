@@ -3,7 +3,9 @@
 import React, { useState, useRef, useEffect, memo } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { useMutation } from '@apollo/client';
+import Link from 'next/link';
 import { SEND_CONTACT_MESSAGE } from '@/lib/graphql/mutations';
+import PageStarfield from '@/components/background/PageStarfield';
 
 const MotionDiv = motion.div as any;
 const MotionSpan = motion.span as any;
@@ -64,6 +66,55 @@ function useTextMorph(from: string, to: string, trigger: boolean, duration = 140
   }, [trigger, from, to, duration]);
   return display;
 }
+
+// ============================================================================
+// ICONS
+// ============================================================================
+
+// ============================================================================
+// BACK BUTTON
+// ============================================================================
+
+const BackButton = memo(function BackButton() {
+  return (
+    <Link
+      href="/"
+      className={cn(
+        'group relative inline-flex items-center gap-3 px-5 py-2.5 rounded-xl overflow-hidden',
+        'text-[10px] font-mono font-black uppercase tracking-[0.3em]',
+        'text-slate-500 dark:text-white/40 hover:text-vision-cyan',
+        'backdrop-blur-md',
+        'bg-white/60 dark:bg-white/[0.04]',
+        'border border-slate-200/70 dark:border-white/[0.08]',
+        'hover:border-vision-cyan/40 dark:hover:border-vision-cyan/30',
+        'shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_2px_10px_rgba(0,0,0,0.06)]',
+        'dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_16px_rgba(0,200,232,0.06)]',
+        'hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_0_24px_rgba(0,200,232,0.15)]',
+        'dark:hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_28px_rgba(0,200,232,0.18)]',
+        'transition-all duration-300'
+      )}
+    >
+      <span className="absolute top-1.5 left-1.5 w-2.5 h-2.5 border-t border-l border-slate-300/50 dark:border-white/[0.08] group-hover:border-vision-cyan/50 transition-colors duration-300" />
+      <span className="absolute bottom-1.5 right-1.5 w-2.5 h-2.5 border-b border-r border-slate-300/50 dark:border-white/[0.08] group-hover:border-vision-cyan/50 transition-colors duration-300" />
+      <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none bg-gradient-to-r from-transparent via-vision-cyan/[0.08] to-transparent" />
+      <svg
+        className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-1.5"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="m12 19-7-7 7-7" />
+        <path d="M19 12H5" />
+      </svg>
+      <span>Back to Core</span>
+      <span className="h-1 w-1 rounded-full bg-slate-300 dark:bg-white/15 group-hover:bg-vision-cyan group-hover:shadow-[0_0_6px_rgba(0,200,232,0.7)] transition-all duration-300" />
+    </Link>
+  );
+});
 
 // ============================================================================
 // ICONS
@@ -366,6 +417,12 @@ const Toast = memo(({ message, onExit }: { message: string; onExit: () => void }
 
       {/* Expanding ring burst */}
       <MotionDiv
+        initial={{ opacity: 0.25, scale: 0.3 }}
+        animate={{ opacity: 0, scale: 3.2 }}
+        transition={{ duration: 1.4, delay: 0.2, ease: 'easeOut' }}
+        className="absolute inset-0 rounded-2xl border border-vision-crimson/30 pointer-events-none z-40"
+      />
+      <MotionDiv
         initial={{ opacity: 0.8, scale: 0.5 }}
         animate={{ opacity: 0, scale: 2.5 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -395,6 +452,12 @@ const Toast = memo(({ message, onExit }: { message: string; onExit: () => void }
       />
 
       <div className="relative rounded-2xl border border-vision-cyan/30 bg-slate-950/95 backdrop-blur-[60px] shadow-[0_0_80px_rgba(var(--glow-cyan),0.25),0_20px_60px_rgba(0,0,0,0.5)] overflow-hidden">
+        {/* HUD corner brackets */}
+        <div className="absolute top-[6px] left-[6px] w-3 h-3 border-t border-l border-vision-cyan/50 pointer-events-none z-20" />
+        <div className="absolute top-[6px] right-[6px] w-3 h-3 border-t border-r border-vision-cyan/30 pointer-events-none z-20" />
+        <div className="absolute bottom-[6px] left-[6px] w-3 h-3 border-b border-l border-vision-cyan/30 pointer-events-none z-20" />
+        <div className="absolute bottom-[6px] right-[6px] w-3 h-3 border-b border-r border-vision-crimson/40 pointer-events-none z-20" />
+
         <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none z-30">
           <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(var(--glow-cyan),0.03)_2px,rgba(var(--glow-cyan),0.03)_4px)]" />
           <MotionDiv
@@ -430,6 +493,22 @@ const Toast = memo(({ message, onExit }: { message: string; onExit: () => void }
             <span className="text-[8px] font-mono font-black text-emerald-400/80 uppercase tracking-widest">
               Secure
             </span>
+            <button
+              onClick={onExit}
+              className="ml-2 h-5 w-5 rounded flex items-center justify-center text-slate-600 hover:text-vision-crimson hover:bg-vision-crimson/10 transition-all"
+              aria-label="Dismiss"
+            >
+              <svg
+                width="7"
+                height="7"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3.5"
+              >
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         </div>
 
@@ -462,14 +541,22 @@ const Toast = memo(({ message, onExit }: { message: string; onExit: () => void }
               className="space-y-3"
             >
               <div className="flex items-center gap-3">
-                <MotionDiv
-                  initial={{ scale: 0, rotate: -180 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ type: 'spring', stiffness: 500, damping: 15 }}
-                  className="h-9 w-9 rounded-xl bg-vision-cyan/10 border border-vision-cyan/30 flex items-center justify-center shadow-[0_0_20px_rgba(var(--glow-cyan),0.3)]"
-                >
-                  <Icons.Check />
-                </MotionDiv>
+                <div className="relative shrink-0">
+                  <MotionDiv
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 15 }}
+                    className="h-9 w-9 rounded-xl bg-vision-cyan/10 border border-vision-cyan/30 flex items-center justify-center shadow-[0_0_20px_rgba(var(--glow-cyan),0.3)]"
+                  >
+                    <Icons.Check />
+                  </MotionDiv>
+                  <MotionDiv
+                    initial={{ scale: 0.6, opacity: 0.9 }}
+                    animate={{ scale: 2.4, opacity: 0 }}
+                    transition={{ duration: 0.9, delay: 0.15 }}
+                    className="absolute inset-0 rounded-xl border border-vision-cyan/70 pointer-events-none"
+                  />
+                </div>
                 <div className="font-mono font-black text-sm text-vision-cyan tracking-wider">
                   {typedText}
                   <MotionSpan
@@ -505,13 +592,19 @@ const Toast = memo(({ message, onExit }: { message: string; onExit: () => void }
           )}
         </div>
 
-        <div className="relative h-[2px] bg-white/5">
+        <div className="relative h-[2px] bg-white/5 overflow-hidden">
           <MotionDiv
             initial={{ width: '100%' }}
             animate={{ width: '0%' }}
             transition={{ duration: 7, ease: 'linear' }}
-            className="absolute inset-y-0 left-0 bg-gradient-to-r from-vision-cyan via-vision-cyan to-vision-cyan/50 shadow-[0_0_10px_rgba(var(--glow-cyan),1)]"
-          />
+            className="absolute inset-y-0 left-0 bg-gradient-to-r from-vision-cyan via-vision-cyan to-vision-cyan/50 shadow-[0_0_10px_rgba(var(--glow-cyan),1)] overflow-hidden"
+          >
+            <MotionDiv
+              animate={{ x: ['-100%', '200%'] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.4 }}
+              className="absolute inset-y-0 w-16 bg-gradient-to-r from-transparent via-white/70 to-transparent"
+            />
+          </MotionDiv>
         </div>
       </div>
     </MotionDiv>
@@ -569,10 +662,7 @@ const SocialLink = ({
 
 export default function ContactPage() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-5%' });
-  const headingInView = useInView(headingRef, { once: true, margin: '-10%' });
-  const morphedText = useTextMorph('Establish Contact.', 'UPLINK', headingInView, 1400);
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [touched, setTouched] = useState({
     name: false,
@@ -580,10 +670,36 @@ export default function ContactPage() {
     subject: false,
     message: false,
   });
+  const [liveTime, setLiveTime] = useState('--:--:--');
+
+  useEffect(() => {
+    const tick = () => {
+      setLiveTime(
+        new Date().toLocaleTimeString('en-IN', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false,
+          timeZone: 'Asia/Kolkata',
+        })
+      );
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
   const [errors, setErrors] = useState<Record<string, string | undefined>>({});
   const [status, setStatus] = useState<FormStatus>('IDLE');
   const [showToast, setShowToast] = useState(false);
   const [transmissionLogs, setTransmissionLogs] = useState<string[]>([]);
+  const [emailCopied, setEmailCopied] = useState(false);
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText('hello@example.com').then(() => {
+      setEmailCopied(true);
+      setTimeout(() => setEmailCopied(false), 2000);
+    });
+  };
 
   const [submitMessage] = useMutation(SEND_CONTACT_MESSAGE);
 
@@ -687,6 +803,8 @@ export default function ContactPage() {
       ref={containerRef}
       className="relative min-h-screen py-32 px-6 overflow-hidden bg-stone-50 dark:bg-space-black transition-colors"
     >
+      <PageStarfield density={60} />
+
       <AnimatePresence>
         {showToast && (
           <Toast
@@ -712,59 +830,10 @@ export default function ContactPage() {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Hero Header */}
-        <MotionDiv
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center mb-20 space-y-8"
-        >
-          <div className="inline-flex items-center gap-4 px-8 py-2.5 rounded-full glassmorphism border-2 border-vision-cyan/40 text-vision-cyan font-mono text-[10px] font-black tracking-[0.6em] uppercase shadow-[0_0_30px_rgba(var(--glow-cyan),0.2)]">
-            <Icons.Activity className="animate-pulse" />
-            Uplink_Channel // SECURE
-          </div>
-
-          <div ref={headingRef} className="relative overflow-visible py-4 px-8">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={headingInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 1.2, ease: 'easeOut' }}
-              className="absolute inset-0 flex items-center justify-center pointer-events-none"
-            >
-              <div className="w-64 h-32 bg-vision-cyan/[0.06] dark:bg-vision-cyan/[0.04] blur-[80px] rounded-full" />
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={headingInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative text-5xl md:text-7xl lg:text-8xl font-display font-black leading-[0.85] tracking-tighter uppercase italic"
-            >
-              <span className="relative inline-block pr-3">
-                <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-br from-rose-800 via-rose-600 to-rose-800 dark:from-vision-cyan dark:via-white/90 dark:to-vision-cyan">
-                  {morphedText || '\u00A0'}
-                </span>
-                <span
-                  aria-hidden
-                  className="absolute inset-0 text-vision-crimson/30 dark:text-vision-crimson/20 animate-[glitch1_3s_infinite] pointer-events-none select-none mix-blend-darken dark:mix-blend-screen"
-                >
-                  {morphedText || '\u00A0'}
-                </span>
-                <span
-                  aria-hidden
-                  className="absolute inset-0 text-vision-cyan/30 dark:text-vision-cyan/20 animate-[glitch2_3s_infinite] pointer-events-none select-none mix-blend-darken dark:mix-blend-screen"
-                >
-                  {morphedText || '\u00A0'}
-                </span>
-              </span>
-            </motion.h1>
-          </div>
-
-          <p className="text-lg md:text-xl font-bold text-slate-600 dark:text-text-dark/50 max-w-xl mx-auto italic leading-relaxed">
-            Secure transmission channel for collaboration requests, project briefings, and
-            interstellar handshakes.
-          </p>
-        </MotionDiv>
+        {/* Back Button */}
+        <div className="mb-10">
+          <BackButton />
+        </div>
 
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
@@ -940,41 +1009,126 @@ export default function ContactPage() {
             className="lg:col-span-5 space-y-8"
           >
             {/* Transmission Log */}
-            <div className="p-8 rounded-[3rem] glassmorphism border-[0.5px] border-slate-200 dark:border-white/5 space-y-3 min-h-[180px] flex flex-col justify-end shadow-2xl relative overflow-hidden bg-slate-100/30 dark:bg-white/[0.01]">
-              <div className="text-[9px] font-mono font-black text-slate-500 dark:text-text-dark/30 uppercase tracking-[0.5em] mb-4 border-b border-current/10 pb-2">
-                Rolling_Log
-              </div>
-              <AnimatePresence mode="popLayout">
-                {transmissionLogs.length === 0 ? (
-                  <div className="text-[10px] font-mono text-slate-400 dark:text-text-dark/20 italic">
-                    Awaiting transmission...
+            <div className="p-8 rounded-[3rem] glassmorphism border-[0.5px] border-slate-200 dark:border-white/5 min-h-[180px] flex flex-col shadow-2xl relative overflow-hidden bg-slate-100/30 dark:bg-white/[0.01]">
+              {/* Terminal header bar */}
+              <div className="flex items-center justify-between mb-4 border-b border-slate-200/60 dark:border-white/[0.06] pb-3">
+                <div className="flex items-center gap-2">
+                  <div className="flex gap-1.5">
+                    <div className="h-2.5 w-2.5 rounded-full bg-vision-crimson/40" />
+                    <div className="h-2.5 w-2.5 rounded-full bg-vision-orange/40" />
+                    <div className="h-2.5 w-2.5 rounded-full bg-green-500/40" />
                   </div>
-                ) : (
-                  transmissionLogs.map((log, i) => (
-                    <MotionDiv
-                      key={log + i}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 10 }}
-                      className="font-mono text-[10px] font-bold text-vision-cyan/80 flex items-center gap-4"
-                    >
-                      <span className="text-vision-cyan/40">
-                        [{new Date().toLocaleTimeString([], { hour12: false })}]
-                      </span>
-                      <span className="tracking-tight uppercase">{log}</span>
-                    </MotionDiv>
-                  ))
-                )}
-              </AnimatePresence>
+                  <div className="text-[9px] font-mono font-black text-slate-500 dark:text-text-dark/30 uppercase tracking-[0.5em] ml-2">
+                    Rolling_Log
+                  </div>
+                </div>
+                <div className="text-[8px] font-mono text-slate-400 dark:text-text-dark/20 tracking-wider">
+                  {liveTime} IST
+                </div>
+              </div>
+
+              <div className="flex-1 space-y-2.5">
+                <AnimatePresence mode="popLayout">
+                  {transmissionLogs.length === 0 ? (
+                    <div className="text-[10px] font-mono text-slate-400 dark:text-text-dark/20 italic flex items-center gap-2">
+                      <span className="w-1 h-3.5 bg-vision-cyan/60 animate-pulse inline-block rounded-sm" />
+                      Awaiting transmission...
+                    </div>
+                  ) : (
+                    transmissionLogs.map((log, i) => (
+                      <MotionDiv
+                        key={log + i}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 10 }}
+                        className="font-mono text-[10px] font-bold text-vision-cyan/80 flex items-center gap-4"
+                      >
+                        <span className="text-vision-cyan/40">
+                          [{new Date().toLocaleTimeString([], { hour12: false })}]
+                        </span>
+                        <span className="tracking-tight uppercase">{log}</span>
+                      </MotionDiv>
+                    ))
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
             {/* Status Card */}
-            <div className="p-8 rounded-[3rem] glassmorphism border-[0.5px] border-slate-200 dark:border-white/5 shadow-xl bg-slate-50/30 dark:bg-white/[0.01]">
-              <div className="text-[10px] font-mono font-black text-vision-crimson uppercase tracking-[0.5em] mb-6 flex items-center gap-3">
-                <Icons.Activity className="animate-pulse" /> Station_Status
+            <div className="p-8 rounded-[3rem] glassmorphism border-[0.5px] border-slate-200 dark:border-white/5 shadow-xl bg-slate-50/30 dark:bg-white/[0.01] relative overflow-hidden">
+              {/* Available banner */}
+              <div className="flex items-center justify-between mb-6">
+                <div className="text-[10px] font-mono font-black text-vision-crimson uppercase tracking-[0.5em] flex items-center gap-3">
+                  <Icons.Activity className="animate-pulse" /> Station_Status
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20">
+                  <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_6px_rgba(34,197,94,0.7)]" />
+                  <span className="text-[8px] font-mono font-black text-green-500 tracking-widest uppercase">
+                    Available
+                  </span>
+                </div>
               </div>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-1.5">
+
+              {/* Live clock */}
+              <div className="mb-6 p-4 rounded-2xl bg-slate-100/60 dark:bg-black/20 border border-slate-200/60 dark:border-white/[0.04]">
+                <div className="text-[8px] font-mono text-slate-400 dark:text-text-dark/30 uppercase tracking-widest mb-1">
+                  Local_Time // IST (UTC+5:30)
+                </div>
+                <div className="text-2xl font-mono font-black text-slate-900 dark:text-text-dark tabular-nums tracking-wider">
+                  {liveTime}
+                </div>
+              </div>
+
+              {/* Download CV */}
+              <a
+                href="/cv.pdf"
+                download
+                className="group flex items-center justify-between gap-3 w-full mb-6 px-5 py-3.5 rounded-2xl border border-vision-cyan/20 bg-vision-cyan/5 hover:bg-vision-cyan/10 hover:border-vision-cyan/50 transition-all duration-300 shadow-[0_0_0_rgba(var(--glow-cyan),0)] hover:shadow-[0_0_20px_rgba(var(--glow-cyan),0.12)]"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-8 rounded-xl bg-vision-cyan/10 border border-vision-cyan/20 group-hover:border-vision-cyan/50 flex items-center justify-center transition-all">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-vision-cyan"
+                    >
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="text-[9px] font-mono font-black text-slate-400 dark:text-text-dark/30 uppercase tracking-[0.4em]">
+                      Resume
+                    </div>
+                    <div className="text-[11px] font-mono font-black text-vision-cyan">
+                      Download_CV.pdf
+                    </div>
+                  </div>
+                </div>
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-vision-cyan/40 group-hover:text-vision-cyan group-hover:translate-y-0.5 transition-all"
+                >
+                  <path d="M12 5v14M5 12l7 7 7-7" />
+                </svg>
+              </a>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5 p-3 rounded-2xl bg-slate-100/40 dark:bg-white/[0.02]">
                   <div className="text-[9px] font-mono text-slate-400 dark:text-text-dark/30 uppercase tracking-widest font-black italic">
                     Response
                   </div>
@@ -982,19 +1136,19 @@ export default function ContactPage() {
                     &lt;24h
                   </div>
                 </div>
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 p-3 rounded-2xl bg-slate-100/40 dark:bg-white/[0.02]">
                   <div className="text-[9px] font-mono text-slate-400 dark:text-text-dark/30 uppercase tracking-widest font-black italic">
-                    Status
+                    Timezone
                   </div>
-                  <div className="text-lg font-display font-black text-green-500">Online</div>
+                  <div className="text-lg font-display font-black text-vision-cyan">IST</div>
                 </div>
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 p-3 rounded-2xl bg-slate-100/40 dark:bg-white/[0.02]">
                   <div className="text-[9px] font-mono text-slate-400 dark:text-text-dark/30 uppercase tracking-widest font-black italic">
                     Location
                   </div>
                   <div className="text-lg font-display font-black text-vision-cyan">India</div>
                 </div>
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 p-3 rounded-2xl bg-slate-100/40 dark:bg-white/[0.02]">
                   <div className="text-[9px] font-mono text-slate-400 dark:text-text-dark/30 uppercase tracking-widest font-black italic">
                     Open To
                   </div>
@@ -1027,12 +1181,78 @@ export default function ContactPage() {
                 href="https://x.com"
                 description="Follow the signal"
               />
-              <SocialLink
-                icon={Icons.Mail}
-                label="Direct_Mail"
-                href="mailto:hello@example.com"
-                description="hello@example.com"
-              />
+              {/* Direct Mail with copy button */}
+              <div className="group relative flex items-center gap-5 p-6 rounded-[2rem] glassmorphism border-[0.5px] border-slate-200 dark:border-white/5 hover:border-vision-cyan/40 transition-all duration-500 bg-slate-50/30 dark:bg-white/[0.02] hover:bg-vision-cyan/5 shadow-lg hover:shadow-[0_0_30px_rgba(var(--glow-cyan),0.1)]">
+                <a
+                  href="mailto:hello@example.com"
+                  className="flex items-center gap-5 flex-1 min-w-0"
+                >
+                  <div className="h-12 w-12 shrink-0 rounded-2xl bg-vision-cyan/10 flex items-center justify-center text-vision-cyan/60 group-hover:text-vision-cyan border border-vision-cyan/10 group-hover:border-vision-cyan/30 transition-all group-hover:scale-110">
+                    <Icons.Mail />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[10px] font-mono font-black text-slate-400 dark:text-text-dark/30 uppercase tracking-[0.4em] group-hover:text-vision-cyan transition-colors">
+                      Direct_Mail
+                    </div>
+                    <div className="text-sm font-bold text-slate-700 dark:text-text-dark/60 mt-1 group-hover:text-slate-900 dark:group-hover:text-text-dark transition-colors truncate">
+                      hello@example.com
+                    </div>
+                  </div>
+                </a>
+                <button
+                  onClick={handleCopyEmail}
+                  aria-label="Copy email"
+                  className="shrink-0 h-9 w-9 rounded-2xl border border-slate-200 dark:border-white/5 group-hover:border-vision-cyan/30 flex items-center justify-center text-slate-400 hover:text-vision-cyan transition-all relative overflow-hidden"
+                >
+                  <AnimatePresence mode="wait">
+                    {emailCopied ? (
+                      <MotionDiv
+                        key="check"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="text-emerald-400"
+                      >
+                        <Icons.Check size={13} />
+                      </MotionDiv>
+                    ) : (
+                      <MotionDiv
+                        key="copy"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <svg
+                          width="13"
+                          height="13"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                        </svg>
+                      </MotionDiv>
+                    )}
+                  </AnimatePresence>
+                  {emailCopied && (
+                    <MotionDiv
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: -28 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4 }}
+                      className="absolute -top-1 left-1/2 -translate-x-1/2 text-[8px] font-mono font-black text-emerald-400 whitespace-nowrap pointer-events-none"
+                    >
+                      Copied!
+                    </MotionDiv>
+                  )}
+                </button>
+              </div>
             </div>
           </MotionDiv>
         </div>

@@ -16,8 +16,8 @@ export default function NotFound() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-sm font-semibold leading-relaxed text-slate-600 dark:text-text-dark/55 md:text-base">
-            The page drifted out of orbit. While we recalibrate your route, jump into the
-            typing arena and test your speed.
+            The page drifted out of orbit. While we recalibrate your route, jump into the typing
+            arena and test your speed.
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
